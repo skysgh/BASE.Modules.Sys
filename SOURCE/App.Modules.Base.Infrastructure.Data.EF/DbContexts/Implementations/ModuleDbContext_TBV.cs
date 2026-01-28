@@ -1,7 +1,11 @@
-using App.Modules.Base.Infrastructure.Factories;
-using App.Modules.Base.Infrastructure.Storage.Db.EF.DbContexts.Implementations.Base;
+using App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations.Base;
+using App.Modules.Base.Infrastructure.Data.EF.Schema.Management;
+using App.Modules.Base.Infrastructure.Data.EF.Schema.Implementations;
 using App.Modules.Base.Shared.Constants;
+using App.Modules.Base.Substrate.Constants;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Logging;
 
 
 namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations
@@ -32,39 +36,19 @@ namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations
         public DbSet<NothingDefinedYet>? NothingDefinedYet { get; set; }
         */
 
-
         /// <summary>
-        /// Constructor
-        /// <para>
-        /// Constructor invokes base with 
-        /// Key ('AppCoreDbContext') used to find the 
-        /// ConnectionString in web.config
-        /// </para>
+        /// Constructor with dependency injection support for runtime scenarios.
         /// </summary>
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public ModuleDbContext() :
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-            this(ModuleConstants.DbConnectionStringName)
-        {
-            // Note:
-            // above is passing on to 'this' next constructor
-            // and not 'base'
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <para>
-        /// Note how its using a ServiceLocator in the middle
-        /// to build a <c>DbContextOptions</c> to pass down.
-        /// </para>
-        /// <param name="connectionStringOrName"></param>
-        public ModuleDbContext(string connectionStringOrName)
-            : base(
-                   ServiceLocator
-                  .Get<DbContextOptionsBuilder>()
-                  .UseSqlServer(connectionStringOrName)
-                  .Options)
+        /// <param name="options">The DbContext options configured via DI.</param>
+        /// <param name="modelBuilderOrchestrator">Orchestrator for model building.</param>
+        /// <param name="dbContextPreCommitService">Pre-commit processing service (IDbContextPreCommitService for runtime).</param>
+        /// <param name="loggerFactory">Logger factory for diagnostics.</param>
+        public ModuleDbContext(
+            DbContextOptions<ModuleDbContext> options,
+            IModelBuilderOrchestrator? modelBuilderOrchestrator = null,
+            object? dbContextPreCommitService = null,
+            ILoggerFactory? loggerFactory = null)
+            : base(options, modelBuilderOrchestrator, dbContextPreCommitService, loggerFactory)
         {
         }
 
@@ -94,6 +78,60 @@ namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations
             base.OnModelCreating(modelBuilder);
         }
 
+    }
+
+    /// <summary>
+    /// Design-time factory for EF Core migrations and tooling.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This factory is automatically discovered and used by:
+    /// - <c>dotnet ef migrations add</c>
+    /// - <c>dotnet ef database update</c>
+    /// - PowerShell EF commands
+    /// </para>
+    /// <para>
+    /// <b>Design Philosophy:</b>
+    /// - NO ServiceProvider dependency
+    /// - Minimal orchestrator (convention-based)
+    /// - Null-object pattern for pre-commit service
+    /// - Works standalone for migrations
+    /// </para>
+    /// <para>
+    /// <b>Connection String Priority:</b>
+    /// 1. Command-line argument (highest)
+    /// 2. Environment variable "ConnectionStrings__Default"
+    /// 3. LocalDB default (fallback)
+    /// </para>
+    /// </remarks>
+    public class ModuleDbContextFactory : IDesignTimeDbContextFactory<ModuleDbContext>
+    {
+        /// <inheritdoc/>
+        public ModuleDbContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<ModuleDbContext>();
+
+            // Connection string resolution for design-time
+            var connectionString = args.Length > 0
+                ? args[0]  // From command line
+                : Environment.GetEnvironmentVariable("ConnectionStrings__Default")
+                    ?? "Server=(localdb)\\mssqllocaldb;Database=AppModuleDb;Trusted_Connection=True;MultipleActiveResultSets=true";
+
+            optionsBuilder.UseSqlServer(connectionString);
+
+            // Create minimal dependencies for design-time
+            // Use simple convention-based orchestrator (no DI required)
+            var modelBuilderOrchestrator = new DesignTimeModelBuilderOrchestrator();
+            
+            // Use null-object pattern for pre-commit service
+            var preCommitService = NullDbContextPreCommitService.Instance;
+
+            return new ModuleDbContext(
+                optionsBuilder.Options,
+                modelBuilderOrchestrator,
+                preCommitService,
+                loggerFactory: null);
+        }
     }
 }
 

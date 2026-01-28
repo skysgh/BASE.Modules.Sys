@@ -2,10 +2,18 @@
 using App.Modules.Base.Substrate.Contracts.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App.Modules.Base.Infrastructure.Extensions
+namespace App
 {
+    /// <summary>
+    /// Extension methods to the <see cref="IServiceCollection"/>
+    /// </summary>
     public static class LoggingServiceCollectionExtensions
     {
+        /// <summary>
+        /// Add Application Logging
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection AddApplicationLogging(this IServiceCollection services)
         {
             services.AddSingleton(typeof(IAppLogger<>), typeof(AppLogger<>));

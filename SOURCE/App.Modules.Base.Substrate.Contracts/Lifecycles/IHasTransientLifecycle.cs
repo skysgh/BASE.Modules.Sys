@@ -1,4 +1,4 @@
-namespace App.Modules.Base.Substrate.Lifecycles
+namespace App.Modules.Base.Substrate.Contracts.Lifecycles
 {
     /// <summary>
     /// A Transient version of <see cref="IHasLifecycle"/>.

@@ -1,6 +1,6 @@
 using App.Modules.Base.Substrate.Services;
 
-namespace App.Modules.Base.Substrate.Lifecycles
+namespace App.Modules.Base.Substrate.Contracts.Lifecycles
 {
     /// <summary>
     /// A non-functional interface to hint 

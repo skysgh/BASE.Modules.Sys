@@ -109,6 +109,30 @@ namespace App
         }
 
         /// <summary>
+        /// Finds types in assemblies that have the specified Contract.
+        /// </summary>
+        /// <param name="assemblies"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static IEnumerable<Type> GetInstantiableTypesImplementing(
+            this Assembly[] assemblies,
+            Type type)
+        {
+            var results = new List<Type>();
+            foreach (var assembly in assemblies)
+            {
+                var resultSet = assembly.GetInstantiableTypesImplementing(type);
+                if (resultSet == null)
+                {
+                    continue;
+                }
+                results.AddRange(resultSet);
+            }
+            return results;
+        }
+
+
+        /// <summary>
         /// Determine whether Assembly contains type.
         /// </summary>
         /// <param name="assembly"></param>

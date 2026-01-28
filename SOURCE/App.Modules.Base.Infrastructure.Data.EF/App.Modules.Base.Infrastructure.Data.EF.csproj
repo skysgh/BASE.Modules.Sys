@@ -50,6 +50,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Extensions\QueryableEFExtensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Packaging\readme.nuget.md">
       <PackagePath>\</PackagePath>
       <Pack>true</Pack>

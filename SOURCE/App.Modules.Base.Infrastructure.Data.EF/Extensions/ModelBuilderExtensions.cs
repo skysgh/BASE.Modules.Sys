@@ -1,6 +1,8 @@
 using App.Modules.Base.Infrastructure.Data.EF.Constants;
 using App.Modules.Base.Substrate.Models;
+using App.Modules.Base.Substrate.Models.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -685,6 +687,52 @@ where TEntity : class, IHasKey
 
         }
 
-    }
+
+        /// <summary>
+        /// Sets the default schema for the model being built.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder to configure.</param>
+        /// <param name="schemaKey">The schema name to use as default. If null or empty, no default schema is set.</param>
+        /// <returns>The same model builder instance for method chaining.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="modelBuilder"/> is null.</exception>
+        /// <remarks>
+        /// <para>
+        /// This extension method wraps EF Core's <see cref="RelationalModelBuilderExtensions.HasDefaultSchema"/> 
+        /// with additional null-safety checks for the schema key parameter.
+        /// </para>
+        /// <para>
+        /// <b>Behavior:</b>
+        /// - If <paramref name="schemaKey"/> is null or whitespace, no schema is set (tables go to database default, usually 'dbo')
+        /// - If <paramref name="schemaKey"/> is a valid string, it's used as the default schema for all entities
+        /// </para>
+        /// <para>
+        /// <b>Usage Example:</b>
+        /// <code>
+        /// protected override void OnModelCreating(ModelBuilder modelBuilder)
+        /// {
+        ///     modelBuilder.HasDefaultSchema(this.SchemaKey);
+        ///     // All entities will now use this schema by default
+        /// }
+        /// </code>
+        /// </para>
+        /// </remarks>
+        public static ModelBuilder HasDefaultSchema(this ModelBuilder modelBuilder, string? schemaKey)
+        {
+            ArgumentNullException.ThrowIfNull(modelBuilder);
+
+            // Only set schema if a non-empty value is provided
+            if (!string.IsNullOrWhiteSpace(schemaKey))
+            {
+                modelBuilder.HasDefaultSchema(schemaKey);
+            }
+
+            return modelBuilder;
+        }
+
+
+
+
+
+}
 }
 

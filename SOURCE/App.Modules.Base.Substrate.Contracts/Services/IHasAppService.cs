@@ -1,4 +1,4 @@
-using App.Modules.Base.Substrate.Lifecycles;
+using App.Modules.Base.Substrate.Contracts.Lifecycles;
 
 namespace App.Modules.Base.Substrate.Services
 {

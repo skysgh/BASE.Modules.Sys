@@ -1,7 +1,9 @@
 namespace App.Base.Infrastructure.Services
 {
+    using App.Modules.Base.Infrastructure.Data.EF.Interceptors;
     using App.Modules.Base.Infrastructure.Storage.Db.EF.Interceptors;
     using App.Modules.Base.Shared.Services;
+    using App.Modules.Base.Substrate.Models.Contracts2;
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>
@@ -25,7 +27,7 @@ namespace App.Base.Infrastructure.Services
     /// </para>
     /// </remarks>
     /// <seealso cref="App.Base.Infrastructure.Services.IHasAppBaseService" />
-    public interface IDbContextPreCommitService : IHasAppBaseService
+    public interface IDbContextPreCommitService : IHasAppBaseService, IHasInitialize
     {
         /// <summary>
         /// Pass all entities belonging to the specified DbContext

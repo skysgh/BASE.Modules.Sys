@@ -11,7 +11,7 @@
     /// anything. 
     /// </para>
     /// </summary>
-    public interface IModuleCore
+    public interface IModuleBase
     {
     }
 }

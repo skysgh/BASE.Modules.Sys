@@ -4,12 +4,8 @@ namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations.Bas
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-    using App.Modules.Base.Infrastructure.Factories;
-    using App.Modules.Base.Infrastructure.Services;
-    using App.Modules.Base.Infrastructure.Singletons;
-    using App.Modules.Base.Infrastructure.Storage.Db.EF.Interceptors;
-    using App.Modules.Base.Infrastructure.Storage.Db.EF.Schema.Management;
-    using App.Modules.Base.Shared.Constants;
+    using App.Modules.Base.Infrastructure.Data.EF.Schema.Management;
+    using App.Modules.Base.Infrastructure.Data.EF.Schema.Implementations;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
 
@@ -54,7 +50,7 @@ namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations.Bas
         /// <summary>
         /// 
         /// </summary>
-        protected IModelBuilderOrchestrator _modelBuilderOrchestrator;
+        IModelBuilderOrchestrator _modelBuilderOrchestrator;
 
 
         /// <summary>
@@ -62,121 +58,54 @@ namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations.Bas
         /// to orchestate the pre-commit checking/cleaning up
         /// of entities before they are persisted.
         /// </summary>
-        protected IDbContextPreCommitService DbContextPreCommitService
+        /// <remarks>
+        /// Can be either IDbContextPreCommitService (runtime) or the internal null service (design-time).
+        /// Both implement PreProcess(DbContext) method.
+        /// </remarks>
+        protected object DbContextPreCommitService
         {
             get
             {
                 return _dbContextPreCommitService;
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        protected IDbContextPreCommitService _dbContextPreCommitService;
-
-
+        private readonly object _dbContextPreCommitService;
 
         /// <summary>
-        /// Static Constructor
-        /// <para>
-        /// Only called once. 
-        /// </para>
-        /// <para>
-        /// A key duty is to determine if 
-        /// working within IIS or Powershell
-        /// as that changes behaviour.
-        /// </para>
+        /// Primary constructor with dependency injection support.
         /// </summary>
-        static ModuleDbContextBase()
-        {
-            // This static constructor is only called once.
-            // So that Migrations can work, when outside of
-            // runtime, ensure the following:
-            PowershellServiceLocatorConfig.Initialize();
-
-            //AppCoreDatabaseInitializerConfigurer.Configure();
-
-            //            //Database.SetInitializer(new AppModuleDatabaseInitializer());
-            //AppModuleDatabaseInitializerConfigurer.Configure();
-
-        }
-
-
-        /// <summary>
-        /// Constructor invokes base with 
-        /// default ConnectionString key,
-        /// which is how the <c>Default</c> ConnectionString is found 
-        /// within in web.config/app.settings
-        /// </summary>
-        protected ModuleDbContextBase() : 
-            this(ModuleConstants.DbConnectionStringName)
-        {
-        }
-
-        /// <summary>
-        /// Constructor to use if passing in the connection string directly.
-        /// <para>
-        /// Note: please consider why you are not using Convention over Configuration
-        /// and why passing around connectionstrings that will have username/passwords
-        /// in them.
-        /// </para>
-        /// <para>
-        /// Note that internally the method is invoking the App's ServiceLocator to build 
-        /// a DbContextOptions then configure it's ConnectionString, 
-        /// and then calls this class' other Constructor.
-        /// </para>
-        /// </summary>
-        /// <param name="connectionStringOrName"></param>
-        protected ModuleDbContextBase(string connectionStringOrName) :
-            this(
-                ServiceLocator
-                .Get<DbContextOptionsBuilder<ModuleDbContextBase>>()
-                .UseSqlServer(connectionStringOrName)
-                .Options)
-        {
-            // Note that overrides of this method will be
-            // invoking a DbContextObptionBuilder --but 
-            // typed to the subclass dbcontext(not this one)
-            // and end up at the constructor below.
-
-            // In other words...it's probable that this 
-            // constructor never gets 
-            
-        }
-
-        /// <summary>
-        /// A protected constructor that accepts a DbConnection
-        /// <para>
-        /// Note that all the other constructors end up here in the end,
-        /// before the constructor on the base class  is called.
-        /// </para>
-        /// <para>
-        /// Note: Does not yet invoke 
-        /// <see cref="DbContext.OnConfiguring(DbContextOptionsBuilder)"/>
-        /// at this point.
-        /// </para>
-        /// </summary>
-        /// <param name="options"></param>
-        protected ModuleDbContextBase(DbContextOptions options) :
+        /// <param name="options">The DbContext options.</param>
+        /// <param name="modelBuilderOrchestrator">Optional orchestrator for model building. If null, creates default for design-time.</param>
+        /// <param name="dbContextPreCommitService">Optional pre-commit service. If null, creates no-op for design-time. Can be IDbContextPreCommitService or internal null service.</param>
+        /// <param name="loggerFactory">Optional logger factory for diagnostics.</param>
+        /// <remarks>
+        /// This constructor supports both runtime (with DI) and design-time (migrations) scenarios.
+        /// For design-time, nullable parameters allow EF tooling to create minimal instances.
+        /// </remarks>
+        protected ModuleDbContextBase(
+            DbContextOptions options,
+            IModelBuilderOrchestrator? modelBuilderOrchestrator = null,
+            object? dbContextPreCommitService = null,
+            ILoggerFactory? loggerFactory = null) :
             base(options)
         {
+            // Use provided dependencies or create defaults for design-time scenarios
+            _modelBuilderOrchestrator = modelBuilderOrchestrator 
+                ?? new ModelBuilderOrchestrator(serviceProvider: null);
 
-            //Solve once:
-            _modelBuilderOrchestrator =
-                ServiceLocator.Get<IModelBuilderOrchestrator>();
+            _dbContextPreCommitService = dbContextPreCommitService 
+                ?? NullDbContextPreCommitService.Instance;
 
-            _dbContextPreCommitService =
-                ServiceLocator.Get<IDbContextPreCommitService>();
-
-            WireUpLogging();
-
+            if (loggerFactory != null)
+            {
+                WireUpLogging(loggerFactory);
+            }
         }
 
-        private void WireUpLogging()
+        private void WireUpLogging(ILoggerFactory loggerFactory)
         {
             //Wire up the logging feature to the Diagnostics Trace feature
             string typeName = GetType().FullName ?? GetType().Name;
-            var loggerFactory = ServiceLocator.Get<ILoggerFactory>();
             loggerFactory.CreateLogger(typeName);
         }
 
@@ -257,9 +186,7 @@ namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations.Bas
         /// <summary>
         /// Intercept all saves in order to clean up loose ends
         /// <para>
-        /// Uses a service locator to find the service (<see cref="IDbContextPreCommitService"/>) that can find
-        /// all the matching tasks (that implement <see cref="IDbCommitPreCommitProcessingStrategy"/>), 
-        /// and invoke them one after the other.
+        /// Invokes the pre-commit service (either runtime or design-time no-op version).
         /// </para>
         /// <para>
         /// Usual tasks are filling in auditing attributes on certain objects
@@ -270,7 +197,8 @@ namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations.Bas
         /// <returns></returns>
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
-            _dbContextPreCommitService.PreProcess(this);
+            // Use dynamic to call PreProcess - works for both IDbContextPreCommitService and null service
+            ((dynamic)_dbContextPreCommitService).PreProcess(this);
 
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
@@ -279,9 +207,7 @@ namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations.Bas
         /// <summary>
         /// Intercept all saves in order to clean up loose ends
         /// <para>
-        /// Uses a service locator to find the service (<see cref="IDbContextPreCommitService"/>) that can find
-        /// all the matching tasks (that implement <see cref="IDbCommitPreCommitProcessingStrategy"/>), 
-        /// and invoke them one after the other.
+        /// Invokes the pre-commit service (either runtime or design-time no-op version).
         /// </para>
         /// <para>
         /// Usual tasks are filling in auditing attributes on certain objects
@@ -292,7 +218,7 @@ namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations.Bas
         /// <returns></returns>
         public override int SaveChanges()
         {
-            _dbContextPreCommitService.PreProcess(this);
+            ((dynamic)_dbContextPreCommitService).PreProcess(this);
 
             return base.SaveChanges();
         }
@@ -301,11 +227,7 @@ namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations.Bas
         /// <summary>
         /// Intercept all saves in order to clean up loose ends
         /// <para>
-        /// Uses a service locator to find the service (<see cref="IDbContextPreCommitService"/>) that can find
-        /// all the matching tasks 
-        /// (that implement 
-        /// <see cref="IDbCommitPreCommitProcessingStrategy"/>), 
-        /// and invoke them one after the other.
+        /// Invokes the pre-commit service (either runtime or design-time no-op version).
         /// </para>
         /// <para>
         /// Usual tasks are filling in auditing attributes on certain objects
@@ -316,7 +238,7 @@ namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations.Bas
         /// <returns></returns>
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
-            _dbContextPreCommitService.PreProcess(this);
+            ((dynamic)_dbContextPreCommitService).PreProcess(this);
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
@@ -325,11 +247,7 @@ namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations.Bas
         /// <summary>
         /// Intercept all saves in order to clean up loose ends
         /// <para>
-        /// Uses a service locator to find the service (<see cref="IDbContextPreCommitService"/>) that can find
-        /// all the matching tasks 
-        /// (that implement 
-        /// <see cref="IDbCommitPreCommitProcessingStrategy"/>), 
-        /// and invoke them one after the other.
+        /// Invokes the pre-commit service (either runtime or design-time no-op version).
         /// </para>
         /// <para>
         /// Usual tasks are filling in auditing attributes on certain objects
@@ -340,7 +258,7 @@ namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations.Bas
         /// <returns></returns>
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            _dbContextPreCommitService.PreProcess(this);
+            ((dynamic)_dbContextPreCommitService).PreProcess(this);
 
             return base.SaveChangesAsync(cancellationToken);
         }

@@ -1,6 +1,8 @@
 namespace App.Modules.Base.Infrastructure.Data.EF.Interceptors.Implementations
 {
     using System;
+    using App.Base.Infrastructure.Services;
+    using App.Modules.Base.Infrastructure.NewFolder.Services;
     using App.Modules.Base.Infrastructure.Services;
     using App.Modules.Base.Infrastructure.Storage.Db.EF.Interceptors;
     using App.Modules.Base.Shared.Models;
@@ -21,7 +23,6 @@ namespace App.Modules.Base.Infrastructure.Data.EF.Interceptors.Implementations
     /// as this.
     /// </para>
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public abstract class DbContextPreCommitProcessingStrategyBase<T> 
         : IDbCommitPreCommitProcessingStrategy
         where T : class

@@ -1,8 +1,11 @@
-using App.Modules.Base.Infrastructure.Factories;
-using App.Modules.Base.Infrastructure.Storage.Db.EF.Interceptors;
+using App.Base.Infrastructure.Services;
+using App.Modules.Base.Infrastructure.Data.EF.Interceptors;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
 
-namespace App.Base.Infrastructure.Services.Implementations
+namespace App.Modules.Base.Infrastructure.Data.EF.Services.Implementations
 {
     //using App.Modules.Base.Infrastructure.Db.DbContextFactories;
     //using App.Modules.Base.Infrastructure.Db.DbContextFactories.Implementations;
@@ -20,23 +23,39 @@ namespace App.Base.Infrastructure.Services.Implementations
     /// TODO: currently it's not automatically handled from the IUnitOfWorkService implementation.
     /// </para>
     /// </summary>
-    /// <seealso cref="App.Base.Infrastructure.Services.IDbContextPreCommitService" />
+    /// <seealso cref="IDbContextPreCommitService" />
     public class DbContextPreCommitService : IDbContextPreCommitService
     {
-
-        IDbCommitPreCommitProcessingStrategy[] _processors;
+        private readonly IServiceProvider _serviceProvider;
+        private IDbCommitPreCommitProcessingStrategy[] _processors;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public DbContextPreCommitService()
+        public DbContextPreCommitService(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+            _processors = [];
+            Initialize();
+
+        }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public DbContextPreCommitService(IServiceProvider serviceProvider, IDbCommitPreCommitProcessingStrategy[] processors)
+        {
+            _serviceProvider = serviceProvider;
+            _processors = [];
+            Initialize();
+        }
+
+        /// <inheritdoc/>
+        public void Initialize()
         {
             _processors =
-                ServiceLocator
-                    .GetAll
-                        <IDbCommitPreCommitProcessingStrategy>()
-                        .ToArray();
-
+                _serviceProvider
+                    .GetServices<IDbCommitPreCommitProcessingStrategy>()
+                    .ToArray();
         }
 
         /// <summary>
@@ -51,3 +70,4 @@ namespace App.Base.Infrastructure.Services.Implementations
         }
     }
 }
+

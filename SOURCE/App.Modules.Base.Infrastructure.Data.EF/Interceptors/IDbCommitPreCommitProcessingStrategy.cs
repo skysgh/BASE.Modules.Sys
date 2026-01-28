@@ -1,7 +1,7 @@
 namespace App.Modules.Base.Infrastructure.Data.EF.Interceptors
 {
     using System;
-    using App.Modules.Base.Infrastructure.Services;
+    using App.Base.Infrastructure.Services;
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>

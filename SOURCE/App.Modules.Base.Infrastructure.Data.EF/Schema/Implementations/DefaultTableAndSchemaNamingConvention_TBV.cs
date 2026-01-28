@@ -1,8 +1,11 @@
+using App.Modules.Base.Infrastructure.Data.EF.Schema.Definitions.Conventions;
+using App.Modules.Base.Infrastructure.Data.EF.Schema.Management;
 using App.Modules.Base.Infrastructure.Storage.Db.EF.Schema.Definitions.Conventions;
 using App.Modules.Base.Infrastructure.Storage.Db.EF.Schema.Management;
+using App.Modules.Base.Substrate.Constants;
 using Microsoft.EntityFrameworkCore;
 
-namespace App.Modules.Base.Infrastructure.Data.EF.Schema.Definitions.Conventions.Implementations
+namespace App.Modules.Base.Infrastructure.Data.EF.Schema.Implementations
 {
 
     /// <summary>
@@ -42,14 +45,14 @@ namespace App.Modules.Base.Infrastructure.Data.EF.Schema.Definitions.Conventions
         /// <param name="schema"></param>
         public void Define<T>(
             ModelBuilder modelBuilder,
-            string schema = Shared.Constants.ModuleConstants.DbSchemaKey)
+            string schema = ModuleConstants.DbSchemaKey)
             where T : class
         {
             string name = typeof(T).Name;
 
-            if (name.EndsWith("y"))
+            if (name.EndsWith('y'))
             {
-                name = name.Substring(0, name.Length - 1) + "ies";
+                name = string.Concat(name.AsSpan(0, name.Length - 1), "ies");
             }
             else
             {
@@ -62,3 +65,4 @@ namespace App.Modules.Base.Infrastructure.Data.EF.Schema.Definitions.Conventions
     }
 
 }
+

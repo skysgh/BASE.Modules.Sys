@@ -1,6 +1,8 @@
 ﻿using App.Base.Infrastructure.Services;
 using App.Base.Infrastructure.Storage.Db.EF.DbContexts.Implementations.Base;
 using App.Base.Infrastructure.Storage.Db.EF.Interceptors;
+using App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations.Base;
+using App.Modules.Base.Infrastructure.Data.EF.Interceptors;
 using Lamar.Scanning.Conventions;
 using Microsoft.EntityFrameworkCore;
 

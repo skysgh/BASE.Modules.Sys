@@ -12,7 +12,7 @@ namespace App.Modules.Base.Substrate.Contracts.Modules
     /// than just with namespaces (which does the same thing, but...easy to miss...)
     /// </para>
     /// </summary>
-    public interface IHasModuleSpecificIdentifier : IModuleCore
+    public interface IHasModuleSpecificIdentifier : IoC.IModuleBase
     {
     }
 }
