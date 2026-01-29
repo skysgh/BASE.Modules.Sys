@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Infrastructure.EF;
+using App.Modules.Base.Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

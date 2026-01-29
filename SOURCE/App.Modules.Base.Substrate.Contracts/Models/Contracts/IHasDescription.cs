@@ -1,4 +1,4 @@
-﻿// using System.ComponentModel;
+// using System.ComponentModel;
 
 namespace App.Modules.Base.Substrate.Models.Contracts
 {

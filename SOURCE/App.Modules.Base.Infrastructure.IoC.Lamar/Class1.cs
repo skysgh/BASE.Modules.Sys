@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Infrastructure.IoC.Lamar
+namespace App.Modules.Base.Infrastructure.IoC.Lamar
 {
     /// <summary>
     /// The class1.

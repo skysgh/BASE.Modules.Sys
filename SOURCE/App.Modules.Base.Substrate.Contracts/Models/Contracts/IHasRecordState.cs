@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Models.Contracts.Enums;
+using App.Modules.Base.Substrate.Models.Contracts.Enums;
 
 namespace App.Modules.Base.Substrate.Models.Contracts
 {

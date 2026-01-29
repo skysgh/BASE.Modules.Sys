@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Constants;
+using App.Modules.Base.Substrate.Constants;
 using App.Modules.Base.Substrate.ExtensionMethods;
 using App.Modules.Base.Substrate.Models.Contracts;
 using App.Modules.Base.Substrate.Attributes;

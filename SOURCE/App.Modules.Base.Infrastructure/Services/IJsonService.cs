@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Services;
+using App.Modules.Base.Substrate.Services;
 
 namespace App.Modules.Base.Infrastructure.NewFolder.Services
 {

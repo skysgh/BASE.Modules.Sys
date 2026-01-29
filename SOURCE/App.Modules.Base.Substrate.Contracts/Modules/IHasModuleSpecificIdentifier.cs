@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.IoC;
+using App.Modules.Base.Substrate.IoC;
 
 namespace App.Modules.Base.Substrate.Contracts.Modules
 {

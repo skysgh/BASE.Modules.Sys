@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Infrastructure.Services
+namespace App.Modules.Base.Infrastructure.Services
 {
     /// <summary>
     /// Service for managing per-request context storage.

@@ -1,4 +1,4 @@
-﻿//namespace App.Base.Infrastructure.Services.Implementations
+//namespace App.Base.Infrastructure.Services.Implementations
 //{
 //    using System;
 //    using System.Runtime.Caching;

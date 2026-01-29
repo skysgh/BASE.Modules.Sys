@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Infrastructure.NewFolder.Services.Configuration;
+using App.Modules.Base.Infrastructure.NewFolder.Services.Configuration;
 // using System;
 // using System.Collections.Generic;
 // using System.Linq;

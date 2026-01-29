@@ -1,4 +1,4 @@
-﻿using System.Web;
+using System.Web;
 using StructureMap.Web.Pipeline;
 
 namespace App.Host.ECSD.DependencyResolution

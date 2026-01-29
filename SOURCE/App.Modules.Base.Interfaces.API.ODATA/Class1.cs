@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Presentation.Web.API
+namespace App.Modules.Base.Presentation.Web.API
 {
     /// <summary>
     /// 

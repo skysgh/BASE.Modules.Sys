@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Infrastructure.IoC.Autofac
+namespace App.Modules.Base.Infrastructure.IoC.Autofac
 {
     /// <summary>
     /// The class1.

@@ -1,4 +1,4 @@
-﻿using App.Base.Infrastructure.Factories;
+using App.Base.Infrastructure.Factories;
 using App.Base.Infrastructure.Storage.Db.EF.DbContexts.Implementations.Base;
 using App.Modules.Core.Shared.Constants;
 using Microsoft.EntityFrameworkCore;

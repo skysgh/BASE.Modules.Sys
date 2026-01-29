@@ -1,4 +1,4 @@
-﻿// using System;
+// using System;
 
 namespace App.Modules.Base.Infrastructure.NewFolder.Services
 {

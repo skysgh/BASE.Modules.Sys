@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Attributes;
+using App.Modules.Base.Substrate.Attributes;
 using App.Modules.Base.Substrate.Constants;
 using App.Modules.Base.Substrate.Models.ConfigurationSettings;
 

@@ -1,4 +1,4 @@
-﻿using App.Base.Shared.Attributes;
+using App.Base.Shared.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

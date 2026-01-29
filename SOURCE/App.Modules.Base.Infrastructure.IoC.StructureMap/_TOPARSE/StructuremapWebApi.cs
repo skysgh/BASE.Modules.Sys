@@ -1,4 +1,4 @@
-﻿using App.Host.ECSD.DependencyResolution;
+using App.Host.ECSD.DependencyResolution;
 
 [assembly: WebActivatorEx.PostApplicationStartMethod(typeof(StructuremapWebApi), "Start")]
 namespace App.Host.ECSD.DependencyResolution

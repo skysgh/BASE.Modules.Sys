@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate.Attributes
+namespace App.Modules.Base.Substrate.Attributes
 {
     /// <summary>
     /// Attribute to uniquely Key Types

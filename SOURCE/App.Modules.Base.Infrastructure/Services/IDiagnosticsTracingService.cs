@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Models.Contracts.Enums;
+using App.Modules.Base.Substrate.Models.Contracts.Enums;
 // using App.Modules.Base.Substrate.Services;
 
 namespace App.Modules.Base.Infrastructure.NewFolder.Services

@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate.Models.Messages
+namespace App.Modules.Base.Substrate.Models.Messages
 {
     /// <summary>
     /// TODO: Describe

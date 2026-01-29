@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using App.Modules.Base.Infrastructure.Data.EF.Schema.Management;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,10 +10,10 @@ namespace App.Modules.Base.Infrastructure.Data.EF.Schema.Implementations
     /// Works in BOTH runtime (DI) and design-time (migrations) scenarios.
     /// </summary>
     /// <remarks>
-    /// <b>✅ Replaces ServiceLocator Anti-Pattern</b><br/>
+    /// <b>? Replaces ServiceLocator Anti-Pattern</b><br/>
     /// Uses proper DI at runtime + assembly scanning fallback for migrations
     /// <para>
-    /// <b>🔄 Dual-Mode Operation:</b><br/>
+    /// <b>?? Dual-Mode Operation:</b><br/>
     /// - Runtime: DI container provides initializers (fast, testable)<br/>
     /// - Design-Time: Assembly scanning discovers initializers (migrations work!)
     /// </para>
@@ -66,7 +66,7 @@ namespace App.Modules.Base.Infrastructure.Data.EF.Schema.Implementations
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"⚠️  Could not instantiate {type.Name}: {ex.Message}");
+                    System.Diagnostics.Debug.WriteLine($"??  Could not instantiate {type.Name}: {ex.Message}");
                 }
             }
             return initializers;
@@ -92,7 +92,7 @@ namespace App.Modules.Base.Infrastructure.Data.EF.Schema.Implementations
                 catch (Exception ex)
                 {
                     throw new InvalidOperationException(
-                        $"❌ Failed applying {type.Name}. Check entity configurations.", ex);
+                        $"? Failed applying {type.Name}. Check entity configurations.", ex);
                 }
             }
         }

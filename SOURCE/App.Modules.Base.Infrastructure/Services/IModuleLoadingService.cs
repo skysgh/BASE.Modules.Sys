@@ -1,4 +1,4 @@
-﻿// using App.Base.Infrastructure.ModuleManagement;
+// using App.Base.Infrastructure.ModuleManagement;
 // using System.Reflection;
 // using System.Runtime.Loader;
 

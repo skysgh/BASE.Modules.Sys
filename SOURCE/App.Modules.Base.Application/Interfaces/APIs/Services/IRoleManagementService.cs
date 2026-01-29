@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Application.Interfaces.APIs.Services
+namespace App.Modules.Base.Application.Interfaces.APIs.Services
 {
     /// <summary>
     /// Contract for an

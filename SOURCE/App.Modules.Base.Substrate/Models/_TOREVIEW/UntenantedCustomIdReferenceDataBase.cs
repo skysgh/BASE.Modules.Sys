@@ -1,4 +1,4 @@
-﻿//namespace App.Modules.Base.Substrate.Models.Entities.Base
+//namespace App.Modules.Base.Substrate.Models.Entities.Base
 //{
 //    public abstract class UntenantedCustomIdReferenceDataBase<TId> : UntenantedTimestampedAuditedRecordStatedCustomIdEntityBase<TId>, IHasEnabled, IHasDisplayOrderHint
 //    {

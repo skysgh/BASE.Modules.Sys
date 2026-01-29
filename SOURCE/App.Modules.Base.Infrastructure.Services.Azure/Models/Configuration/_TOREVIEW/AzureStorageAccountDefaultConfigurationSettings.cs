@@ -1,4 +1,4 @@
-﻿
+
 namespace App.Modules.Core.Infrastructure.Models.Configuration._TOREVIEW
 {
     using App.Base.Shared.Attributes;

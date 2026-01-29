@@ -1,4 +1,4 @@
-﻿using App.Modules.Core.Infrastructure.Configuration;
+using App.Modules.Core.Infrastructure.Configuration;
 using App.Modules.Core.Infrastructure.Services;
 using App.Modules.Core.Infrastructure.Singletons;
 using App.Modules.Core.Shared.Initialisation;

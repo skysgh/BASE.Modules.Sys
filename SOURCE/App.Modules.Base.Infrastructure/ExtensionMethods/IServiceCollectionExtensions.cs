@@ -1,4 +1,4 @@
-﻿//// using Lamar.Scanning.Conventions;
+//// using Lamar.Scanning.Conventions;
 // using Microsoft.Extensions.DependencyInjection;
 // using Microsoft.Extensions.DependencyInjection.Extensions;
 // using System;

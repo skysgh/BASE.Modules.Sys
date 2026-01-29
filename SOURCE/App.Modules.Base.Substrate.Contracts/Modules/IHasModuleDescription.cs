@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Models.Contracts;
+using App.Modules.Base.Substrate.Models.Contracts;
 
 namespace App.Modules.Base.Substrate.Contracts.Modules
 {

@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate.Attributes
+namespace App.Modules.Base.Substrate.Attributes
 {
     /// <summary>
     /// Attribute applied to Entities, DTOs, Controllers that

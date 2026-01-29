@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate.Helpers
+namespace App.Modules.Base.Substrate.Helpers
 {
     /// <summary>
     /// A Disposable class to help with logging the durations of operations.

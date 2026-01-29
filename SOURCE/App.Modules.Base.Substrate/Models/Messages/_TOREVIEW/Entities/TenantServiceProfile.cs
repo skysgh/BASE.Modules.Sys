@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Models.Entities.Base;
+using App.Modules.Base.Substrate.Models.Entities.Base;
 
 // using System.Collections.Generic;
 // using System.Collections.ObjectModel;

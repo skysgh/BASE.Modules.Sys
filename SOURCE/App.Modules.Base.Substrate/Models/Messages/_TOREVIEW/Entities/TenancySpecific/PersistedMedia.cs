@@ -1,4 +1,4 @@
-﻿// using System;
+// using System;
 using App.Modules.Base.Substrate.Models.Contracts;
 using App.Modules.Base.Substrate.Models.Entities.Base;
 

@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Attributes;
+using App.Modules.Base.Substrate.Attributes;
 using App.Modules.Base.Substrate.Models.Contracts.Enums;
 using App.Modules.Base.Substrate.ExtensionMethods;
 using App.Modules.Base.Substrate.Models.Entities.Demos;

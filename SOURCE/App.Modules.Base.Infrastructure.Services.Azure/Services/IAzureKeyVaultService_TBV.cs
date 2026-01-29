@@ -1,4 +1,4 @@
-﻿namespace App.Base.Infrastructure.Services
+namespace App.Base.Infrastructure.Services
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

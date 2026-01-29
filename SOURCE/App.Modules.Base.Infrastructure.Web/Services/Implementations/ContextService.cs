@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Infrastructure.Services;
+using App.Modules.Base.Infrastructure.Services;
 using Microsoft.AspNetCore.Http;
 
 namespace App.Modules.Base.Infrastructure.Web.Services.Implementations

@@ -1,4 +1,4 @@
-﻿// using JasperFx.TypeDiscovery;
+// using JasperFx.TypeDiscovery;
 // using System;
 // using System.Collections.Generic;
 // using System.IO;

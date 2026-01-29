@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using App.Modules.Base.Substrate.Contracts.Models.Contracts;
 
 namespace App.Modules.Base.Substrate.Models.Messages

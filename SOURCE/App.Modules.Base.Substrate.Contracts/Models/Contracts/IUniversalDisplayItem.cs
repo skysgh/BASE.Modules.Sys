@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Models.Contracts;
+using App.Modules.Base.Substrate.Models.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;

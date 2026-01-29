@@ -1,4 +1,4 @@
-﻿
+
 namespace App.Host.ECSD.DependencyResolution
 {
     public class StructureMapDependencyScopeFactory

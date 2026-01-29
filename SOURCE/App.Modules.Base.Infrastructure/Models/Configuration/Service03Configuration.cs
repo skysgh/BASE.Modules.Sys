@@ -1,4 +1,4 @@
-﻿// namespace App.Modules.Base.Substrate.Models.Configuration.AppHost
+// namespace App.Modules.Base.Substrate.Models.Configuration.AppHost
 // {
 //     using App.Modules.Base.Substrate.Attributes;
 //     using App.Modules.Base.Substrate.Models.ConfigurationSettings;

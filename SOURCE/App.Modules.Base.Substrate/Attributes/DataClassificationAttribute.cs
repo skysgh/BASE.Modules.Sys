@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Models.Messages._TOREVIEW.Entities.Enums;
+using App.Modules.Base.Substrate.Models.Messages._TOREVIEW.Entities.Enums;
 
 namespace App.Modules.Base.Substrate.Attributes
 {

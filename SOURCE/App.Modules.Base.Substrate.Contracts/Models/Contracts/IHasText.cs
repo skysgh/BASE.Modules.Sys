@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate.Models.Contracts
+namespace App.Modules.Base.Substrate.Models.Contracts
 {
     /// <summary>
     /// Contract for objects that have a Text field.

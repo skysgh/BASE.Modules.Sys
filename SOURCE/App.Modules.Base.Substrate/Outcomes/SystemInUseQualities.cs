@@ -1,4 +1,4 @@
-Ôªø// using System;
+// using System;
 // using System.Collections.Generic;
 // using System.Linq;
 // using System.Text;
@@ -82,7 +82,7 @@ namespace App.Modules.Base.Substrate.Outcomes
         /// degree to which a product or system can be used with effectiveness, efficiency, freedom from risk and satisfaction in both specified contexts of use and in contexts beyond those initially explicitly identified
         /// </summary>
         /// <remarks>
-        /// Note 1 to entry: Context of use is relevant to both quality in use and some product quality (sub)characteristics (where it is referred to as ‚Äúspecified conditions‚Äù).
+        /// Note 1 to entry: Context of use is relevant to both quality in use and some product quality (sub)characteristics (where it is referred to as ìspecified conditionsî).
         /// </remarks>
         ISO_0000_ContextCoverage,
 

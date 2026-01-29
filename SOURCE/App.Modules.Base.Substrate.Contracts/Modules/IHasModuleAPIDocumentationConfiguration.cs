@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate.Contracts.Modules
+namespace App.Modules.Base.Substrate.Contracts.Modules
 {
     /// <summary>
     /// Configuration Information used to 

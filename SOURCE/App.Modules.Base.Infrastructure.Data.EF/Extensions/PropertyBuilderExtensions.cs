@@ -1,4 +1,4 @@
-﻿//using Microsoft.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore;
 //using Microsoft.EntityFrameworkCore.Relational;
 //using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -211,8 +211,8 @@
 //        /// </para>
 //        /// <para>
 //        /// <b>Stored vs Non-Stored:</b>
-//        /// - stored: true → Value calculated once and stored (can be indexed)
-//        /// - stored: false → Value calculated on every read (no storage overhead)
+//        /// - stored: true ? Value calculated once and stored (can be indexed)
+//        /// - stored: false ? Value calculated on every read (no storage overhead)
 //        /// </para>
 //        /// </remarks>
 //        public static PropertyBuilder<TProperty> HasComputedColumn2<TProperty>(

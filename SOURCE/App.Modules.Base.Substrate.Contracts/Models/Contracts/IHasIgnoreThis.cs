@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate.Contracts.Models.Contracts
+namespace App.Modules.Base.Substrate.Contracts.Models.Contracts
 {
     /// <summary>
     /// Contract that can be attached to classes 

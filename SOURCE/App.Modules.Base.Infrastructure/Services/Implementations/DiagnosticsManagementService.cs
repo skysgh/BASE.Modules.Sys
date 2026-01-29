@@ -1,4 +1,4 @@
-﻿// using App.Modules.Base.Substrate.Models.Entities;
+// using App.Modules.Base.Substrate.Models.Entities;
 // using App.Modules.Base.Infrastructure.NewFolder.Services;
 // using System;
 // using System.Collections.Generic;

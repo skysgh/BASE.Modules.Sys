@@ -1,4 +1,4 @@
-﻿using App.Modules.Core.Application.APIs.Messages.V0100.Demo;
+using App.Modules.Core.Application.APIs.Messages.V0100.Demo;
 using App.Modules.Core.Application.Services.Implementations.Base;
 using App.Modules.Core.Shared.Models.Entities;
 using App.Modules.Core.Infrastructure.NewFolder.Services;

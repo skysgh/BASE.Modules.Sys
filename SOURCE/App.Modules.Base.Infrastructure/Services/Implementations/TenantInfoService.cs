@@ -1,4 +1,4 @@
-﻿// using App.Modules.Base.Infrastructure.NewFolder.Services;
+// using App.Modules.Base.Infrastructure.NewFolder.Services;
 using App.Modules.Base.Substrate.Models.CacheItems;
 
 namespace App.Modules.Base.Infrastructure.NewFolder.Services.Implementations

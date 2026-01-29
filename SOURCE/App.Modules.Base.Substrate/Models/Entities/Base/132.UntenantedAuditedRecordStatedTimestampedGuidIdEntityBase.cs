@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
 using App.Modules.Base.Substrate.Factories;
 using App.Modules.Base.Substrate.Models.Contracts;
 

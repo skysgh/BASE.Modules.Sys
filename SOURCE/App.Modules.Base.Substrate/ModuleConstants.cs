@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate
+namespace App.Modules.Base.Substrate
 {
     /// <summary>
     /// Constants specific to this 

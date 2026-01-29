@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate.Models.CacheItems
+namespace App.Modules.Base.Substrate.Models.CacheItems
 {
     /// <summary>
     /// Cacheable information about a Tenancy

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace App
@@ -15,7 +15,7 @@ namespace App
     /// - Keeps domain layer clean (no EF attributes)
     /// </para>
     /// <para>
-    /// <b>⚠️ Important for Entity Initializers:</b>
+    /// <b>?? Important for Entity Initializers:</b>
     /// Entity initializers using these extensions MUST have a parameterless constructor
     /// for design-time migrations to work. They should NOT require injected services.
     /// Configuration should be pure and declarative.
@@ -36,7 +36,7 @@ namespace App
         /// <para>
         /// <b>Temporal Tables:</b>
         /// When enabled, SQL Server automatically tracks all changes with system-time columns.
-        /// History is stored in a companion table (e.g., "Users" → "UsersHistory").
+        /// History is stored in a companion table (e.g., "Users" ? "UsersHistory").
         /// This eliminates the need for custom audit logging for data changes.
         /// </para>
         /// <para>

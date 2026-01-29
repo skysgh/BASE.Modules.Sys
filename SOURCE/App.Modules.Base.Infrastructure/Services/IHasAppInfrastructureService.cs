@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Lifecycles;
+using App.Modules.Base.Substrate.Contracts.Lifecycles;
 using App.Modules.Base.Substrate.Services;
 
 namespace App.Modules.Base.Infrastructure.NewFolder.Services

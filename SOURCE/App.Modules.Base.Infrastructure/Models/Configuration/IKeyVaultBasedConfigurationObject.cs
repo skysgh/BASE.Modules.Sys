@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Models.Configuration;
+using App.Modules.Base.Substrate.Models.Configuration;
 
 namespace App.Modules.Base.Substrate.Models.ConfigurationSettings
 {

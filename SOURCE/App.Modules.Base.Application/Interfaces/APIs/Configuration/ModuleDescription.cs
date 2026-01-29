@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Contracts.Modules;
+using App.Modules.Base.Substrate.Contracts.Modules;
 
 namespace App.Modules.Base.Application.Interfaces.APIs.Configuration
 {

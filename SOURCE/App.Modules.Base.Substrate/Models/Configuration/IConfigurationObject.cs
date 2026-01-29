@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate.Models.Configuration
+namespace App.Modules.Base.Substrate.Models.Configuration
 {
     /// <summary>
     /// A (generally) singleton configuration object used 

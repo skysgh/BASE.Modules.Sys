@@ -1,4 +1,4 @@
-﻿// using System;
+// using System;
 // using System.Collections.Generic;
 // using System.Collections.ObjectModel;
 using App.Modules.Base.Substrate.Models.Contracts;

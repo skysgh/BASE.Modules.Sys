@@ -1,4 +1,4 @@
-﻿namespace App.Base.Infrastructure.Configuration
+namespace App.Base.Infrastructure.Configuration
 {
     /// <summary>
     /// Context information about the 

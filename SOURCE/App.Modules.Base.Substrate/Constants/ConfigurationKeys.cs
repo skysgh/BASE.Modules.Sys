@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate.Constants
+namespace App.Modules.Base.Substrate.Constants
 {
     /// <summary>
     /// A helper class to help build up

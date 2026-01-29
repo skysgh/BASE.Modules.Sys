@@ -1,4 +1,4 @@
-﻿// Extensions are always put in root namespace
+// Extensions are always put in root namespace
 // for maximum usability from elsewhere:
 
 namespace App

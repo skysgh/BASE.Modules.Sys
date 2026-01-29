@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Infrastructure.Services.Implementations;
+using App.Modules.Base.Infrastructure.Services.Implementations;
 using App.Modules.Base.Substrate.Contracts.Services;
 using Microsoft.Extensions.DependencyInjection;
 

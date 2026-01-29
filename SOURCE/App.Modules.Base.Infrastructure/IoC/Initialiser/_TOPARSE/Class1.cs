@@ -1,4 +1,4 @@
-﻿using App.Base.Infrastructure.IoC;
+using App.Base.Infrastructure.IoC;
 using App.Modules.DevSpikes.Infrastructure.Services.Implementations;
 using App.Modules.DevSpikes.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;

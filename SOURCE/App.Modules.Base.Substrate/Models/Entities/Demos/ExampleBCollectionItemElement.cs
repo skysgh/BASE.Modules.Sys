@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Attributes;
+using App.Modules.Base.Substrate.Attributes;
 using App.Modules.Base.Substrate.Models.Contracts;
 using App.Modules.Base.Substrate.Models.Entities.Base;
 

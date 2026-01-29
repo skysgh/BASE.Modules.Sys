@@ -1,4 +1,4 @@
-﻿// using ICSharpCode.Decompiler.CSharp.Syntax;
+// using ICSharpCode.Decompiler.CSharp.Syntax;
 // using ICSharpCode.Decompiler.CSharp;
 // using ICSharpCode.Decompiler;
 // using Spike.DotNetCore.ILSpy._01.Services.Configuration;

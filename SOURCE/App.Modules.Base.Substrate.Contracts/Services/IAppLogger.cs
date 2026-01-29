@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate.Contracts.Services
+namespace App.Modules.Base.Substrate.Contracts.Services
 {
     /// <summary>
     /// Application-specific logger abstraction.

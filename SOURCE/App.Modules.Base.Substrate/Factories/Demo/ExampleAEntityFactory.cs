@@ -1,4 +1,4 @@
-﻿using App.Modules.Base.Substrate.Attributes;
+using App.Modules.Base.Substrate.Attributes;
 // using System;
 // using System.Collections.Generic;
 // using System.Linq;

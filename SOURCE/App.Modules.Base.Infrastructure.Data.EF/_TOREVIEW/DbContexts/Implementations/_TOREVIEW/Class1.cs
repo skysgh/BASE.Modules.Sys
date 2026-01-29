@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using App.Modules.Base.Common.Models;
 using App.Modules.Base.Common.Models.Entities;
 using Microsoft.EntityFrameworkCore;

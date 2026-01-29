@@ -1,4 +1,4 @@
-﻿
+
 namespace App.Modules.DevSpikes.Infrastructure.Storage.Db.EF.Schemas
 {
     using App.Base.Infrastructure.Storage.Db.EF.Schema.Definitions.Conventions.Implementations;

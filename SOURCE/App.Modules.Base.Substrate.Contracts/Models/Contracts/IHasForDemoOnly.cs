@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate.Contracts.Models.Contracts
+namespace App.Modules.Base.Substrate.Contracts.Models.Contracts
 {
     /// <summary>
     /// Contract applied to Demo entities, DTOs and Controllers

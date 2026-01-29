@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate.Outcomes
+namespace App.Modules.Base.Substrate.Outcomes
 {
     /// <summary>
     /// The quality of a system is the degree to which the system satisfies the stated and implied needs of its various stakeholders, and thus provides value. 

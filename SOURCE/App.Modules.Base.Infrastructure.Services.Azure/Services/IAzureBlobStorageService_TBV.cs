@@ -1,4 +1,4 @@
-﻿
+
 namespace App.Base.Infrastructure.Services
 {
     using App.Base.Infrastructure.Services.Enums;

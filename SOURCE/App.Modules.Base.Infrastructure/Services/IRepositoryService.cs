@@ -1,4 +1,4 @@
-﻿//namespace App.Modules.Base.Infrastructure.NewFolder.Services
+//namespace App.Modules.Base.Infrastructure.NewFolder.Services
 //{
 //    using System;
 //    using System.Linq;
