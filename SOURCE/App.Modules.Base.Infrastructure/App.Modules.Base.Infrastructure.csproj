@@ -37,7 +37,7 @@
     <Folder Include="_Startup\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ICSharpCode.Decompiler" Version="9.1.0.7988" />
+    <PackageReference Include="ICSharpCode.Decompiler" Version="10.0.0.8282-preview2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.2" />
   </ItemGroup>
   <ItemGroup>
