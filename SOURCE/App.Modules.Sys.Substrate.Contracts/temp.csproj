@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net10.0</TargetFramework>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>enable</Nullable>
+	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  <!-- NoWarn>1591;CA1716</NoWarn -->
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <Title>$(AssemblyName)</Title>
+	  <Copyright>Copyright $(Authors)</Copyright>
+	  
+	  <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+	  <AnalysisLevel>preview-recommended</AnalysisLevel>
+	  <EnableNETAnalyzers>True</EnableNETAnalyzers>
+	  <Company>MachineBrains, Inc.</Company>
+	  <Product>BASE</Product>
+	  <PackageReadmeFile>_Packaging/readme.nuget.md</PackageReadmeFile>
+	  <!--<BaseOutputPath>..\..\..\..\SOURCE\App.Host\MODULES\</BaseOutputPath>-->
+	  <RootNamespace>App.Modules.Sys</RootNamespace>
+  </PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <WarningLevel>9999</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <WarningLevel>9999</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="tmp\**" />
+    <EmbeddedResource Remove="tmp\**" />
+    <None Remove="tmp\**" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Infrastructure\Caching\" />
+		<Folder Include="Infrastructure\Initialisation\" />
+		<Folder Include="Infrastructure\Web\Services\Implementations\" />
+		<Folder Include="Infrastructure\Web\Services\Configurations\" />
+		<Folder Include="Common\" />
+		<Folder Include="Shared\Models\Implementations\Base\" />
+		<Folder Include="Shared\Modules\Implementations\" />
+		<Folder Include="Shared\ObjectMaps\Implementations\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="_Packaging\readme.nuget.md"><PackagePath>\</PackagePath><Pack>true</Pack></None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.2" />
+	</ItemGroup>
+	
+</Project>

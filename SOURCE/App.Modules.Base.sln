@@ -23,37 +23,37 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CONFIGURATION", "CONFIGURAT
 		00.Scripts\post-build.ps1 = 00.Scripts\post-build.ps1
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Application", "App.Modules.Base.Application\App.Modules.Base.Application.csproj", "{21355EBB-5B4F-4527-8F99-774FB92C7A01}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Application", "App.Modules.Sys.Application\App.Modules.Sys.Application.csproj", "{21355EBB-5B4F-4527-8F99-774FB92C7A01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Domain", "App.Modules.Base.Domain\App.Modules.Base.Domain.csproj", "{AF70D633-F19D-4DC7-89BE-0E364D545E45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Domain", "App.Modules.Sys.Domain\App.Modules.Sys.Domain.csproj", "{AF70D633-F19D-4DC7-89BE-0E364D545E45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Substrate.Contracts", "App.Modules.Base.Substrate.Contracts\App.Modules.Base.Substrate.Contracts.csproj", "{D82A0192-F118-4DA7-ADC3-DDDC56F007DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Substrate.Contracts", "App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.Contracts.csproj", "{D82A0192-F118-4DA7-ADC3-DDDC56F007DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Substrate", "App.Modules.Base.Substrate\App.Modules.Base.Substrate.csproj", "{13C2E62B-A9F9-4C9B-8D45-F5F681F60DDA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Substrate", "App.Modules.Sys.Substrate\App.Modules.Sys.Substrate.csproj", "{13C2E62B-A9F9-4C9B-8D45-F5F681F60DDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Infrastructure", "App.Modules.Base.Infrastructure\App.Modules.Base.Infrastructure.csproj", "{0566D986-4A4B-40BE-98FF-F210FB53E5EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Infrastructure", "App.Modules.Sys.Infrastructure\App.Modules.Sys.Infrastructure.csproj", "{0566D986-4A4B-40BE-98FF-F210FB53E5EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Interfaces.Models", "App.Modules.Base.Interfaces.Models\App.Modules.Base.Interfaces.Models.csproj", "{0B4A79D5-D082-4669-A8F5-F6F5E8F38989}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Interfaces.Models", "App.Modules.Sys.Interfaces.Models\App.Modules.Sys.Interfaces.Models.csproj", "{0B4A79D5-D082-4669-A8F5-F6F5E8F38989}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Infrastructure.Data.EF", "App.Modules.Base.Infrastructure.Data.EF\App.Modules.Base.Infrastructure.Data.EF.csproj", "{74D76BA2-FCEF-45DC-83D1-7FEF65CCA910}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Infrastructure.Data.EF", "App.Modules.Sys.Infrastructure.Data.EF\App.Modules.Sys.Infrastructure.Data.EF.csproj", "{74D76BA2-FCEF-45DC-83D1-7FEF65CCA910}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Infrastructure.IoC.Autofac", "App.Modules.Base.Infrastructure.IoC.Autofac\App.Modules.Base.Infrastructure.IoC.Autofac.csproj", "{DB14426F-78C3-48E5-893A-A07456E79310}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Infrastructure.IoC.Autofac", "App.Modules.Sys.Infrastructure.IoC.Autofac\App.Modules.Sys.Infrastructure.IoC.Autofac.csproj", "{DB14426F-78C3-48E5-893A-A07456E79310}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Infrastructure.IoC.Lamar", "App.Modules.Base.Infrastructure.IoC.Lamar\App.Modules.Base.Infrastructure.IoC.Lamar.csproj", "{B46FE5D5-238D-4C3D-A927-0B1EEA981E3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Infrastructure.IoC.Lamar", "App.Modules.Sys.Infrastructure.IoC.Lamar\App.Modules.Sys.Infrastructure.IoC.Lamar.csproj", "{B46FE5D5-238D-4C3D-A927-0B1EEA981E3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Infrastructure.IoC.StructureMap", "App.Modules.Base.Infrastructure.IoC.StructureMap\App.Modules.Base.Infrastructure.IoC.StructureMap.csproj", "{9657D3FB-A0EE-48F4-A356-C302234ED14C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Infrastructure.IoC.StructureMap", "App.Modules.Sys.Infrastructure.IoC.StructureMap\App.Modules.Sys.Infrastructure.IoC.StructureMap.csproj", "{9657D3FB-A0EE-48F4-A356-C302234ED14C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Infrastructure.Services.AWS", "App.Modules.Base.Infrastructure.Services.AWS\App.Modules.Base.Infrastructure.Services.AWS.csproj", "{7FD04E13-BE70-40CE-A634-EB14F1EAFB0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Infrastructure.Services.AWS", "App.Modules.Sys.Infrastructure.Services.AWS\App.Modules.Sys.Infrastructure.Services.AWS.csproj", "{7FD04E13-BE70-40CE-A634-EB14F1EAFB0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Infrastructure.Services.Azure", "App.Modules.Base.Infrastructure.Services.Azure\App.Modules.Base.Infrastructure.Services.Azure.csproj", "{B6037FAD-95D9-432D-9D6B-BDB20849DB99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Infrastructure.Services.Azure", "App.Modules.Sys.Infrastructure.Services.Azure\App.Modules.Sys.Infrastructure.Services.Azure.csproj", "{B6037FAD-95D9-432D-9D6B-BDB20849DB99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Interfaces.API.GraphQL", "App.Modules.Base.Interfaces.API.GraphQL\App.Modules.Base.Interfaces.API.GraphQL.csproj", "{E6684938-211B-493A-8824-7926EA1CA277}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Interfaces.API.GraphQL", "App.Modules.Sys.Interfaces.API.GraphQL\App.Modules.Sys.Interfaces.API.GraphQL.csproj", "{E6684938-211B-493A-8824-7926EA1CA277}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Interfaces.API.ODATA", "App.Modules.Base.Interfaces.API.ODATA\App.Modules.Base.Interfaces.API.ODATA.csproj", "{42DA45CB-A85B-48D1-B7A3-B08D42D4701B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Interfaces.API.ODATA", "App.Modules.Sys.Interfaces.API.ODATA\App.Modules.Sys.Interfaces.API.ODATA.csproj", "{42DA45CB-A85B-48D1-B7A3-B08D42D4701B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Interfaces.API.REST", "App.Modules.Base.Interfaces.API.REST\App.Modules.Base.Interfaces.API.REST.csproj", "{3A90E69D-2C37-48AF-8B80-B93C8D50058B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Interfaces.API.REST", "App.Modules.Sys.Interfaces.API.REST\App.Modules.Sys.Interfaces.API.REST.csproj", "{3A90E69D-2C37-48AF-8B80-B93C8D50058B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Base.Interfaces.UI.Web", "App.Modules.Base.Interfaces.UI.Web\App.Modules.Base.Interfaces.UI.Web.csproj", "{455A48C4-DEA2-40D3-9DCB-F88C076A5152}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Interfaces.UI.Web", "App.Modules.Sys.Interfaces.UI.Web\App.Modules.Sys.Interfaces.UI.Web.csproj", "{455A48C4-DEA2-40D3-9DCB-F88C076A5152}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
