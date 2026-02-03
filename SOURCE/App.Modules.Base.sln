@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Interfaces.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Interfaces.UI.Web", "App.Modules.Sys.Interfaces.UI.Web\App.Modules.Sys.Interfaces.UI.Web.csproj", "{455A48C4-DEA2-40D3-9DCB-F88C076A5152}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Infrastructure.AutoMapper", "App.Modules.Sys.Infrastructure.AutoMapper\App.Modules.Sys.Infrastructure.AutoMapper.csproj", "{1D55331F-BC21-4C51-8557-8C2F0A59BA5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -257,6 +259,18 @@ Global
 		{455A48C4-DEA2-40D3-9DCB-F88C076A5152}.Release|x64.Build.0 = Release|Any CPU
 		{455A48C4-DEA2-40D3-9DCB-F88C076A5152}.Release|x86.ActiveCfg = Release|Any CPU
 		{455A48C4-DEA2-40D3-9DCB-F88C076A5152}.Release|x86.Build.0 = Release|Any CPU
+		{1D55331F-BC21-4C51-8557-8C2F0A59BA5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D55331F-BC21-4C51-8557-8C2F0A59BA5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D55331F-BC21-4C51-8557-8C2F0A59BA5E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1D55331F-BC21-4C51-8557-8C2F0A59BA5E}.Debug|x64.Build.0 = Debug|Any CPU
+		{1D55331F-BC21-4C51-8557-8C2F0A59BA5E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1D55331F-BC21-4C51-8557-8C2F0A59BA5E}.Debug|x86.Build.0 = Debug|Any CPU
+		{1D55331F-BC21-4C51-8557-8C2F0A59BA5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D55331F-BC21-4C51-8557-8C2F0A59BA5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D55331F-BC21-4C51-8557-8C2F0A59BA5E}.Release|x64.ActiveCfg = Release|Any CPU
+		{1D55331F-BC21-4C51-8557-8C2F0A59BA5E}.Release|x64.Build.0 = Release|Any CPU
+		{1D55331F-BC21-4C51-8557-8C2F0A59BA5E}.Release|x86.ActiveCfg = Release|Any CPU
+		{1D55331F-BC21-4C51-8557-8C2F0A59BA5E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

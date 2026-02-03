@@ -1,4 +1,5 @@
 ﻿using App.Modules.Sys.Initialisation.Implementation.Base;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Modules.Sys.Infrastructure.Services.Azure.Initialisation
 {
@@ -9,13 +10,13 @@ namespace App.Modules.Sys.Infrastructure.Services.Azure.Initialisation
     public class InfrastructureAzureModuleAssemblyInitialiser : ModuleAssemblyInitialiserBase
     {
         /// <inheritdoc/>
-        public override void DoBeforeBuild()
+        public override void DoBeforeBuild(IServiceCollection services)
         {
             // Custom logic before DI builds
         }
         
         /// <inheritdoc/>
-        public override void DoAfterBuild()
+        public override void DoAfterBuild(IServiceProvider serviceProvider)
         {
             // Custom logic after DI builds (has IServiceProvider)
         }

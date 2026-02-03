@@ -13,7 +13,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 // Note how namespace does not match folders.
+#pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace App
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// Class of Extension methods to 

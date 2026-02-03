@@ -1,0 +1,146 @@
+# Settings Schema
+# Defines metadata for all settings in the system
+# Values come from appsettings.json at runtime
+#
+# KEY SYNTAX: Use either slashes (/) or colons (:) - both work!
+# Examples (all equivalent):
+#   System/Identity/DeveloperName
+#   System:Identity:DeveloperName
+# We normalize internally to slashes for consistency.
+
+System/Identity/DeveloperName:
+  title: "Developer Name"
+  description: "Name of the organization or individual that developed this application"
+  type: "System.String"
+  locked: true
+  category: "System Identity"
+  order: 1
+  default: "MachineBrains, Inc."
+
+System/Identity/AppName:
+  title: "Application Name"
+  description: "Display name of the application"
+  type: "System.String"
+  locked: true
+  category: "System Identity"
+  order: 2
+  default: "BASE Framework"
+
+System/Identity/Version:
+  title: "Application Version"
+  description: "Current version of the application"
+  type: "System.String"
+  locked: true
+  category: "System Identity"
+  order: 3
+  default: "1.0.0"
+
+System/Security/TwoFactorAuth/Enabled:
+  title: "Two-Factor Authentication"
+  description: "Require two-factor authentication for all users"
+  type: "System.Boolean"
+  locked: false
+  category: "Security"
+  order: 10
+  default: false
+
+System/Security/PasswordPolicy/MinLength:
+  title: "Minimum Password Length"
+  description: "Minimum number of characters required in passwords"
+  type: "System.Int32"
+  locked: false
+  category: "Security"
+  order: 11
+  default: 8
+  validation:
+    min: 6
+    max: 128
+
+System/Security/PasswordPolicy/RequireSpecialChar:
+  title: "Require Special Characters"
+  description: "Passwords must contain at least one special character"
+  type: "System.Boolean"
+  locked: false
+  category: "Security"
+  order: 12
+  default: true
+
+App/Preferences/Theme:
+  title: "UI Theme"
+  description: "Visual theme for the user interface"
+  type: "System.String"
+  locked: false
+  category: "Appearance"
+  order: 100
+  default: "Light"
+  validation:
+    allowedValues: ["Light", "Dark", "Auto"]
+
+App/Preferences/Language:
+  title: "Language"
+  description: "Display language for the user interface"
+  type: "System.String"
+  locked: false
+  category: "Localization"
+  order: 101
+  default: "en-US"
+
+App/Preferences/Timezone:
+  title: "Timezone"
+  description: "Timezone for date/time display"
+  type: "System.String"
+  locked: false
+  category: "Localization"
+  order: 102
+  default: "UTC"
+
+App/Preferences/DateFormat:
+  title: "Date Format"
+  description: "Format string for displaying dates"
+  type: "System.String"
+  locked: false
+  category: "Localization"
+  order: 103
+  default: "yyyy-MM-dd"
+
+App/Preferences/Background/Color:
+  title: "Background Color"
+  description: "Background color in hexadecimal format"
+  type: "System.String"
+  locked: false
+  category: "Appearance"
+  order: 110
+  default: "#FFFFFF"
+  validation:
+    pattern: "^#[0-9A-Fa-f]{6}$"
+
+App/Preferences/Background/Opacity:
+  title: "Background Opacity"
+  description: "Opacity level for the background (0.0 = transparent, 1.0 = opaque)"
+  type: "System.Double"
+  locked: false
+  category: "Appearance"
+  order: 111
+  default: 1.0
+  validation:
+    min: 0.0
+    max: 1.0
+
+App/Features/Experimental/NewUI:
+  title: "New UI (Experimental)"
+  description: "Enable the experimental new user interface"
+  type: "System.Boolean"
+  locked: false
+  category: "Features"
+  order: 200
+  default: false
+
+App/Features/BetaFeatures/Enabled:
+  title: "Beta Features"
+  description: "Enable beta features for this environment"
+  type: "System.Boolean"
+  locked: false
+  category: "Features"
+  order: 201
+  default: false
+

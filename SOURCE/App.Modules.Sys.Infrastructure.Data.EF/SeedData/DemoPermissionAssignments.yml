@@ -1,0 +1,20 @@
+# Demo Permission Assignments
+# Links demo users to system permissions
+#
+# LOCATION: This is a MINIMAL EXAMPLE kept in Data.EF assembly
+# For production use, copy to:
+#   - App.Host/SeedData/DemoPermissionAssignments.yml (or .json)
+#   - Or set SEEDDATA_PATH environment variable
+#
+# FORMAT: Also supports .json format
+
+assignments:
+  # Minimal admin permissions for development
+  - userEmail: admin@localhost
+    permissionKey: System.Configure
+  - userEmail: admin@localhost
+    permissionKey: Users.Create
+  - userEmail: admin@localhost
+    permissionKey: Users.Edit
+  - userEmail: admin@localhost
+    permissionKey: Permissions.Grant

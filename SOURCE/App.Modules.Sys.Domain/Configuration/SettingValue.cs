@@ -1,18 +1,20 @@
+using App.Modules.Sys.Shared.Models;
 using System;
 
 namespace App.Modules.Sys.Domain.Configuration
 {
     /// <summary>
     /// Represents a stored configuration setting value.
+    /// Implements IHasKey and IHasSerializedTypeValueNullable for consistency.
     /// Database schema:
     /// - WorkspaceId: Guid or '*' for all workspaces
     /// - UserId: Guid or '*' for all users  
     /// - Key: Hierarchical path like 'Appearance/Background/Color'
-    /// - Type: .NET type name
-    /// - SerializedValue: JSON or string representation
+    /// - SerializedTypeName: .NET type name
+    /// - SerializedTypeValue: JSON or string representation
     /// - IsLocked: Prevents descendant levels from overriding
     /// </summary>
-    public class SettingValue
+    public class SettingValue : IHasKey, IHasSerializedTypeValueNullable
     {
         /// <summary>
         /// Workspace ID or '*' for system-level
@@ -24,20 +26,14 @@ namespace App.Modules.Sys.Domain.Configuration
         /// </summary>
         public string UserId { get; set; } = "*";
 
-        /// <summary>
-        /// Hierarchical setting key (e.g., 'Appearance/Background/Color')
-        /// </summary>
+        /// <inheritdoc/>
         public string Key { get; set; } = string.Empty;
 
-        /// <summary>
-        /// .NET type name (e.g., 'System.String', 'System.Int32')
-        /// </summary>
-        public string Type { get; set; } = string.Empty;
+        /// <inheritdoc/>
+        public string SerializedTypeName { get; set; } = string.Empty;
 
-        /// <summary>
-        /// Serialized value (JSON or string)
-        /// </summary>
-        public string SerializedValue { get; set; } = string.Empty;
+        /// <inheritdoc/>
+        public string? SerializedTypeValue { get; set; } = string.Empty;
 
         /// <summary>
         /// When true, descendant levels cannot override this setting.

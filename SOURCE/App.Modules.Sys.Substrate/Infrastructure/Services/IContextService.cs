@@ -1,9 +1,11 @@
+using App.Modules.Sys.Infrastructure.Lifecycles;
+
 namespace App.Modules.Sys.Infrastructure.Services
 {
     /// <summary>
     /// Service for managing per-request context storage.
     /// </summary>
-    public interface IContextService: IHasAppInfrastructureService
+    public interface IContextService: IHasScopedLifecycle
     {
         /// <summary>
         /// Sets a value in the context storage for the specified key.

@@ -67,5 +67,53 @@ namespace App
                    name?.StartsWith("App.Host", StringComparison.OrdinalIgnoreCase) == true ||
                    name?.StartsWith("App.Service", StringComparison.OrdinalIgnoreCase) == true;
         }
+
+        /// <summary>
+        /// Discover module initializer classes in an assembly.
+        /// Looks for classes implementing IModuleAssemblyInitialiser.
+        /// </summary>
+        /// <param name="assembly">Assembly to search</param>
+        /// <returns>List of instantiated initializer objects</returns>
+        public static List<App.Modules.Sys.Initialisation.IModuleAssemblyInitialiser> DiscoverModuleInitializers(
+            this Assembly assembly)
+        {
+            var initializerType = typeof(App.Modules.Sys.Initialisation.IModuleAssemblyInitialiser);
+            var initializers = new List<App.Modules.Sys.Initialisation.IModuleAssemblyInitialiser>();
+
+            try
+            {
+                var types = assembly.GetTypes()
+                    .Where(t => initializerType.IsAssignableFrom(t) 
+                             && !t.IsAbstract 
+                             && !t.IsInterface)
+                    .ToList();
+
+                foreach (var type in types)
+                {
+                    try
+                    {
+                        var instance = Activator.CreateInstance(type) 
+                            as App.Modules.Sys.Initialisation.IModuleAssemblyInitialiser;
+                        
+                        if (instance != null)
+                        {
+                            initializers.Add(instance);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log but continue - don't fail entire discovery
+                        Console.WriteLine($"Failed to instantiate initializer {type.Name}: {ex.Message}");
+                    }
+                }
+            }
+            catch (ReflectionTypeLoadException)
+            {
+                // Assembly doesn't have these types - that's OK
+            }
+
+            return initializers;
+        }
     }
 }
+

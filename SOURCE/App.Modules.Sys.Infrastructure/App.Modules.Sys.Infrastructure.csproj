@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -16,12 +16,12 @@
     <!--<BaseOutputPath>..\..\..\..\SOURCE\App.Host\MODULES\</BaseOutputPath>-->
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>NU5104</NoWarn>
+    <NoWarn>NU5104;CS1591;CA1848;CA1873;CA1513;CA1816;CA1869;CA1822;CA1852</NoWarn>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <WarningLevel>9999</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>NU5104</NoWarn>
+    <NoWarn>NU5104;CS1591;CA1848;CA1873;CA1513;CA1816;CA1869;CA1822;CA1852</NoWarn>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <WarningLevel>9999</WarningLevel>
   </PropertyGroup>
@@ -30,17 +30,30 @@
     <Compile Remove="_Initialisation\Class1.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Middleware\" />
+    <Folder Include="ObjectMapping\" />
     <Folder Include="_Initialisation\_TOPARSE\" />
     <Folder Include="NewFolder\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ICSharpCode.Decompiler" Version="10.0.0.8282-preview2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.2" />
+    <PackageReference Include="YamlDotNet" Version="16.2.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\App.Modules.Sys.Domain\App.Modules.Sys.Domain.csproj" />
     <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.Contracts.csproj" />
     <ProjectReference Include="..\App.Modules.Sys.Substrate\App.Modules.Sys.Substrate.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Settings\SettingsSchema.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Settings\SettingsDefaults.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Update="_Packaging\readme.nuget.md">

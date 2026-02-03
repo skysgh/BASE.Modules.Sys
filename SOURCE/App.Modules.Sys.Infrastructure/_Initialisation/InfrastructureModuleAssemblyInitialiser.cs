@@ -1,9 +1,10 @@
 using App.Modules.Sys.Domain.Configuration;
 using App.Modules.Sys.Initialisation.Implementation.Base;
-using App.Modules.Sys.Infrastructure.Services.Caching;
-using App.Modules.Sys.Infrastructure.Services.Caching.Implementations;
 using App.Modules.Sys.Infrastructure.Services.Configuration;
+using App.Modules.Sys.Shared.Services.Caching;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using App.Modules.Sys.Infrastructure.Caching.Implementations;
 
 namespace App.Modules.Sys.Infrastructure.Initialisation
 {
@@ -14,17 +15,20 @@ namespace App.Modules.Sys.Infrastructure.Initialisation
     public class InfrastructureModuleAssemblyInitialiser : ModuleAssemblyInitialiserBase
     {
         /// <inheritdoc/>
-        public override void DoBeforeBuild()
+        public override void DoBeforeBuild(IServiceCollection services)
         {
             // ========================================
-            // TIER 1: CACHE REGISTRY (In-Memory with Refresh)
+            // CACHE OBJECT REGISTRY SERVICE (Tier 1: Self-refreshing objects)
             // ========================================
-            Services.AddSingleton<ICacheRegistry, CacheRegistryService>();
+            services.AddSingleton<ICacheObjectRegistryService, CacheObjectRegistryService>();
             
             // ========================================
-            // TIER 2: MEMORY CACHE (Backing Store)
+            // MEMORY CACHE (Tier 2: Backing store - INTERNAL only)
             // ========================================
-            Services.AddMemoryCache();
+            services.AddMemoryCache();
+            
+            // Note: ICacheService implementations are internal and only
+            // accessible through ICacheObjectRegistryService
             
             // TODO: Add distributed cache when needed
             // Services.AddStackExchangeRedisCache(options => {
@@ -32,26 +36,49 @@ namespace App.Modules.Sys.Infrastructure.Initialisation
             // });
             
             // ========================================
-            // SETTINGS SERVICE
+            // SETTINGS SERVICE (Works with or without DB)
             // ========================================
-            Services.AddSingleton<ISettingsService, SettingsService>();
+            services.AddSingleton<ISettingsService, SettingsService>();
+            services.AddSingleton<SettingsDefaultsLoader>();
             
-            // TODO: Implement and register repository
+            // Repository is OPTIONAL - register when DB is ready
             // Services.AddScoped<ISettingsRepository, SettingsRepositoryEFCore>();
         }
         
         /// <inheritdoc/>
-        public override void DoAfterBuild()
+        public override void DoAfterBuild(IServiceProvider serviceProvider)
         {
-            // Phase 2: Services are now available via DI
-            // Can use ServiceProvider to get services and configure them
+            // ========================================
+            // PHASE 2: DISCOVER AND REGISTER CACHE OBJECTS
+            // ========================================
+            // Use reflection to find all ICacheObject implementations
+            // and register them in the cache object registry with DI support
             
-            // Example: Get cache registry and pre-warm commonly used caches
-            // var cache = ServiceProvider.GetRequiredService<ICacheRegistry>();
+            var cacheRegistry = serviceProvider.GetRequiredService<ICacheObjectRegistryService>();
             
-            // Example: Register default system settings
-            // var settings = ServiceProvider.GetRequiredService<ISettingsService>();
-            // await settings.SetValueAsync("System/Appearance/Theme", "Light", modifiedBy: "SYSTEM");
+            if (cacheRegistry is CacheObjectRegistryService registry)
+            {
+                // Discover all cache objects via reflection with DI support
+                registry.DiscoverAndRegisterAll(serviceProvider);
+                
+                // Cache objects are now available throughout the application
+                // Example usage:
+                // var config = await cacheRegistry.GetValueAsync<Dictionary<string, string>>("System.Configuration.AppSettings");
+            }
+            
+            // ========================================
+            // PHASE 3: SEED DEFAULT SETTINGS
+            // ========================================
+            // Load and seed default settings from YAML/JSON if repository is available
+            // Note: This will only run once - existing settings are not overwritten
+            
+            // TODO: Uncomment when repository is implemented
+            // var defaultsLoader = ServiceProvider.GetRequiredService<SettingsDefaultsLoader>();
+            // var settingsRepo = ServiceProvider.GetService<ISettingsRepository>();
+            // if (settingsRepo != null)
+            // {
+            //     Task.Run(async () => await defaultsLoader.SeedDefaultsAsync(settingsRepo));
+            // }
         }
     }
 }

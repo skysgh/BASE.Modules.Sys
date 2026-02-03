@@ -41,21 +41,53 @@ namespace App
                     
                     foreach (var iface in interfaces)
                     {
-                        var descriptor = new ServiceDescriptor(iface, implType, lifetime.Value);
+                        // Handle generic types - register as open generic
+                        Type serviceType;
+                        Type implementationType;
+                        
+                        if (implType.IsGenericTypeDefinition)
+                        {
+                            // Skip non-generic interfaces when implementation is generic
+                            // (e.g., skip IAppLogger when implementing IAppLogger<T>)
+                            if (!iface.IsGenericType)
+                            {
+                                continue;
+                            }
+                            
+                            // Open generic: IAppLogger<> -> AppLogger<>
+                            serviceType = iface.GetGenericTypeDefinition();
+                            implementationType = implType;
+                        }
+                        else if (implType.IsGenericType && !implType.IsGenericTypeDefinition)
+                        {
+                            // Closed generic constructed from open generic - skip, will be resolved at runtime
+                            continue;
+                        }
+                        else
+                        {
+                            // Non-generic type
+                            serviceType = iface;
+                            implementationType = implType;
+                        }
+                        
+                        var descriptor = new ServiceDescriptor(serviceType, implementationType, lifetime.Value);
                         descriptors.Add(descriptor);
                         
                         log?.Services.Add(new ImplementationDetails
                         {
-                            Interface = iface,
-                            Implementation = implType,
-                            Description = $"{lifetime.Value}: {iface.Name} ? {implType.Name}"
+                            Interface = serviceType,
+                            Implementation = implementationType,
+                            Description = $"{lifetime.Value}: {serviceType.Name} ? {implementationType.Name}"
                         });
                     }
                     
                     // Also register concrete type if has lifecycle but no interfaces
                     if (!interfaces.Any() && lifetime.HasValue)
                     {
-                        descriptors.Add(new ServiceDescriptor(implType, implType, lifetime.Value));
+                        if (!implType.IsGenericTypeDefinition)
+                        {
+                            descriptors.Add(new ServiceDescriptor(implType, implType, lifetime.Value));
+                        }
                     }
                 }
             }
@@ -92,6 +124,52 @@ namespace App
                    interfaceType == typeof(IHasSingletonLifecycle) ||
                    interfaceType == typeof(IHasScopedLifecycle) ||
                    interfaceType == typeof(IHasTransientLifecycle);
+        }
+
+        /// <summary>
+        /// Discovers cache objects (ICacheObject implementations) in assembly.
+        /// Cache objects are always registered as singletons via their interface inheritance.
+        /// </summary>
+        public static List<ServiceDescriptor> DiscoverCacheObjects(
+            this Assembly assembly,
+            StartupLog? log = null)
+        {
+            var descriptors = new List<ServiceDescriptor>();
+            
+            try
+            {
+                var cacheObjectInterface = typeof(App.Modules.Sys.Shared.Services.Caching.ICacheObject);
+                
+                var types = assembly.GetExportedTypes()
+                    .Where(t => t.IsClass 
+                             && !t.IsAbstract 
+                             && cacheObjectInterface.IsAssignableFrom(t));
+                
+                foreach (var implType in types)
+                {
+                    // Register as ICacheObject (singleton via interface inheritance)
+                    var descriptor = new ServiceDescriptor(
+                        cacheObjectInterface, 
+                        implType, 
+                        ServiceLifetime.Singleton);
+                    
+                    descriptors.Add(descriptor);
+                    
+                    log?.Services.Add(new ImplementationDetails
+                    {
+                        Interface = cacheObjectInterface,
+                        Implementation = implType,
+                        Description = $"CacheObject: {implType.Name}"
+                    });
+                }
+            }
+            catch (ReflectionTypeLoadException)
+            {
+                // Log warning but continue - some types may not load
+                log?.Notes.Add($"Warning: Could not load some cache object types from {assembly.GetName().Name}");
+            }
+            
+            return descriptors;
         }
     }
 }

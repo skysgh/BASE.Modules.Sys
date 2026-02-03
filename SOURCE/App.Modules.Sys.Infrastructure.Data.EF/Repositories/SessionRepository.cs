@@ -1,0 +1,82 @@
+using App.Modules.Sys.Application.Contracts.Repositories;
+using App.Modules.Sys.Domain.Session;
+using App.Modules.Sys.Infrastructure.Data.EF.DbContexts.Implementations;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace App.Modules.Sys.Infrastructure.Data.EF.Repositories
+{
+    /// <summary>
+    /// EF Core implementation of ISessionRepository.
+    /// Lives in Infrastructure layer - knows about DbContext.
+    /// </summary>
+    public class SessionRepository : ISessionRepository
+    {
+        private readonly ModuleDbContext _context;
+
+        public SessionRepository(ModuleDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<IEnumerable<Session>> GetSessionsAsync(
+            int skip,
+            int take,
+            bool activeOnly,
+            CancellationToken ct = default)
+        {
+            var query = _context.Sessions
+                .Include(s => s.Operations)
+                .AsQueryable();
+
+            if (activeOnly)
+            {
+                query = query.Where(s =>
+                    s.TerminatedAt == null &&
+                    (s.ExpiresAt == null || s.ExpiresAt > DateTime.UtcNow));
+            }
+
+            return await query
+                .OrderByDescending(s => s.CreatedAt)
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync(ct);
+        }
+
+/// <summary>
+/// TODO...
+/// </summary>
+/// <param name="id"></param>
+/// <param name="ct"></param>
+/// <returns></returns>
+        public async Task<Session?> GetByIdAsync(Guid id, CancellationToken ct = default)
+        {
+            return await _context.Sessions
+                .Include(s => s.Operations)
+                .FirstOrDefaultAsync(s => s.Id == id, ct);
+        }
+
+        public async Task<bool> ExistsAsync(Guid id, CancellationToken ct = default)
+        {
+            return await _context.Sessions.AnyAsync(s => s.Id == id, ct);
+        }
+
+        public async Task<IEnumerable<SessionOperation>> GetOperationsAsync(
+            Guid sessionId,
+            int skip,
+            int take,
+            CancellationToken ct = default)
+        {
+            return await _context.SessionOperations
+                .Where(o => o.SessionId == sessionId)
+                .OrderByDescending(o => o.Timestamp)
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync(ct);
+        }
+    }
+}

@@ -2,7 +2,9 @@ using App.Modules.Sys.Infrastructure.Diagnostics;
 using App.Modules.Sys.Infrastructure.Services.Implementations;
 using Microsoft.Extensions.DependencyInjection;
 
+#pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace App
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// Extension methods to the <see cref="IServiceCollection"/>

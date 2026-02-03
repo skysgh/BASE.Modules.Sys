@@ -1,3 +1,7 @@
+using App.Modules.Sys.Domain.Authorization;
+using App.Modules.Sys.Domain.Configuration;
+using App.Modules.Sys.Domain.Identity;
+using App.Modules.Sys.Domain.Session;
 using App.Modules.Sys.Infrastructure.Data.EF.DbContexts.Implementations.Base;
 using App.Modules.Sys.Infrastructure.Data.EF.Schema.Management;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using App.Modules.Sys.Infrastructure.Data.EF.Schema.Implementations;
 using App.Base.Infrastructure.Services;
 using App.Modules.Sys.Infrastructure.Constants;
+
 namespace App.Modules.Sys.Infrastructure.Data.EF.DbContexts.Implementations
 {
     /// <summary>
@@ -23,16 +28,49 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.DbContexts.Implementations
     /// </para>
     /// </summary>
     /// <seealso cref="ModuleDbContextBase" />
-
-    //[Alias(Constants.Db.AppCoreDbContextNames.Core)]
     public class ModuleDbContext : ModuleDbContextBase
     {
-        /*
         /// <summary>
-        /// Expost the Types/Tables specific to this DbContext
+        /// Users table - runtime authentication identity
         /// </summary>
-        public DbSet<NothingDefinedYet>? NothingDefinedYet { get; set; }
-        */
+        public DbSet<User> Users { get; set; } = null!;
+        
+        /// <summary>
+        /// User identities table - multi-provider authentication
+        /// </summary>
+        public DbSet<UserIdentity> UserIdentities { get; set; } = null!;
+        
+        /// <summary>
+        /// Identity links table - opaque bridge to Social.Person
+        /// </summary>
+        public DbSet<IdentityLink> IdentityLinks { get; set; } = null!;
+
+        /// <summary>
+        /// System permissions table - runtime authorization
+        /// </summary>
+        public DbSet<SystemPermission> SystemPermissions { get; set; } = null!;
+        
+        /// <summary>
+        /// User system permissions table - permission assignments
+        /// </summary>
+        public DbSet<UserSystemPermission> UserSystemPermissions { get; set; } = null!;
+
+        /// <summary>
+        /// Settings table - hierarchical configuration
+        /// </summary>
+        public DbSet<SettingValue> Settings { get; set; } = null!;
+
+        /// <summary>
+        /// Sessions table - user session tracking
+        /// </summary>
+        public DbSet<App.Modules.Sys.Domain.Session.Session> Sessions { get; set; } = null!;
+
+        /// <summary>
+        /// Session operations table - individual requests/operations per session
+        /// </summary>
+        public DbSet<App.Modules.Sys.Domain.Session.SessionOperation> SessionOperations { get; set; } = null!;
+        /// <summary>
+        /// </summary>
 
         /// <summary>
         /// Constructor with dependency injection support for runtime scenarios.

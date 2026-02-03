@@ -1,0 +1,16 @@
+{
+  "users": [
+    {
+      "email": "admin@system.local",
+      "password": "Admin123!",
+      "isActive": true,
+      "isSystemAdmin": true
+    },
+    {
+      "email": "test.user@example.com",
+      "password": "Test123!",
+      "isActive": true,
+      "isSystemAdmin": false
+    }
+  ]
+}

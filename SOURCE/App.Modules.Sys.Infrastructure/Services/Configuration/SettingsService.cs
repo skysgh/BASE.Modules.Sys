@@ -1,5 +1,4 @@
 using App.Modules.Sys.Domain.Configuration;
-using App.Modules.Sys.Infrastructure.Services.Caching;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +10,22 @@ namespace App.Modules.Sys.Infrastructure.Services.Configuration
 {
     /// <summary>
     /// Implementation of hierarchical settings service.
-    /// Manages System/Workspace/Person levels with locking and caching.
+    /// Works with OR without database (graceful degradation):
+    /// - No DB: Read-only from appsettings.json + SettingsSchema.yml
+    /// - With DB: Full persistence + hierarchy (System/Workspace/User)
     /// </summary>
     public class SettingsService : ISettingsService
     {
-        private readonly ISettingsRepository _repository;
-        private readonly ICacheRegistry _cache;
+        private readonly ISettingsRepository? _repository;
+        private readonly SettingsDefaultsLoader _defaultsLoader;
+        private Dictionary<string, SettingDefinition>? _inMemoryDefaults;
 
-        public SettingsService(ISettingsRepository repository, ICacheRegistry cache)
+        public SettingsService(
+            SettingsDefaultsLoader defaultsLoader,
+            ISettingsRepository? repository = null)
         {
+            _defaultsLoader = defaultsLoader;
             _repository = repository;
-            _cache = cache;
         }
 
         public async Task<T?> GetValueAsync<T>(
@@ -31,50 +35,68 @@ namespace App.Modules.Sys.Infrastructure.Services.Configuration
             T? defaultValue = default, 
             CancellationToken ct = default)
         {
-            var cacheKey = BuildCacheKey(key, workspaceId, userId);
+            // With repository: Use full hierarchy
+            if (_repository != null)
+            {
+                return await GetFromDatabaseAsync<T>(key, workspaceId, userId, defaultValue, ct);
+            }
 
-            // Try cache first
-            var cached = await _cache.GetOrCreateAsync(
-                cacheKey,
-                async (ct) =>
-                {
-                    // Walk up hierarchy: Person ? Workspace ? System ? Default
-                    SettingValue? setting = null;
-
-                    // Try Person level
-                    if (userId.HasValue && workspaceId.HasValue)
-                    {
-                        setting = await _repository.GetAsync(key, workspaceId.Value.ToString(), userId.Value.ToString(), ct);
-                    }
-
-                    // Try Workspace level
-                    if (setting == null && workspaceId.HasValue)
-                    {
-                        setting = await _repository.GetAsync(key, workspaceId.Value.ToString(), "*", ct);
-                    }
-
-                    // Try System level
-                    if (setting == null)
-                    {
-                        setting = await _repository.GetAsync(key, "*", "*", ct);
-                    }
-
-                    // Deserialize or return default
-                    if (setting != null)
-                    {
-                        return JsonSerializer.Deserialize<T>(setting.SerializedValue);
-                    }
-
-                    return defaultValue;
-                },
-                expiry: TimeSpan.FromMinutes(15),
-                ct: ct
-            );
-
-            return cached;
+            // Without repository: Use in-memory defaults (read-only)
+            return await GetFromDefaultsAsync<T>(key, defaultValue, ct);
         }
 
-        public async Task SetValueAsync<T>(
+        private async Task<T?> GetFromDatabaseAsync<T>(
+            string key,
+            Guid? workspaceId,
+            Guid? userId,
+            T? defaultValue,
+            CancellationToken ct)
+        {
+            // Walk up hierarchy: Person ? Workspace ? System ? Defaults
+            SettingValue? setting = null;
+
+            if (userId.HasValue && workspaceId.HasValue)
+            {
+                setting = await _repository!.GetAsync(key, workspaceId.Value.ToString(), userId.Value.ToString(), ct);
+            }
+
+            if (setting == null && workspaceId.HasValue)
+            {
+                setting = await _repository!.GetAsync(key, workspaceId.Value.ToString(), "*", ct);
+            }
+
+            if (setting == null)
+            {
+                setting = await _repository!.GetAsync(key, "*", "*", ct);
+            }
+
+            if (setting == null || string.IsNullOrEmpty(setting.SerializedTypeValue))
+                return defaultValue;
+
+            return JsonSerializer.Deserialize<T>(setting.SerializedTypeValue);
+        }
+
+        private async Task<T?> GetFromDefaultsAsync<T>(
+            string key,
+            T? defaultValue,
+            CancellationToken ct)
+        {
+            _inMemoryDefaults ??= await _defaultsLoader.LoadDefaultsAsync(ct);
+
+            if (!_inMemoryDefaults.TryGetValue(key, out var definition))
+                return defaultValue;
+
+            try
+            {
+                return JsonSerializer.Deserialize<T>(definition.SerializedTypeValue ?? string.Empty);
+            }
+            catch
+            {
+                return defaultValue;
+            }
+        }
+
+        public Task SetValueAsync<T>(
             string key, 
             T value, 
             Guid? workspaceId = null, 
@@ -82,10 +104,10 @@ namespace App.Modules.Sys.Infrastructure.Services.Configuration
             string? modifiedBy = null, 
             CancellationToken ct = default)
         {
-            // Check if locked
-            if (await IsLockedAsync(key, workspaceId, userId, ct))
+            if (_repository == null)
             {
-                throw new InvalidOperationException($"Setting '{key}' is locked and cannot be modified");
+                throw new InvalidOperationException(
+                    "Cannot persist settings without database. System is in read-only mode.");
             }
 
             var setting = new SettingValue
@@ -93,71 +115,50 @@ namespace App.Modules.Sys.Infrastructure.Services.Configuration
                 WorkspaceId = workspaceId?.ToString() ?? "*",
                 UserId = userId?.ToString() ?? "*",
                 Key = key,
-                Type = typeof(T).FullName ?? typeof(T).Name,
-                SerializedValue = JsonSerializer.Serialize(value),
+                SerializedTypeName = typeof(T).FullName ?? typeof(T).Name,
+                SerializedTypeValue = JsonSerializer.Serialize(value),
+                IsLocked = false,
                 LastModified = DateTime.UtcNow,
                 ModifiedBy = modifiedBy
             };
 
-            await _repository.SetAsync(setting, ct);
-
-            // Invalidate cache
-            _cache.RemoveByPattern(BuildCacheKeyPattern(key));
+            return _repository.SetAsync(setting, ct);
         }
 
-        public async Task ResetAsync(
+        public Task ResetAsync(
             string key, 
             Guid? workspaceId = null, 
             Guid? userId = null, 
             bool resetChildren = false, 
             CancellationToken ct = default)
         {
+            if (_repository == null)
+            {
+                throw new InvalidOperationException("Cannot reset without database.");
+            }
+
             var workspaceIdStr = workspaceId?.ToString() ?? "*";
             var userIdStr = userId?.ToString() ?? "*";
 
-            if (resetChildren)
-            {
-                // Delete all settings under this key (e.g., "Appearance/*")
-                await _repository.DeleteByPatternAsync(key, workspaceIdStr, userIdStr, ct);
-            }
-            else
-            {
-                // Delete just this specific key
-                await _repository.DeleteAsync(key, workspaceIdStr, userIdStr, ct);
-            }
-
-            // Invalidate cache
-            if (resetChildren)
-            {
-                _cache.RemoveByPattern($"{key}*");
-            }
-            else
-            {
-                _cache.RemoveByPattern(BuildCacheKeyPattern(key));
-            }
+            return resetChildren
+                ? _repository.DeleteByPatternAsync(key, workspaceIdStr, userIdStr, ct)
+                : _repository.DeleteAsync(key, workspaceIdStr, userIdStr, ct);
         }
 
-        public async Task SetLockAsync(
+        public Task SetLockAsync(
             string key, 
             Guid? workspaceId, 
             bool locked, 
             string? modifiedBy = null, 
             CancellationToken ct = default)
         {
-            // Only System and Workspace levels can lock
-            if (workspaceId == null)
+            if (_repository == null)
             {
-                // System level lock
-                await _repository.SetLockAsync(key, "*", "*", locked, modifiedBy, ct);
-            }
-            else
-            {
-                // Workspace level lock
-                await _repository.SetLockAsync(key, workspaceId.Value.ToString(), "*", locked, modifiedBy, ct);
+                throw new InvalidOperationException("Cannot set locks without database.");
             }
 
-            // Invalidate cache
-            _cache.RemoveByPattern(BuildCacheKeyPattern(key));
+            var workspaceIdStr = workspaceId?.ToString() ?? "*";
+            return _repository.SetLockAsync(key, workspaceIdStr, "*", locked, modifiedBy, ct);
         }
 
         public async Task<bool> IsLockedAsync(
@@ -166,7 +167,14 @@ namespace App.Modules.Sys.Infrastructure.Services.Configuration
             Guid? userId = null, 
             CancellationToken ct = default)
         {
-            // Check hierarchically: parent locks apply to children
+            if (_repository == null)
+            {
+                // No DB: Check schema defaults
+                _inMemoryDefaults ??= await _defaultsLoader.LoadDefaultsAsync(ct);
+                return _inMemoryDefaults.TryGetValue(key, out var def) && def.Locked;
+            }
+
+            // With DB: Check hierarchy
             var keyParts = key.Split('/');
             var currentPath = "";
 
@@ -174,16 +182,11 @@ namespace App.Modules.Sys.Infrastructure.Services.Configuration
             {
                 currentPath = string.IsNullOrEmpty(currentPath) ? part : $"{currentPath}/{part}";
 
-                // Check System level
-                var systemLock = await _repository.IsLockedAsync(currentPath, "*", "*", ct);
-                if (systemLock) return true;
+                if (await _repository.IsLockedAsync(currentPath, "*", "*", ct))
+                    return true;
 
-                // Check Workspace level
-                if (workspaceId.HasValue)
-                {
-                    var workspaceLock = await _repository.IsLockedAsync(currentPath, workspaceId.Value.ToString(), "*", ct);
-                    if (workspaceLock) return true;
-                }
+                if (workspaceId.HasValue && await _repository.IsLockedAsync(currentPath, workspaceId.Value.ToString(), "*", ct))
+                    return true;
             }
 
             return false;
@@ -195,6 +198,23 @@ namespace App.Modules.Sys.Infrastructure.Services.Configuration
             Guid? userId = null, 
             CancellationToken ct = default)
         {
+            if (_repository == null)
+            {
+                _inMemoryDefaults ??= await _defaultsLoader.LoadDefaultsAsync(ct);
+                
+                return _inMemoryDefaults.Values.Select(def => new SettingValue
+                {
+                    WorkspaceId = "*",
+                    UserId = "*",
+                    Key = def.Key,
+                    SerializedTypeName = def.SerializedTypeName,
+                    SerializedTypeValue = def.SerializedTypeValue,
+                    IsLocked = def.Locked,
+                    LastModified = DateTime.UtcNow,
+                    ModifiedBy = "DEFAULTS"
+                });
+            }
+
             var workspaceIdStr = level == SettingLevel.System ? "*" : workspaceId?.ToString() ?? "*";
             var userIdStr = level == SettingLevel.Person ? userId?.ToString() ?? "*" : "*";
 
@@ -207,26 +227,35 @@ namespace App.Modules.Sys.Infrastructure.Services.Configuration
             Guid? userId = null, 
             CancellationToken ct = default)
         {
+            if (_repository == null)
+            {
+                _inMemoryDefaults ??= await _defaultsLoader.LoadDefaultsAsync(ct);
+                
+                return _inMemoryDefaults.Values
+                    .Where(def => def.Key.StartsWith(parentKey + "/", StringComparison.OrdinalIgnoreCase))
+                    .Select(def => new SettingValue
+                    {
+                        WorkspaceId = "*",
+                        UserId = "*",
+                        Key = def.Key,
+                        SerializedTypeName = def.SerializedTypeName,
+                        SerializedTypeValue = def.SerializedTypeValue,
+                        IsLocked = def.Locked,
+                        LastModified = DateTime.UtcNow,
+                        ModifiedBy = "DEFAULTS"
+                    });
+            }
+
             var workspaceIdStr = workspaceId?.ToString() ?? "*";
             var userIdStr = userId?.ToString() ?? "*";
 
             return await _repository.GetChildrenAsync(parentKey, workspaceIdStr, userIdStr, ct);
         }
-
-        private static string BuildCacheKey(string key, Guid? workspaceId, Guid? userId)
-        {
-            return $"setting:{workspaceId?.ToString() ?? "*"}:{userId?.ToString() ?? "*"}:{key}";
-        }
-
-        private static string BuildCacheKeyPattern(string key)
-        {
-            return $"setting:*:*:{key}";
-        }
     }
 
     /// <summary>
     /// Repository interface for settings persistence.
-    /// Implement this with your data access technology (EF Core, Dapper, etc.)
+    /// OPTIONAL: System works without it (read-only mode).
     /// </summary>
     public interface ISettingsRepository
     {

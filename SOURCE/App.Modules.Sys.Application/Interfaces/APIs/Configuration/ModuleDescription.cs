@@ -20,7 +20,7 @@ namespace App.Modules.Sys.Application.Interfaces.APIs.Configuration
         /// <summary>
         /// Public default configurable Title of the Module
         /// </summary>
-        public string Title { get; set; } = "BASE Module";
+        public string Title { get; set; } = "SYS Module";
 
         /// <summary>
         /// Public configurable Description of the Module

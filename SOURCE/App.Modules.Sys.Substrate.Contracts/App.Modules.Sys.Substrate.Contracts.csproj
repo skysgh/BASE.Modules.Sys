@@ -5,7 +5,7 @@
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <Nullable>enable</Nullable>
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
-	  <NoWarn>CA1716</NoWarn>
+	  <NoWarn>CA1716;CA1513</NoWarn>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <Title>$(AssemblyName)</Title>
 	  <Copyright>Copyright $(Authors)</Copyright>
@@ -40,6 +40,7 @@
 		<Folder Include="Infrastructure\Azure\Services\Configuration\" />
 		<Folder Include="Infrastructure\Caching\" />
 		<Folder Include="Infrastructure\Initialisation\" />
+		<Folder Include="Infrastructure\ObjectMapping\" />
 		<Folder Include="Infrastructure\Web\Services\Implementations\" />
 		<Folder Include="Infrastructure\Web\Services\Configurations\" />
 		<Folder Include="Common\" />

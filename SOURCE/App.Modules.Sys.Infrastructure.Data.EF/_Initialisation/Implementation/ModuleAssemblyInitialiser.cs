@@ -1,6 +1,7 @@
 ﻿using App.Modules.Sys.Infrastructure.Data.EF.Interceptors;
 using App.Modules.Sys.Infrastructure.Data.EF.Services;
 using App.Modules.Sys.Initialisation;
+using App.Modules.Sys.Initialisation.Implementation.Base;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -14,31 +15,20 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Initialisation.Implementation
     /// Assembly specific implementation of IModuleAssemblyInitialiser.
     /// Discovers and registers DbContext save handlers from this assembly.
     /// </summary>
-    public class ModuleAssemblyInitialiser : IModuleAssemblyInitialiser
+    public class ModuleAssemblyInitialiser : ModuleAssemblyInitialiserBase
     {
-        private readonly IServiceProvider _serviceProvider;
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="serviceProvider"></param>
-        public ModuleAssemblyInitialiser(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
-
-        /// <inheritdoc/>
-        public void DoBeforeBuild()
+        ///<inheritdoc/>
+        public override void DoBeforeBuild(IServiceCollection services)
         {
         }
 
         /// <inheritdoc/>
-        public void DoAfterBuild()
+        public override void DoAfterBuild(IServiceProvider serviceProvider)
         {
 
-
-            // Get the handler registry (singleton)
-            var registry = _serviceProvider.GetService<IDbContextSaveHandlerRegistryService>();
+        // Get the handler registry (singleton)
+        var registry = serviceProvider.GetService<IDbContextSaveHandlerRegistryService>();
             if (registry != null)
             {
                 registry.DiscoverAndRegister(Assembly.GetExecutingAssembly());

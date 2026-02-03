@@ -2,7 +2,9 @@ using App.Modules.Sys.Shared.ExtensionMethods;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+#pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace App
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// Extension methods for ModelBuilder to simplify common schema configuration tasks.

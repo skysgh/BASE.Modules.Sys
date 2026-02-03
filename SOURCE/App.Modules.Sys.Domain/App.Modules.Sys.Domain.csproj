@@ -33,11 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Implementations\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="_Packaging\readme.nuget.md">
       <PackagePath>\</PackagePath>
       <Pack>true</Pack>

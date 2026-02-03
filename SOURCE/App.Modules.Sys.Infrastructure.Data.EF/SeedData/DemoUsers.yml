@@ -1,0 +1,21 @@
+# Demo Users for Development/Testing
+# This file is read by YamlDataSeeder at startup
+#
+# LOCATION: This is a MINIMAL EXAMPLE kept in Data.EF assembly
+# For production use, copy to:
+#   - App.Host/SeedData/DemoUsers.yml (or .json)
+#   - Or set SEEDDATA_PATH environment variable
+#
+# PATH RESOLUTION PRIORITY:
+#   1. Host/SeedData/ folder (recommended for production)
+#   2. SEEDDATA_PATH environment variable
+#   3. This assembly default (development fallback)
+#
+# FORMAT: Also supports .json format (DemoUsers.json)
+
+users:
+  # Minimal admin for development
+  - email: admin@localhost
+    password: DevAdmin123!  # CHANGE IN PRODUCTION!
+    isActive: true
+    isSystemAdmin: true

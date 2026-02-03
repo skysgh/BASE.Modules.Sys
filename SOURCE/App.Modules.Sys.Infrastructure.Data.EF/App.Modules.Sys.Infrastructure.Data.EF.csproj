@@ -4,7 +4,8 @@
 	  <TargetFramework>net10.0</TargetFramework>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <Nullable>enable</Nullable>
-	  <NoWarn>CS1574</NoWarn><GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  <NoWarn>CS1574</NoWarn>
+	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <Title>$(AssemblyName)</Title>
 	  <Copyright>Copyright $(Authors)</Copyright>
@@ -36,9 +37,17 @@
   <ItemGroup><Compile Remove="Extensions\ScanAll*_TBV.cs" /><Compile Remove="**\*_TBV.cs" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="YamlDotNet" Version="16.2.1" />
   </ItemGroup>
 
   <ItemGroup><Compile Remove="Extensions\ScanAll*_TBV.cs" /><Compile Remove="**\*_TBV.cs" />
+    <ProjectReference Include="..\App.Modules.Sys.Application\App.Modules.Sys.Application.csproj" />
+    <ProjectReference Include="..\App.Modules.Sys.Domain\App.Modules.Sys.Domain.csproj" />
     <ProjectReference Include="..\App.Modules.Sys.Infrastructure\App.Modules.Sys.Infrastructure.csproj" />
     <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.Contracts.csproj" />
     <ProjectReference Include="..\App.Modules.Sys.Substrate\App.Modules.Sys.Substrate.csproj" />
@@ -53,6 +62,14 @@
       <PackagePath>\</PackagePath>
       <Pack>true</Pack>
     </None>
-  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0" /></ItemGroup>
+    
+    <!-- Copy YAML and JSON seed data files to output directory -->
+    <None Update="SeedData\*.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SeedData\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>

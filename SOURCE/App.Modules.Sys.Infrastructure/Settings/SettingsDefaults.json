@@ -1,0 +1,26 @@
+{
+  "System/Identity/DeveloperName": {
+    "value": "MachineBrains, Inc.",
+    "type": "System.String",
+    "locked": true,
+    "description": "Application developer/publisher name"
+  },
+  "System/Identity/AppName": {
+    "value": "BASE Framework",
+    "type": "System.String",
+    "locked": true,
+    "description": "Application display name"
+  },
+  "App/Preferences/Theme": {
+    "value": "Light",
+    "type": "System.String",
+    "locked": false,
+    "description": "UI theme (Light, Dark, Auto)"
+  },
+  "App/Preferences/Language": {
+    "value": "en-US",
+    "type": "System.String",
+    "locked": false,
+    "description": "User interface language"
+  }
+}

@@ -1,3 +1,4 @@
+using App.Modules.Sys.Initialisation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ namespace App.Modules.Sys.Substrate.Contracts.Models
 {
     /// <summary>
     /// Configuration bag collected during module initialization.
-    /// Contains all discovered services, mappers, schemas, handlers, and configurers.
+    /// Contains all discovered services, mappers, schemas, handlers, configurers, and initializers.
     /// </summary>
     public class ModuleConfigurationBag
     {
@@ -31,6 +32,11 @@ namespace App.Modules.Sys.Substrate.Contracts.Models
         public List<IServiceConfigurer> ServiceConfigurers { get; } = new();
 
         /// <summary>
+        /// Module initializers - called DoBeforeBuild in Phase 1, DoAfterBuild in Phase 2.
+        /// </summary>
+        public List<IModuleAssemblyInitialiser> ModuleInitializers { get; set; } = new();
+
+        /// <summary>
         /// AutoMapper Profile types and descriptions.
         /// </summary>
         public List<(Type Profile, string Description)> MapperProfiles { get; } = new();
@@ -44,6 +50,11 @@ namespace App.Modules.Sys.Substrate.Contracts.Models
         /// DbContext save handlers (pre/post save operations).
         /// </summary>
         public List<Type> DbContextHandlers { get; } = new();
+
+        /// <summary>
+        /// Cache objects discovered via reflection (ICacheObject implementers).
+        /// </summary>
+        public List<ServiceDescriptor> CacheObjects { get; } = new();
 
         /// <summary>
         /// Notes about the initialization process.
