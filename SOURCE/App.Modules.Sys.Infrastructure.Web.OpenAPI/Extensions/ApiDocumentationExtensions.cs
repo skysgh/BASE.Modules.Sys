@@ -117,13 +117,13 @@ namespace App
             if (enableScalar)
             {
                 // Scalar UI: /scalar/v1
-                // CRITICAL: Must call MapOpenApi() first (see enableOpenApi above)
+                // CRITICAL: Must call MapOpenApi() first AND tell Scalar where to find it
                 app.MapScalarApiReference(options =>
                 {
                     options
                         .WithTitle($"BASE System API {apiVersion}")
-                        .WithTheme(Scalar.AspNetCore.ScalarTheme.DeepSpace);
-                    // Note: Sidebar is shown by default in Scalar 2.x
+                        .WithTheme(Scalar.AspNetCore.ScalarTheme.DeepSpace)
+                        .WithOpenApiRoutePattern($"{DocumentationBasePath}/{apiVersion}/openapi.json");
                 });
             }
 
@@ -131,6 +131,7 @@ namespace App
         }
     }
 }
+
 
 
 
