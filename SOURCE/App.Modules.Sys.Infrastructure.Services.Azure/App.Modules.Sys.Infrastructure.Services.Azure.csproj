@@ -9,6 +9,8 @@
 	  <Title>$(AssemblyName)</Title>
 	  <Copyright>Copyright $(Authors)</Copyright>
 	  <!--<PackageReadmeFile>Packaging/readme.nuget.md</PackageReadmeFile>-->
+	  <!-- NU5039: Package missing readme - suppressed until readme is created -->
+	  <NoWarn>$(NoWarn);NU5039</NoWarn>
 	  <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
 	  <AnalysisLevel>preview-recommended</AnalysisLevel>
 	  <EnableNETAnalyzers>True</EnableNETAnalyzers>
@@ -20,13 +22,11 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <WarningLevel>9999</WarningLevel>
-    <NoWarn>NU5039</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <WarningLevel>9999</WarningLevel>
-    <NoWarn>NU5039</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
