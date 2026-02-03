@@ -24,15 +24,7 @@ namespace App
             this IServiceCollection services)
         {
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "BASE System API",
-                    Description = "Multi-tenant system management API"
-                });
-            });
+            services.AddSwaggerGen();
             
             return services;
         }
