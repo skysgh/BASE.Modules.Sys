@@ -44,8 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\App.Modules.Sys.Domain\App.Modules.Sys.Domain.csproj" />
-    <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.Contracts.csproj" />
-    <ProjectReference Include="..\App.Modules.Sys.Substrate\App.Modules.Sys.Substrate.csproj" />
+    <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.csproj" />
+    <ProjectReference Include="..\App.Modules.Sys.Substrate\App.Modules.Sys.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Settings\SettingsSchema.yml">

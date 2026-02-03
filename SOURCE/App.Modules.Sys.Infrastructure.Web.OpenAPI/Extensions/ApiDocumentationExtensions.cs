@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using System.IO;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure
@@ -10,8 +10,11 @@ namespace App
 {
     /// <summary>
     /// Extension methods for API documentation configuration.
-    /// CRITICAL: All API endpoints MUST include version information (/v1/, /v2/, etc.)
-    /// to ensure long-term maintainability and backward compatibility.
+    /// Supports three UI options (all versioned):
+    /// - OpenAPI (native .NET 10): /documentation/apis/v1/openapi.json
+    /// - Swagger UI: /documentation/apis/v1/swagger
+    /// - Scalar UI: /scalar/v1
+    /// CRITICAL: All endpoints MUST include version information for maintainability!
     /// </summary>
     public static class ApiDocumentationExtensions
     {
@@ -27,7 +30,7 @@ namespace App
         private const string DefaultApiVersion = "v1";
 
         /// <summary>
-        /// Add API documentation services (Swagger + Scalar with versioning).
+        /// Add API documentation services (all three: OpenAPI + Swagger + Scalar).
         /// Call this during service configuration (before builder.Build()).
         /// </summary>
         /// <param name="services">Service collection</param>
@@ -36,7 +39,10 @@ namespace App
             this IServiceCollection services,
             string apiVersion = DefaultApiVersion)
         {
-            // API versioning support
+            // 1. Built-in OpenAPI (.NET 9+) - Modern, lightweight
+            services.AddOpenApi(apiVersion);
+            
+            // 2. API versioning support
             services.AddApiVersioning(options =>
             {
                 options.DefaultApiVersion = new ApiVersion(1, 0);
@@ -44,6 +50,7 @@ namespace App
                 options.ReportApiVersions = true;
             });
 
+            // 3. Swagger/Swashbuckle - Traditional, widely adopted
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(options =>
             {
@@ -55,28 +62,39 @@ namespace App
                 });
                 
                 // Include XML comments if available
-                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "App.Host.xml"), includeControllerXmlComments: true);
+                var xmlFile = Path.Combine(AppContext.BaseDirectory, "App.Host.xml");
+                if (File.Exists(xmlFile))
+                {
+                    options.IncludeXmlComments(xmlFile, includeControllerXmlComments: true);
+                }
             });
             
             return services;
         }
 
         /// <summary>
-        /// Configure API documentation middleware (Swagger + Scalar).
+        /// Configure API documentation middleware (all three UIs).
         /// Call this after app.Build() in the middleware pipeline.
         /// </summary>
         /// <param name="app">Web application</param>
         /// <param name="apiVersion">API version (default: v1). MUST match AddApiDocumentation!</param>
+        /// <param name="enableOpenApi">Enable built-in OpenAPI endpoint (default: true)</param>
         /// <param name="enableSwagger">Enable Swagger UI (default: true)</param>
-        /// <param name="enableScalar">Enable Scalar UI (reserved for future use)</param>
-#pragma warning disable IDE0060 // Remove unused parameter - Reserved for Scalar implementation
+        /// <param name="enableScalar">Enable Scalar UI (default: true)</param>
         public static WebApplication UseApiDocumentation(
             this WebApplication app,
             string apiVersion = DefaultApiVersion,
+            bool enableOpenApi = true,
             bool enableSwagger = true,
             bool enableScalar = true)
-#pragma warning restore IDE0060
         {
+            if (enableOpenApi)
+            {
+                // Native .NET OpenAPI: /documentation/apis/v1/openapi.json
+                app.MapOpenApi($"{DocumentationBasePath}/{apiVersion}/openapi.json")
+                    .WithName($"openapi-{apiVersion}");
+            }
+
             if (enableSwagger)
             {
                 // Swagger JSON: /documentation/apis/v1/swagger.json
@@ -95,18 +113,21 @@ namespace App
                 });
             }
 
-            // TODO: Add Scalar UI support when API is clarified
-            // Scalar.AspNetCore 2.x has different API than 1.x
-            // For now, Swagger provides full documentation at versioned endpoint
+            // TODO: Scalar UI integration pending
+            // Scalar.AspNetCore 2.x API requires IEndpointRouteBuilder, not WebApplication directly
+            // Will add once proper integration pattern is determined
             // if (enableScalar)
             // {
-            //     app.MapScalarApiReference();
+            //     app.MapScalarApiReference()
+            //         .WithName($"scalar-{apiVersion}");
             // }
 
             return app;
         }
     }
 }
+
+
 
 
 
