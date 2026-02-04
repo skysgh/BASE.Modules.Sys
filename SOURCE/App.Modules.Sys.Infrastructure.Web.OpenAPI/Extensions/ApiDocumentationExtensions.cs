@@ -90,20 +90,21 @@ namespace App
                         return false;
                     }
                     
-                    // Include endpoints from this module's namespace
-                    var controllerType = apiDesc.ActionDescriptor.EndpointMetadata
-                        .OfType<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>()
-                        .FirstOrDefault()?.ControllerTypeInfo;
-                    
-                    if (controllerType == null)
+                    // Get controller type from action descriptor
+                    if (apiDesc.ActionDescriptor is Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor controllerActionDesc)
                     {
-                        return false;
+                        var controllerType = controllerActionDesc.ControllerTypeInfo;
+                        var controllerNamespace = controllerType.Namespace ?? "";
+                        
+                        // Check if controller belongs to this module (case-insensitive)
+                        var moduleNameCapitalized = char.ToUpper(moduleName[0]) + moduleName.Substring(1);
+                        var pattern = $".Modules.{moduleNameCapitalized}.";
+                        
+                        return controllerNamespace.Contains(pattern, StringComparison.OrdinalIgnoreCase);
                     }
                     
-                    // Check if controller belongs to this module
-                    var controllerNamespace = controllerType.Namespace ?? "";
-                    return controllerNamespace.Contains($".Modules.{char.ToUpper(moduleName[0])}{moduleName.Substring(1)}", 
-                        StringComparison.OrdinalIgnoreCase);
+                    // Include if we can't determine (safer default)
+                    return true;
                 });
                 
                 // Include XML comments if available
