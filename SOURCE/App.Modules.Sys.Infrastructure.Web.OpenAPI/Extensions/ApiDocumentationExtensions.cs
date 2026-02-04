@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Http;
 using Scalar.AspNetCore;
 using System.IO;
+using System.Linq;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace App
@@ -153,20 +155,20 @@ namespace App
                     c.RouteTemplate = "/swagger/{documentName}/swagger.json";
                 });
                 
-                // CUSTOM: /documentation/apis/sys/v1/swagger (unified module docs)
+                // CUSTOM: /documentation/apis/swagger/sys/v1/ (consistent pattern)
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint(
                         $"/swagger/{documentName}/swagger.json",
                         $"{char.ToUpper(moduleName[0])}{moduleName.Substring(1)} Module API {apiVersion}");
-                    c.RoutePrefix = $"{DocumentationBasePath.TrimStart('/')}/{moduleName}/{apiVersion}/swagger";
+                    c.RoutePrefix = $"{DocumentationBasePath.TrimStart('/')}/swagger/{moduleName}/{apiVersion}";
                 });
             }
 
             if (enableScalar)
             {
-                // CUSTOM: /documentation/apis/sys/v1/scalar (unified module docs)
-                // Reads from STANDARD /openapi/sys-v1.json
+                // CUSTOM: /documentation/apis/scalar/sys/v1/ (consistent pattern)
+                // Maps to unique route to avoid conflicts between modules
                 app.MapScalarApiReference(options =>
                 {
                     options
@@ -175,13 +177,23 @@ namespace App
                         .WithOpenApiRoutePattern($"/openapi/{documentName}.json");
                 })
                 .WithName($"scalar-{documentName}")
-                .RequireHost($"*:*/documentation/apis/{moduleName}/{apiVersion}/scalar");
+                .WithGroupName(documentName);
+                
+                // Map Scalar UI to custom path using MapGet redirect
+                app.MapGet($"{DocumentationBasePath}/scalar/{moduleName}/{apiVersion}", () =>
+                {
+                    return Results.Redirect($"/scalar/{apiVersion}");
+                })
+                .WithName($"scalar-redirect-{documentName}")
+                .ExcludeFromDescription();
             }
 
             return app;
         }
     }
 }
+
+
 
 
 
