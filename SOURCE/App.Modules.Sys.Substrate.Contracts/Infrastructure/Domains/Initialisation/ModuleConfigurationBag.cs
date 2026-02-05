@@ -3,6 +3,7 @@ using App.Modules.Sys.Initialisation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace App.Modules.Sys.Infrastructure.Domains.Initialisation
 {
@@ -16,6 +17,11 @@ namespace App.Modules.Sys.Infrastructure.Domains.Initialisation
         /// Name of the module (e.g., "Base", "Core", "Application")
         /// </summary>
         public string ModuleName { get; init; } = string.Empty;
+
+        /// <summary>
+        /// Assemblies that belong to the logical module.
+        /// </summary>
+        public List<Assembly> Assemblies { get; } = new();
 
         /// <summary>
         /// Services discovered via reflection (lifecycle markers).

@@ -14,7 +14,9 @@ namespace App
     {
         /// <summary>
         /// Discovers all module assemblies starting from entry point.
-        /// Uses BFS to find all referenced App.* assemblies.
+        /// Uses TWO strategies:
+        /// 1. BFS through referenced assemblies
+        /// 2. Scan ALL loaded assemblies in AppDomain
         /// </summary>
         /// <param name="entryPoint">Starting assembly (typically App.Host)</param>
         /// <returns>Set of all discovered module assemblies</returns>
@@ -22,6 +24,8 @@ namespace App
         {
             var moduleAssemblies = new HashSet<Assembly>();
             var allAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+            
+            // STRATEGY 1: BFS from entry point through references
             var queue = new Queue<Assembly>();
             queue.Enqueue(entryPoint);
             
@@ -50,10 +54,20 @@ namespace App
                 foreach (var asm in allAssemblies
                                       .Where(a => referencedNames.Contains(a.GetName().Name)))
                 {
-                    if (asm.IsModuleAssembly())
+                    if (asm.IsModuleAssembly() && !moduleAssemblies.Contains(asm))
                     {
                         queue.Enqueue(asm);
                     }
+                }
+            }
+            
+            // STRATEGY 2: Scan ALL loaded assemblies for any we missed
+            // This catches assemblies loaded via reflection or indirect references
+            foreach (var asm in allAssemblies)
+            {
+                if (asm.IsModuleAssembly() && !moduleAssemblies.Contains(asm))
+                {
+                    moduleAssemblies.Add(asm);
                 }
             }
             

@@ -38,6 +38,7 @@ namespace App.Modules.Sys.Initialisation.Implementation
             
             // STEP 2: Sort in dependency order using extension method
             var sortedAssemblies = moduleAssemblies.ToList().TopologicalSort();
+
             
             log.Log(TraceLevel.Info, $"Found {sortedAssemblies.Count} module assemblies in dependency order:");
             for (int i = 0; i < sortedAssemblies.Count; i++)
@@ -48,6 +49,7 @@ namespace App.Modules.Sys.Initialisation.Implementation
             // STEP 3: Process each assembly using extension methods
             log.Log(TraceLevel.Info, "=== PROCESSING ASSEMBLIES ===");
             var bag = new ModuleConfigurationBag { ModuleName = "Application" };
+            bag.Assemblies.AddRange(sortedAssemblies);
             var allInitializers = new System.Collections.Generic.List<App.Modules.Sys.Initialisation.IModuleAssemblyInitialiser>();
             
             foreach (var assembly in sortedAssemblies)

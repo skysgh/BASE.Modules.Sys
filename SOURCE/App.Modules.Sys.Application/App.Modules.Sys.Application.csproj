@@ -47,6 +47,7 @@
     <Folder Include="Domains\Users\Services\Implementations\" />
     <Folder Include="Domains\Workspace\Models\" />
     <Folder Include="Domains\Workspace\Repositories\" />
+    <Folder Include="Extensions\" />
     <Folder Include="_Initialisation\_TOREVIEW\" />
     <Folder Include="TODO\APIs\ObjectMapping\" />
     <Folder Include="_Initialisation\IoC\" />
