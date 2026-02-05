@@ -19,6 +19,7 @@
 	  <EnableNETAnalyzers>True</EnableNETAnalyzers>
 	  <Company>MachineBrains, Inc.</Company>
 	  <Product>BASE</Product>
+	  <RootNamespace>App.Modules.Sys.Interfaces</RootNamespace>
 	  <!--<BaseOutputPath>..\..\..\..\SOURCE\App.Host\MODULES\</BaseOutputPath>-->
   </PropertyGroup>
 
@@ -34,7 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\App.Modules.Sys.Application\App.Modules.Sys.Application.csproj" />
-    <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.Contracts.csproj" />
+    <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +43,10 @@
       <PackagePath>\</PackagePath>
       <Pack>true</Pack>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Domains\" />
   </ItemGroup>
 
 </Project>

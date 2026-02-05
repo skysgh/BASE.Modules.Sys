@@ -2,9 +2,10 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using App.Modules.Sys.Infrastructure.Domains.Initialisation;
+using App.Modules.Sys.Infrastructure.Services.Configuration;
 using App.Modules.Sys.Shared.Models.Enums;
 using App.Modules.Sys.Shared.Models.Implementations;
-using App.Modules.Sys.Substrate.Contracts.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Modules.Sys.Initialisation.Implementation

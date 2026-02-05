@@ -23,7 +23,7 @@ namespace App.Modules.Sys.Substrate
         /// (it's the same as the Base one).
         /// </summary>
         public const string DbConnectionName =
-            App.Modules.Sys.Infrastructure.Constants.ModuleConstants.DbConnectionStringName;
+            Sys.Infrastructure.Domains.Constants.ModuleConstants.DbConnectionStringName;
 
     }
 }

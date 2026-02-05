@@ -1,5 +1,5 @@
 // using App.Modules.Sys.Infrastructure.NewFolder.Services;
-using App.Modules.Sys.Infrastructure.Diagnostics;
+using App.Modules.Sys.Infrastructure.Domains.Diagnostics;
 using App.Modules.Sys.Infrastructure.Services;
 using System.Globalization;
 // using System;

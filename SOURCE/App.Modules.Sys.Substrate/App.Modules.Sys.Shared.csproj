@@ -45,8 +45,10 @@
 
 
   <ItemGroup>
+    <Folder Include="Domain\Domains\" />
+    <Folder Include="Infrastructure\Domains\ObjectMapping\" />
     <Folder Include="Infrastructure\Domains\Startup\" />
-    <Folder Include="Infrastructure\Diagnostics\" />
+    <Folder Include="Infrastructure\Domains\Diagnostics\" />
     <Folder Include="Common\" />
   </ItemGroup>
 	  

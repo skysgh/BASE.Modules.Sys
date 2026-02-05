@@ -1,4 +1,4 @@
-using App.Modules.Sys.Infrastructure.Lifecycles;
+using App.Modules.Sys.Shared.Lifecycles;
 using App.Modules.Sys.Shared.Services;
 
 namespace App.Modules.Sys.Infrastructure.Services

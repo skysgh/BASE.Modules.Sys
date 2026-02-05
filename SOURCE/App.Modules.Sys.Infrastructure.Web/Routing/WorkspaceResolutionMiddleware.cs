@@ -1,5 +1,6 @@
-using App.Modules.Sys.Application.Contracts.Services;
-using App.Modules.Sys.Infrastructure.Diagnostics;
+using App.Modules.Sys.Application.Domains.Workspace.Services;
+using App.Modules.Sys.Infrastructure.Domains.Diagnostics;
+using App.Modules.Sys.Shared.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
@@ -34,8 +35,8 @@ namespace App.Modules.Sys.Infrastructure.Web.Routing
         {
             var workspace = await ResolveWorkspaceAsync(context, workspaceValidator);
             
-            context.Items["WorkspaceId"] = workspace;
-            context.Request.RouteValues["workspaceId"] = workspace;
+            context.Items[ContextKeys.WorkspaceId] = workspace;
+            context.Request.RouteValues[ContextKeys.WorkspaceId] = workspace;
 
             _logger.LogDebug($"Resolved workspace: {workspace}");
 

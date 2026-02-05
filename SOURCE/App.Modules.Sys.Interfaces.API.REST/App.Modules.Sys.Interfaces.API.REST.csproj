@@ -19,6 +19,7 @@
 	  <EnableNETAnalyzers>True</EnableNETAnalyzers>
 	  <Company>MachineBrains, Inc.</Company>
 	  <Product>BASE</Product>
+	  <RootNamespace>App.Modules.Sys.Interfaces</RootNamespace>
 	  <!--<BaseOutputPath>..\..\..\..\SOURCE\App.Host\MODULES\</BaseOutputPath>-->
   </PropertyGroup>
 
@@ -46,6 +47,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.0.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

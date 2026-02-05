@@ -1,8 +1,8 @@
 using App.Modules.Sys.Shared.Attributes;
 // using System.Xml.Linq;
-using App.Modules.Sys.Infrastructure.Constants;
 using App.Modules.Sys.Shared.Models.Configuration;
 using App.Modules.Sys.Shared.Models;
+using App.Modules.Sys.Infrastructure.Domains.Constants;
 
 namespace App.Base.Infrastructure.Configuration
 {

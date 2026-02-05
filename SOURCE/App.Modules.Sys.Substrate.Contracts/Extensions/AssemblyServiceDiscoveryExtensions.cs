@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using App.Modules.Sys.Infrastructure.Lifecycles;
 using App.Modules.Sys.Shared.Models;
 using App.Modules.Sys.Shared.Models.Implementations;
+using App.Modules.Sys.Shared.Lifecycles;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace App

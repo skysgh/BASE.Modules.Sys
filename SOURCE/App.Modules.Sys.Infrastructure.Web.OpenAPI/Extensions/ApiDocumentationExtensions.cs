@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
+using App.Modules.Sys.Infrastructure.Web.OpenAPI.Filters;
 using Scalar.AspNetCore;
 using System.IO;
 using System.Linq;
@@ -47,22 +48,7 @@ namespace App
             var documentName = $"{moduleName}-{apiVersion}";
             var moduleTitle = $"{char.ToUpper(moduleName[0])}{moduleName.Substring(1)} Module API";
             
-            // 1. Built-in OpenAPI (.NET 9+) - Modern, lightweight
-            services.AddOpenApi(documentName, options =>
-            {
-                options.AddDocumentTransformer((document, context, ct) =>
-                {
-                    document.Info = new()
-                    {
-                        Title = $"BASE {moduleTitle}",
-                        Version = apiVersion,
-                        Description = $"Multi-tenant {moduleName} module management API with versioned endpoints"
-                    };
-                    return Task.CompletedTask;
-                });
-            });
-            
-            // 2. API versioning support (if not already added)
+            // API versioning support (if not already added)
             if (!services.Any(x => x.ServiceType.Name.Contains("ApiVersioning")))
             {
                 services.AddApiVersioning(options =>
@@ -73,7 +59,7 @@ namespace App
                 });
             }
 
-            // 3. Swagger/Swashbuckle - Traditional, widely adopted
+            // Swagger/Swashbuckle - Widely adopted, works with .NET 10
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(options =>
             {
@@ -82,6 +68,21 @@ namespace App
                     Title = $"BASE {moduleTitle}",
                     Version = apiVersion,
                     Description = $"Multi-tenant {moduleName} module API with versioned endpoints"
+                });
+                
+                // Remove "Dto" suffix from Swagger documentation
+                options.SchemaFilter<RemoveDtoSuffixSchemaFilter>();
+                
+                // Also clean up schema IDs (used in $ref paths)
+                options.CustomSchemaIds(type => 
+                {
+                    var name = type.Name;
+                    // Remove "Dto" suffix (case-insensitive for flexibility)
+                    if (name.EndsWith("Dto", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return name.Substring(0, name.Length - 3);
+                    }
+                    return name;
                 });
                 
                 // CRITICAL: Filter endpoints by module namespace
@@ -142,9 +143,10 @@ namespace App
             
             if (enableOpenApi)
             {
+                // TODO: Re-add when Microsoft.AspNetCore.OpenApi package is added back
                 // STANDARD: /openapi/sys-v1.json (tools/libraries expect pattern)
-                app.MapOpenApi($"/openapi/{documentName}.json")
-                    .WithName($"openapi-{documentName}");
+                // app.MapOpenApi($"/openapi/{documentName}.json")
+                //     .WithName($"openapi-{documentName}");
             }
 
             if (enableSwagger)

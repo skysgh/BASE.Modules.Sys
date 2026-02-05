@@ -18,7 +18,8 @@ namespace App.Modules.Sys.Shared.Models.Implementations
         /// <inheritdoc/>
         public string Description { get; set; } = string.Empty;
 
-
+        /// <inheritdoc/>
+        public IEnumerable<string> Tags { get; set; } = new List<string>();
 
         /// <inheritdoc/>
         public string? DisplayStyleHint { get; set; }
@@ -36,7 +37,7 @@ namespace App.Modules.Sys.Shared.Models.Implementations
             } = new  List<IUniversalDisplayItemDisplayAction>(); 
 
         /// <inheritdoc/>
-        public IDictionary<string, object> Metadata => throw new NotImplementedException();
+        public IDictionary<string, object> Metadata { get; set; } = new Dictionary<string, object>();
     }
 }
 

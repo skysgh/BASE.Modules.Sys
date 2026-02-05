@@ -1,4 +1,5 @@
-﻿using App.Modules.Sys.Domain.Initialisation;
+using App.Modules.Sys.Application.Interfaces.APIs.Services;
+using App.Modules.Sys.Domain.Initialisation;
 using App.Modules.Sys.Initialisation;
 using App.Modules.Sys.Initialisation.Implementation.Base;
 using App.Modules.Sys.Substrate.Models.Messages;
@@ -18,6 +19,12 @@ namespace App.Modules.Sys.Application.Initialisation
         ///<inheritdoc/>
         public override void DoBeforeBuild(IServiceCollection services)
         {
+            // ========================================
+            // CONTEXT SERVICES
+            // ========================================
+            // Services are auto-registered via IHasScopedLifecycle:
+            // - IContextService → ContextService
+            // - IUserProfileService → UserProfileService
         }
 
         /// <inheritdoc/>

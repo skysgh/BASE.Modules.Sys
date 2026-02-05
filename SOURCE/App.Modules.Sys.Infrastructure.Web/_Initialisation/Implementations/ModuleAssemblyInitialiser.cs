@@ -1,5 +1,5 @@
-﻿using System;
-using App.Modules.Sys.Substrate.Contracts.Models;
+using System;
+using App.Modules.Sys.Initialisation.Implementation.Base;
 
 namespace App.Modules.Sys.Infrastructure.Web.Initialisation
 {

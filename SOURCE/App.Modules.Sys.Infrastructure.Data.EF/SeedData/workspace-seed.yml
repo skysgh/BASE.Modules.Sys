@@ -1,0 +1,98 @@
+# Workspace Seed Data
+# Alternative to code-based seeding - load via custom seed service
+
+workspaces:
+  - id: 10000000-0000-0000-0000-000000000001
+    title: Default Workspace
+    description: System default workspace for initial setup
+    slug: default
+    organizationName: Default Organization
+    primaryColor: "#0078D4"
+    subscriptionTier: Free
+    maxUsers: 10
+    storageLimitGb: 5
+    isActive: true
+    createdAt: 2026-01-01T00:00:00Z
+    updatedAt: 2026-01-01T00:00:00Z
+
+  - id: 10000000-0000-0000-0000-000000000002
+    title: Foo Workspace
+    description: Test workspace for Foo team
+    slug: foo
+    organizationName: Foo Corporation
+    logoUrl: https://via.placeholder.com/150/FF6B6B/FFFFFF?text=FOO
+    primaryColor: "#FF6B6B"
+    subscriptionTier: Pro
+    maxUsers: 50
+    storageLimitGb: 100
+    isActive: true
+    createdAt: 2026-01-01T00:00:00Z
+    updatedAt: 2026-01-01T00:00:00Z
+
+  - id: 10000000-0000-0000-0000-000000000003
+    title: Bar Workspace
+    description: Test workspace for Bar team
+    slug: bar
+    organizationName: Bar Industries
+    logoUrl: https://via.placeholder.com/150/4ECDC4/FFFFFF?text=BAR
+    primaryColor: "#4ECDC4"
+    customCssUrl: https://example.com/bar-theme.css
+    subscriptionTier: Enterprise
+    maxUsers: null  # Unlimited
+    storageLimitGb: null  # Unlimited
+    isActive: true
+    createdAt: 2026-01-01T00:00:00Z
+    updatedAt: 2026-01-01T00:00:00Z
+
+workspaceMembers:
+  # Admin user in all workspaces
+  - id: 30000000-0000-0000-0000-000000000001
+    workspaceId: 10000000-0000-0000-0000-000000000001
+    userId: 20000000-0000-0000-0000-000000000001
+    role: Owner
+    isDefault: true
+    joinedAt: 2026-01-01T00:00:00Z
+
+  - id: 30000000-0000-0000-0000-000000000002
+    workspaceId: 10000000-0000-0000-0000-000000000002
+    userId: 20000000-0000-0000-0000-000000000001
+    role: Admin
+    isDefault: false
+    joinedAt: 2026-01-01T00:00:00Z
+
+  - id: 30000000-0000-0000-0000-000000000003
+    workspaceId: 10000000-0000-0000-0000-000000000003
+    userId: 20000000-0000-0000-0000-000000000001
+    role: Admin
+    isDefault: false
+    joinedAt: 2026-01-01T00:00:00Z
+
+  # User1 in Default and Foo
+  - id: 30000000-0000-0000-0000-000000000004
+    workspaceId: 10000000-0000-0000-0000-000000000001
+    userId: 20000000-0000-0000-0000-000000000002
+    role: Member
+    isDefault: true
+    joinedAt: 2026-01-01T00:00:00Z
+
+  - id: 30000000-0000-0000-0000-000000000005
+    workspaceId: 10000000-0000-0000-0000-000000000002
+    userId: 20000000-0000-0000-0000-000000000002
+    role: Member
+    isDefault: false
+    joinedAt: 2026-01-01T00:00:00Z
+
+  # User2 in Foo and Bar
+  - id: 30000000-0000-0000-0000-000000000006
+    workspaceId: 10000000-0000-0000-0000-000000000002
+    userId: 20000000-0000-0000-0000-000000000003
+    role: Member
+    isDefault: true
+    joinedAt: 2026-01-01T00:00:00Z
+
+  - id: 30000000-0000-0000-0000-000000000007
+    workspaceId: 10000000-0000-0000-0000-000000000003
+    userId: 20000000-0000-0000-0000-000000000003
+    role: Guest
+    isDefault: false
+    joinedAt: 2026-01-01T00:00:00Z

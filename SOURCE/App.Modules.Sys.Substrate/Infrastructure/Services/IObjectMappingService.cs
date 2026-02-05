@@ -55,6 +55,25 @@ namespace App.Modules.Sys.Infrastructure.Services
         TTarget Map<TSource, TTarget>(TSource source) where TSource : class where TTarget : new();
 
         /// <summary>
+        /// Projects an IQueryable of source type to target type.
+        /// Optimized for LINQ-to-SQL scenarios - translates to SELECT with only needed columns.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TTarget">The type of the target.</typeparam>
+        /// <param name="source">The queryable source.</param>
+        /// <returns>Projected queryable (deferred execution - translates to SQL).</returns>
+        /// <remarks>
+        /// Example: repository.GetUsersQueryable().ProjectTo&lt;User, UserDto&gt;()
+        /// Benefits:
+        /// - Only fetches needed columns (SELECT optimization)
+        /// - Single SQL query (no N+1)
+        /// - Deferred execution until .ToList() or similar
+        /// </remarks>
+        IQueryable<TTarget> ProjectTo<TSource, TTarget>(IQueryable<TSource> source)
+            where TSource : class
+            where TTarget : class;
+
+        /// <summary>
         /// Maps the specified source object to the given Target object.
         /// </summary>
         /// <typeparam name="TSource">The type of the source.</typeparam>

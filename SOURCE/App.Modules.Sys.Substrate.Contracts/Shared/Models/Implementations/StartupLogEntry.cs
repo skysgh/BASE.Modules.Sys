@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using App.Modules.Sys.Shared.Constants;
 using App.Modules.Sys.Shared.Models.Enums;
 using App.Modules.Sys.Shared.Models.Persistence;
 
@@ -47,13 +43,26 @@ namespace App.Modules.Sys.Shared.Models.Implementations
         /// <summary>
         /// Start the entry.
         /// </summary>
-        public void Start(string title, string? description=null)
+        /// <param name="title">Entry title.</param>
+        /// <param name="description">Optional description.</param>
+        /// <param name="tags">Optional tags for categorization.</param>
+        public void Start(string title, string? description = null, params string[] tags)
         {
             Title = title;
             Description = description ?? string.Empty;
+            Tags = tags ?? Array.Empty<string>();
 
             StartUtc = DateTime.UtcNow;
         }
+
+        /// <summary>
+        /// Start the entry with a single tag.
+        /// </summary>
+        public void StartWithTag(string title, string tag, string? description = null)
+        {
+            Start(title, description, new[] { tag });
+        }
+
         /// <summary>
         /// Finalize the entry.
         /// </summary>
@@ -61,11 +70,19 @@ namespace App.Modules.Sys.Shared.Models.Implementations
         {
             EndUtc = DateTime.UtcNow;
 
-            Metadata["Duration"] = $"{Duration.TotalMilliseconds:F0}ms";
+            Metadata[MetadataKeys.Duration] = $"{Duration.TotalMilliseconds:F0}ms";
             if (Exception != null)
             {
-                Metadata["ExceptionType"] = Exception.GetType().Name;
-                Metadata["ExceptionMessage"] = Exception.Message;
+                Metadata[MetadataKeys.ExceptionType] = Exception.GetType().Name;
+                Metadata[MetadataKeys.ExceptionMessage] = Exception.Message;
+                
+                // Auto-add Error tag if exception occurred
+                var tagsList = new List<string>(Tags);
+                if (!tagsList.Contains(StartupTags.Error))
+                {
+                    tagsList.Add(StartupTags.Error);
+                }
+                Tags = tagsList;
             }
         }
     }

@@ -4,7 +4,7 @@
 // using System.Text;
 // using System.Threading.Tasks;
 
-using App.Modules.Sys.Infrastructure.Configuration;
+using App.Modules.Sys.Infrastructure.Domains.Configuration;
 
 namespace App.Modules.Sys.Infrastructure.Services.Configuration
 {

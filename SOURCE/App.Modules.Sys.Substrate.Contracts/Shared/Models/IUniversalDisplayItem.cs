@@ -16,9 +16,15 @@ namespace App.Modules.Sys.Shared.Models
         IHasTitleAndDescriptionAndImage, 
         IHasMetadata
     {
+        /// <summary>
+        /// Tags for categorizing/filtering this item.
+        /// Examples: "Module", "Service", "Database", "Migration"
+        /// UI can use these for filtering, grouping, and layout decisions.
+        /// </summary>
+        IEnumerable<string> Tags { get; }
 
         /// <summary>
-        /// 
+        /// Available actions for this display item.
         /// </summary>
         IEnumerable<IUniversalDisplayItemDisplayAction> AvailableActions { get; }
      

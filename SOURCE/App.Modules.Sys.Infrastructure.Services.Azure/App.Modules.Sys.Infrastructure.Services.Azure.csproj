@@ -30,20 +30,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\Configuration\_TOREVIEW\AzureCognitiveServicesComputerVisionConfigurationSettings.cs" />
-    <Compile Remove="Models\Configuration\_TOREVIEW\AzureCommonConfigurationSettings.cs" />
-    <Compile Remove="Models\Configuration\_TOREVIEW\AzureDocumentDbConfigurationSettings.cs" />
-    <Compile Remove="Models\Configuration\_TOREVIEW\AzureEnvironmentSettings.cs" />
-    <Compile Remove="Models\Configuration\_TOREVIEW\AzureKeyVaultConfigurationSettings.cs" />
-    <Compile Remove="Models\Configuration\_TOREVIEW\AzureMapsConfigurationSettings.cs" />
-    <Compile Remove="Models\Configuration\_TOREVIEW\AzureRedisCacheConfigurationSettings.cs" />
-    <Compile Remove="Models\Configuration\_TOREVIEW\AzureStorageAccountDefaultConfigurationSettings.cs" />
-    <Compile Remove="Models\Configuration\_TOREVIEW\AzureStorageAccountDiagnosticsConfigurationSettings.cs" />
+    <Compile Remove="Domains\Models\Configuration\_TOREVIEW\AzureCognitiveServicesComputerVisionConfigurationSettings.cs" />
+    <Compile Remove="Domains\Models\Configuration\_TOREVIEW\AzureCommonConfigurationSettings.cs" />
+    <Compile Remove="Domains\Models\Configuration\_TOREVIEW\AzureDocumentDbConfigurationSettings.cs" />
+    <Compile Remove="Domains\Models\Configuration\_TOREVIEW\AzureEnvironmentSettings.cs" />
+    <Compile Remove="Domains\Models\Configuration\_TOREVIEW\AzureKeyVaultConfigurationSettings.cs" />
+    <Compile Remove="Domains\Models\Configuration\_TOREVIEW\AzureMapsConfigurationSettings.cs" />
+    <Compile Remove="Domains\Models\Configuration\_TOREVIEW\AzureRedisCacheConfigurationSettings.cs" />
+    <Compile Remove="Domains\Models\Configuration\_TOREVIEW\AzureStorageAccountDefaultConfigurationSettings.cs" />
+    <Compile Remove="Domains\Models\Configuration\_TOREVIEW\AzureStorageAccountDiagnosticsConfigurationSettings.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Configuration\_TOREVIEW\" />
-    <Folder Include="Services\Configuration\Implementations\" />
+    <Folder Include="Domains\Models\Configuration\_TOREVIEW\" />
+    <Folder Include="Domains\Caching\" />
+    <Folder Include="Domains\Services\Configuration\Implementations\" />
   </ItemGroup>
 
   <ItemGroup>

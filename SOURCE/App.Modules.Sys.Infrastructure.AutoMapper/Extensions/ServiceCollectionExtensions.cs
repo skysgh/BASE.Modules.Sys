@@ -1,4 +1,4 @@
-using App.Modules.Sys.Infrastructure.AutoMapper.Services;
+using App.Modules.Sys.Infrastructure.Domains.ObjectMapping;
 using App.Modules.Sys.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;

@@ -1,4 +1,4 @@
-﻿using App.Modules.Sys.Infrastructure.Identifiers;
+using App.Modules.Sys.Infrastructure.Domains.Identifiers;
 using App.Modules.Sys.Shared.Factories;
 
 namespace App.Modules.Sys.Infrastructure.Indentifiers

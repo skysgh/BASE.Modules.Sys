@@ -1,6 +1,6 @@
 using App.Modules.Sys.Shared.Attributes;
-using App.Modules.Sys.Infrastructure.Constants;
 using App.Modules.Sys.Shared.ExtensionMethods;
+using App.Modules.Sys.Infrastructure.Domains.Constants;
 
 namespace App.Modules.Sys.Shared.Models.Configuration
 {

@@ -1,6 +1,6 @@
-using App.Modules.Sys.Application.Contracts.Services;
-using App.Modules.Sys.Application.Services.Workspace.CacheObjects;
-using App.Modules.Sys.Application.Services.Workspace.Implementations;
+using App.Modules.Sys.Application.Domains.Workspace.CacheObjects;
+using App.Modules.Sys.Application.Domains.Workspace.Services;
+using App.Modules.Sys.Application.Domains.Workspace.Services.Implementations;
 using App.Modules.Sys.Shared.Services.Caching;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;

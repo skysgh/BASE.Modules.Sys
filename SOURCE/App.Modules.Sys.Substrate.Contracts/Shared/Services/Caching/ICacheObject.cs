@@ -1,4 +1,4 @@
-using App.Modules.Sys.Infrastructure.Lifecycles;
+using App.Modules.Sys.Shared.Lifecycles;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

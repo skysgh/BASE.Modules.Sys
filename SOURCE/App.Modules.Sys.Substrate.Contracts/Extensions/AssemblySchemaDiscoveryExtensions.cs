@@ -3,9 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using App.Modules.Sys.Infrastructure.Azure.Models.Implementations.Base;
-using App.Modules.Sys.Substrate.Contracts.Models;
 using App.Modules.Sys.Shared.Models.Implementations;
+using App.Modules.Sys.Infrastructure.Services.Configuration;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace App

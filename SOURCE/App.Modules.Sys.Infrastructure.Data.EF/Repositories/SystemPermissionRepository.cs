@@ -1,6 +1,6 @@
-using App.Modules.Sys.Application.Contracts.Repositories;
-using App.Modules.Sys.Domain.Authorization;
-using App.Modules.Sys.Infrastructure.Data.EF.DbContexts.Implementations;
+using App.Modules.Sys.Domain.Domains.Permissions.Models;
+using App.Modules.Sys.Domain.Domains.Permissions.Respositories;
+using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContexts.Implementations;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

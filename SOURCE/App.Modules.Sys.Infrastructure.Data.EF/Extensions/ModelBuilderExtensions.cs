@@ -1,7 +1,6 @@
 using App.Modules.Sys.Infrastructure.Data.EF.Constants;
 using App.Modules.Sys.Shared.Models;
 using App.Modules.Sys.Shared.Models.Persistence;
-using App.Modules.Sys.Substrate.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;

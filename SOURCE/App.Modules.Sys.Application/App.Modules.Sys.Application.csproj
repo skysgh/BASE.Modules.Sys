@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <Compile Remove="_Initialisation\_TOREVIEW\AutoMapperAppConfigurer.cs" />
-    <Compile Remove="Interfaces\APIs\Services\Implementations\_TOREVIEW\DiagnosticsManagementService.cs" />
+    <Compile Remove="TODO\APIs\Services\Implementations\_TOREVIEW\DiagnosticsManagementService.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,10 +41,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Domains\Diagnostics.Startup\" />
+    <Folder Include="Domains\Permissions\" />
+    <Folder Include="Domains\Users\Services\Implementations\" />
+    <Folder Include="Domains\Workspace\Models\" />
+    <Folder Include="Domains\Workspace\Repositories\" />
     <Folder Include="_Initialisation\_TOREVIEW\" />
-    <Folder Include="Interfaces\APIs\ObjectMapping\" />
+    <Folder Include="TODO\APIs\ObjectMapping\" />
     <Folder Include="_Initialisation\IoC\" />
-    <Folder Include="Interfaces\APIs\Services\Implementations\_TOREVIEW\" />
+    <Folder Include="TODO\APIs\Services\Implementations\_TOREVIEW\" />
   </ItemGroup>
 
   <ItemGroup>

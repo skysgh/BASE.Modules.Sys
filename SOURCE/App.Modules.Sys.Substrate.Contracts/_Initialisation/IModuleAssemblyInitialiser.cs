@@ -1,4 +1,4 @@
-﻿using App.Modules.Sys.Infrastructure.Lifecycles;
+using App.Modules.Sys.Shared.Lifecycles;
 using App.Modules.Sys.Shared.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,7 +21,7 @@ namespace App.Modules.Sys.Initialisation
         /// <summary>
         /// Do this *after* the service provider is built.
         /// At this point, can resolve services from DI.
-        /// Use this to configure <see cref="IHasRegistryService"/> and similar.
+        /// Use this to configure registry services and similar.
         /// </summary>
         /// <param name="serviceProvider">Built service provider for resolving services</param>
         void DoAfterBuild(IServiceProvider serviceProvider);

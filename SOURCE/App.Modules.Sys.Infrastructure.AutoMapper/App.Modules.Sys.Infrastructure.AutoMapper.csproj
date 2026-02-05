@@ -14,6 +14,7 @@
     <Company>MachineBrains, Inc.</Company>
     <Product>BASE</Product>
     <Description>AutoMapper implementation plugin for IObjectMappingService. Optional - can be swapped with alternative mapping libraries.</Description>
+    <RootNamespace>App.Modules.Sys.Infrastructure</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

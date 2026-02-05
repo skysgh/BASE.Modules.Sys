@@ -15,6 +15,7 @@
 	  <EnableNETAnalyzers>True</EnableNETAnalyzers>
 	  <Company>MachineBrains, Inc.</Company>
 	  <Product>BASE</Product>
+	  <RootNamespace>App.Modules.Sys.Infrastructure</RootNamespace>
 	  <!--<BaseOutputPath>..\..\..\..\SOURCE\App.Host\MODULES\</BaseOutputPath>-->
   </PropertyGroup>
 
@@ -46,7 +47,6 @@
   </ItemGroup>
 
   <ItemGroup><Compile Remove="Extensions\ScanAll*_TBV.cs" /><Compile Remove="**\*_TBV.cs" />
-    <ProjectReference Include="..\App.Modules.Sys.Application\App.Modules.Sys.Application.csproj" />
     <ProjectReference Include="..\App.Modules.Sys.Domain\App.Modules.Sys.Domain.csproj" />
     <ProjectReference Include="..\App.Modules.Sys.Infrastructure\App.Modules.Sys.Infrastructure.csproj" />
     <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.csproj" />
