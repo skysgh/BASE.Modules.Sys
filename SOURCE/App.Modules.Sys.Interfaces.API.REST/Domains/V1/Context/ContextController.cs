@@ -1,5 +1,6 @@
 using App.Modules.Sys.Application.Domains.Context;
 using App.Modules.Sys.Application.Domains.Context.Models.Implementations;
+using App.Modules.Sys.Interfaces.API.REST.Domains.Constants;
 using App.Modules.Sys.Interfaces.Domains.V1.Implementations.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Context;
 /// This endpoint replaces multiple frontend API calls with a single aggregated response.
 /// Supports both authenticated and anonymous users.
 /// </remarks>
-[Route("api/sys/rest/v{version:apiVersion}")]
+[Route(ApiRoutes.Versioned.Sys.ControllerRoute)]
 [AllowAnonymous] // Allow anonymous access - returns limited context for anonymous users
 public class ContextController : SysApiControllerBase
 {

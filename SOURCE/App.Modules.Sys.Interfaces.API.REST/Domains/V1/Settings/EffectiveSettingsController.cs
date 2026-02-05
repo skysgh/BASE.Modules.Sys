@@ -1,5 +1,6 @@
 using App.Modules.Sys.Application.Domains.Settings.Models;
 using App.Modules.Sys.Application.Domains.Settings.Services;
+using App.Modules.Sys.Interfaces.API.REST.Domains.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
@@ -20,7 +21,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Settings;
 /// - WorkspaceSettingsController (workspace admin)
 /// - SystemSettingsController (system admin)
 /// </remarks>
-[Route("api/sys/rest/v{version:apiVersion}/settings")]
+[Route(ApiRoutes.Versioned.Sys.ControllerRoute)]
 [Authorize]
 public class EffectiveSettingsController : ControllerBase
 {
