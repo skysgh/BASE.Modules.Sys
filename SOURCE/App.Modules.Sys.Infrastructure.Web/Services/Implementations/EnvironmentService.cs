@@ -1,56 +1,51 @@
 using App.Modules.Sys.Infrastructure.Services;
-using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.IO;
 
-namespace App.Modules.Sys.Infrastructure.Services.Implementations;
+namespace App.Modules.Sys.Infrastructure.Web.Services.Implementations;
 
 /// <summary>
-/// Production implementation of environment service.
+/// Web-specific implementation of environment service.
 /// Provides deployment environment information and configuration access.
 /// </summary>
 /// <remarks>
-/// Wraps IHostEnvironment to provide clean abstraction for application layer.
+/// Uses IWebHostEnvironment for web-specific features (WebRootPath).
 /// Singleton lifetime - environment doesn't change during runtime.
+/// 
+/// Located in Infrastructure.Web because it depends on ASP.NET Core types.
 /// </remarks>
 public sealed class EnvironmentService : IEnvironmentService
 {
-    private readonly IHostEnvironment _hostEnvironment;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public EnvironmentService(IHostEnvironment hostEnvironment)
+    public EnvironmentService(IWebHostEnvironment webHostEnvironment)
     {
-        _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
+        _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
     }
 
     // ========================================
     // ENVIRONMENT IDENTIFICATION
     // ========================================
 
-    public string EnvironmentName => _hostEnvironment.EnvironmentName;
+    public string EnvironmentName => _webHostEnvironment.EnvironmentName;
 
-    public bool IsDevelopment => _hostEnvironment.IsDevelopment();
+    public bool IsDevelopment => _webHostEnvironment.IsDevelopment();
 
-    public bool IsStaging => _hostEnvironment.IsStaging();
+    public bool IsStaging => _webHostEnvironment.IsStaging();
 
-    public bool IsProduction => _hostEnvironment.IsProduction();
+    public bool IsProduction => _webHostEnvironment.IsProduction();
 
-    public string ApplicationName => _hostEnvironment.ApplicationName;
+    public string ApplicationName => _webHostEnvironment.ApplicationName;
 
     // ========================================
     // FILE SYSTEM PATHS
     // ========================================
 
-    public string ContentRootPath => _hostEnvironment.ContentRootPath;
+    public string ContentRootPath => _webHostEnvironment.ContentRootPath;
 
-    public string WebRootPath
-    {
-        get
-        {
-            // IHostEnvironment doesn't have WebRootPath, but IWebHostEnvironment does
-            // For now, return wwwroot under content root
-            return Path.Combine(ContentRootPath, "wwwroot");
-        }
-    }
+    // ✅ REAL WebRootPath (not computed) - from IWebHostEnvironment
+    public string WebRootPath => _webHostEnvironment.WebRootPath;
 
     public string GetAbsolutePath(string relativePath)
     {
@@ -76,7 +71,7 @@ public sealed class EnvironmentService : IEnvironmentService
             throw new ArgumentException("Environment name cannot be null or whitespace", nameof(environmentName));
         }
 
-        return _hostEnvironment.IsEnvironment(environmentName);
+        return _webHostEnvironment.IsEnvironment(environmentName);
     }
 
     // ========================================
