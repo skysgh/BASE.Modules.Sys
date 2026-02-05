@@ -1,9 +1,10 @@
 using App.Modules.Sys.Application.Domains.Diagnostics.CodeQuality.Models;
 using App.Modules.Sys.Application.Domains.Diagnostics.CodeQuality.Services;
+using App.Modules.Sys.Shared.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Threading.Task;
 
 namespace App.Modules.Sys.Interfaces.API.REST.Domains.V1.Diagnostics;
 
@@ -25,7 +26,7 @@ namespace App.Modules.Sys.Interfaces.API.REST.Domains.V1.Diagnostics;
 /// - GET /api/v1/diagnostics/code-quality/capabilities - Get analyzer info
 /// </remarks>
 [ApiController]
-[Route("api/v1/diagnostics/code-quality")]
+[Route(ApiRoutes.V1.Diagnostics.CodeQuality)]
 #if DEBUG
 [AllowAnonymous] // Development: No auth required for diagnostics
 #else
