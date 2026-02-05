@@ -152,11 +152,22 @@ public record ComputedSettings
 /// </summary>
 public record UserProfile
 {
+    /// <summary>User unique identifier.</summary>
     public Guid UserId { get; init; }
+    
+    /// <summary>User login name.</summary>
     public string UserName { get; init; } = null!;
+    
+    /// <summary>User display name.</summary>
     public string? DisplayName { get; init; }
+    
+    /// <summary>User email address.</summary>
     public string? Email { get; init; }
+    
+    /// <summary>User avatar URL.</summary>
     public string? AvatarUrl { get; init; }
+    
+    /// <summary>User timezone.</summary>
     public string? TimeZone { get; init; }
 }
 
@@ -165,10 +176,19 @@ public record UserProfile
 /// </summary>
 public record WorkspaceDetails
 {
+    /// <summary>Workspace unique identifier.</summary>
     public Guid WorkspaceId { get; init; }
+    
+    /// <summary>Workspace URL slug.</summary>
     public string Slug { get; init; } = null!;
+    
+    /// <summary>Workspace name.</summary>
     public string Name { get; init; } = null!;
+    
+    /// <summary>Workspace description.</summary>
     public string? Description { get; init; }
+    
+    /// <summary>Workspace branding.</summary>
     public WorkspaceBranding? Branding { get; init; }
 }
 
@@ -177,8 +197,13 @@ public record WorkspaceDetails
 /// </summary>
 public record WorkspaceBranding
 {
+    /// <summary>Logo URL.</summary>
     public string? LogoUrl { get; init; }
+    
+    /// <summary>Primary color.</summary>
     public string? PrimaryColor { get; init; }
+    
+    /// <summary>Secondary color.</summary>
     public string? SecondaryColor { get; init; }
 }
 
@@ -187,12 +212,27 @@ public record WorkspaceBranding
 /// </summary>
 public record SystemLanguageDto
 {
+    /// <summary>Language ID.</summary>
     public Guid Id { get; init; }
+    
+    /// <summary>Language code.</summary>
     public string Code { get; init; } = null!;
+    
+    /// <summary>Language name.</summary>
     public string Name { get; init; } = null!;
+    
+    /// <summary>Native language name.</summary>
     public string? NativeName { get; init; }
+    
+    /// <summary>Language icon URL.</summary>
     public string? IconUrl { get; init; }
+    
+    /// <summary>Whether language is active.</summary>
     public bool IsActive { get; init; }
+    
+    /// <summary>Whether language is default.</summary>
     public bool IsDefault { get; init; }
+    
+    /// <summary>Sort order.</summary>
     public int SortOrder { get; init; }
 }

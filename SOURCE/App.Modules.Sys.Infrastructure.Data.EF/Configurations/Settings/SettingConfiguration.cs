@@ -1,4 +1,4 @@
-using App.Modules.Sys.Domain.Domains.Settings.Models.Implementations;
+using App.Modules.Sys.Domain.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

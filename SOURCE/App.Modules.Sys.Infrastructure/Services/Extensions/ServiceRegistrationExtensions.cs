@@ -94,22 +94,25 @@ public static class ServiceRegistrationExtensions
 
     /// <summary>
     /// Register user context service (business context).
+    /// NOTE: IUserContextService must be defined where this is called (Application layer).
     /// </summary>
+    /// <typeparam name="TService">User context service interface.</typeparam>
     /// <typeparam name="TImplementation">Concrete implementation type.</typeparam>
     /// <param name="services">Service collection.</param>
     /// <param name="lifetime">Service lifetime (default: Scoped).</param>
     /// <returns>Service collection for chaining.</returns>
-    public static IServiceCollection AddUserContext<TImplementation>(
+    public static IServiceCollection AddUserContext<TService, TImplementation>(
         this IServiceCollection services,
         ServiceLifetime lifetime = ServiceLifetime.Scoped)
-        where TImplementation : class, IUserContextService
+        where TService : class
+        where TImplementation : class, TService
     {
         // Register concrete implementation
         services.Add(new ServiceDescriptor(typeof(TImplementation), typeof(TImplementation), lifetime));
         
-        // Register against IUserContextService (forwarding to concrete)
+        // Register against TService interface (forwarding to concrete)
         services.Add(new ServiceDescriptor(
-            typeof(IUserContextService),
+            typeof(TService),
             sp => sp.GetRequiredService<TImplementation>(),
             lifetime));
 

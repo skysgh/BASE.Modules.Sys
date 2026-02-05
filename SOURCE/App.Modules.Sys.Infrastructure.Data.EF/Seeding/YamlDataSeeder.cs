@@ -1,4 +1,4 @@
-using App.Modules.Sys.Domain.Domains.Authorization;
+// using App.Modules.Sys.Domain.Domains.Authorization; // TODO: Re-enable when Authorization domain exists
 using App.Modules.Sys.Domain.Domains.Identity;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContexts.Implementations;
 using Microsoft.EntityFrameworkCore;
@@ -168,8 +168,11 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Seeding
                     var adminPerm = await _context.SystemPermissions
                         .FirstOrDefaultAsync(p => p.Key == "System.Admin", ct);
 
+
                     if (adminPerm != null)
                     {
+                        // TODO: Re-enable when UserSystemPermission is defined
+                        /*
                         _context.UserSystemPermissions.Add(new UserSystemPermission
                         {
                             Id = Guid.NewGuid(),
@@ -178,6 +181,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Seeding
                             GrantedAt = DateTime.UtcNow,
                             GrantedBy = "DEMO_SEED"
                         });
+                        */
                     }
                 }
             }
@@ -217,6 +221,8 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Seeding
                     continue;
                 }
 
+                // TODO: Re-enable when UserSystemPermission is defined
+                /*
                 // Idempotent - only add if doesn't exist
                 var exists = await _context.UserSystemPermissions
                     .AnyAsync(up => up.UserId == identity.UserId && 
@@ -233,8 +239,10 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Seeding
                         GrantedBy = "DEMO_SEED"
                     });
                 }
+                */
             }
         }
+
 
         /// <summary>
         /// Load seed data from YAML or JSON file.

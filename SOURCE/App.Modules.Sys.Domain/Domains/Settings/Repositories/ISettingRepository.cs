@@ -1,11 +1,11 @@
-using App.Modules.Sys.Domain.Domains.Settings.Models.Implementations;
+using App.Modules.Sys.Domain.Settings;
 using App.Modules.Sys.Shared.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace App.Modules.Sys.Domain.Domains.Settings.Repositories;
+namespace App.Modules.Sys.Domain.Settings.Repositories;
 
 /// <summary>
 /// Repository interface for hierarchical settings (System → Workspace → User).

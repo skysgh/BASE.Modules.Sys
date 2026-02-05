@@ -1,5 +1,5 @@
-using App.Modules.Sys.Domain.Domains.Settings.Models.Implementations;
-using App.Modules.Sys.Domain.Domains.Settings.Repositories;
+using App.Modules.Sys.Domain.Settings;
+using App.Modules.Sys.Domain.Settings.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
