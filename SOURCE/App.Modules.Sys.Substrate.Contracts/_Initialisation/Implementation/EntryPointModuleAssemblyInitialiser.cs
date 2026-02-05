@@ -17,13 +17,15 @@ namespace App.Modules.Sys.Initialisation.Implementation
     public class EntryPointModuleAssemblyInitialiser
     {
         /// <summary>
-        /// ONE METHOD - discovers and initializes everything recursively.
+        /// Discovers and initializes all modules.
+        /// Returns one bag per logical module (Sys, Core, Accounts, etc).
         /// </summary>
         /// <param name="entryPointAssembly">Entry assembly (App.Host)</param>
         /// <param name="configuration">Configuration object (reserved for future use)</param>
         /// <param name="log">Startup log</param>
-        /// <param name="services"></param>
-        public static ModuleConfigurationBag Initialize(
+        /// <param name="services">Service collection for BeforeBuild registration</param>
+        /// <returns>Dictionary of module bags keyed by module name</returns>
+        public static System.Collections.Generic.Dictionary<string, ModuleConfigurationBag> Initialize(
             Assembly entryPointAssembly,
 #pragma warning disable IDE0060 // Remove unused parameter - Reserved for future configuration scenarios
             object configuration,
@@ -39,62 +41,128 @@ namespace App.Modules.Sys.Initialisation.Implementation
             // STEP 2: Sort in dependency order using extension method
             var sortedAssemblies = moduleAssemblies.ToList().TopologicalSort();
 
-            
             log.Log(TraceLevel.Info, $"Found {sortedAssemblies.Count} module assemblies in dependency order:");
             for (int i = 0; i < sortedAssemblies.Count; i++)
             {
                 log.Log(TraceLevel.Info, $"  [{i}] {sortedAssemblies[i].GetName().Name}");
             }
             
-            // STEP 3: Process each assembly using extension methods
-            log.Log(TraceLevel.Info, "=== PROCESSING ASSEMBLIES ===");
-            var bag = new ModuleConfigurationBag { ModuleName = "Application" };
-            bag.Assemblies.AddRange(sortedAssemblies);
-            var allInitializers = new System.Collections.Generic.List<App.Modules.Sys.Initialisation.IModuleAssemblyInitialiser>();
+            // STEP 3: Group assemblies by module name
+            log.Log(TraceLevel.Info, "=== GROUPING BY MODULE ===");
+            var assemblyGroups = sortedAssemblies
+                .GroupBy(a => ExtractModuleName(a))
+                .Where(g => g.Key != null)  // Skip assemblies without module name
+                .ToDictionary(g => g.Key!, g => g.ToList());
             
-            foreach (var assembly in sortedAssemblies)
+            log.Log(TraceLevel.Info, $"Found {assemblyGroups.Count} logical modules:");
+            foreach (var moduleName in assemblyGroups.Keys)
             {
-                ProcessAssembly(assembly, bag, log);
-                
-                // NEW: Discover module initializers
-                var initializers = assembly.DiscoverModuleInitializers();
-                allInitializers.AddRange(initializers);
+                log.Log(TraceLevel.Info, $"  - {moduleName} ({assemblyGroups[moduleName].Count} assemblies)");
             }
             
-            // STEP 4: NEW - Call DoBeforeBuild on all module initializers
-            if (allInitializers.Count > 0)
+            // STEP 4: Create one bag per module and process
+            log.Log(TraceLevel.Info, "=== PROCESSING MODULES ===");
+            var moduleBags = new System.Collections.Generic.Dictionary<string, ModuleConfigurationBag>();
+            
+            foreach (var kvp in assemblyGroups)
             {
-                log.Log(TraceLevel.Info, $"=== INVOKING {allInitializers.Count} MODULE INITIALIZERS (BeforeBuild) ===");
-                foreach (var initializer in allInitializers)
+                var moduleName = kvp.Key;
+                var assemblies = kvp.Value;
+                
+                log.Log(TraceLevel.Info, $"\n=== Processing Module: {moduleName} ===");
+                
+                var bag = new ModuleConfigurationBag { ModuleName = moduleName };
+                bag.Assemblies.AddRange(assemblies);
+                
+                foreach (var assembly in assemblies)
                 {
-                    try
+                    ProcessAssembly(assembly, bag, log);
+                    
+                    // Discover module initializers
+                    var initializers = assembly.DiscoverModuleInitializers();
+                    bag.ModuleInitializers.AddRange(initializers);
+                }
+                
+                log.Log(TraceLevel.Info, 
+                    $"Module {moduleName} summary: " +
+                    $"Services: {bag.LocalServices.Count}, " +
+                    $"Mappers: {bag.MapperProfiles.Count}, " +
+                    $"Schemas: {bag.DbSchemaTypes.Count}, " +
+                    $"Configurers: {bag.ServiceConfigurers.Count}, " +
+                    $"CacheObjects: {bag.CacheObjects.Count}, " +
+                    $"Initializers: {bag.ModuleInitializers.Count}");
+                
+                moduleBags[moduleName] = bag;
+            }
+            
+            // STEP 5: Call BeforeBuild for ALL modules
+            log.Log(TraceLevel.Info, "\n=== INVOKING MODULE INITIALIZERS (BeforeBuild) ===");
+            foreach (var bag in moduleBags.Values)
+            {
+                if (bag.ModuleInitializers.Count > 0)
+                {
+                    log.Log(TraceLevel.Info, $"Module {bag.ModuleName}: {bag.ModuleInitializers.Count} initializers");
+                    
+                    foreach (var initializer in bag.ModuleInitializers)
                     {
-                        var initType = initializer.GetType().Name;
-                        log.Log(TraceLevel.Debug, $"Calling DoBeforeBuild on {initType}");
-                        initializer.DoBeforeBuild(services);
-                    }
-                    catch (Exception ex)
-                    {
-                        log.Log(TraceLevel.Error, 
-                            $"ERROR in {initializer.GetType().Name}.DoBeforeBuild: {ex.Message}");
+                        try
+                        {
+                            var initType = initializer.GetType().Name;
+                            log.Log(TraceLevel.Debug, $"  Calling DoBeforeBuild on {initType}");
+                            initializer.DoBeforeBuild(services);
+                        }
+                        catch (Exception ex)
+                        {
+                            log.Log(TraceLevel.Error, 
+                                $"  ERROR in {initializer.GetType().Name}.DoBeforeBuild: {ex.Message}");
+                        }
                     }
                 }
             }
             
-            // Store initializers in bag for Phase 2 (DoAfterBuild)
-            bag.ModuleInitializers = allInitializers;
+            log.Log(TraceLevel.Info, "\n=== INITIALIZATION COMPLETE ===");
+            log.Log(TraceLevel.Info, $"Total modules processed: {moduleBags.Count}");
             
-            log.Log(TraceLevel.Info, 
-                $"=== INITIALIZATION COMPLETE ===");
-            log.Log(TraceLevel.Info,
-                $"Services: {bag.LocalServices.Count}, " +
-                $"Mappers: {bag.MapperProfiles.Count}, " +
-                $"Schemas: {bag.DbSchemaTypes.Count}, " +
-                $"Configurers: {bag.ServiceConfigurers.Count}, " +
-                $"CacheObjects: {bag.CacheObjects.Count}, " +
-                $"Initializers: {allInitializers.Count}");
+            return moduleBags;
+        }
+        
+        /// <summary>
+        /// Extract logical module name from assembly name.
+        /// </summary>
+        /// <param name="assembly">Assembly to extract module name from</param>
+        /// <returns>Module name (e.g., "Sys", "Core", "Accounts") or null if not a module</returns>
+        /// <remarks>
+        /// Examples:
+        /// - App.Modules.Sys.Application → "Sys"
+        /// - App.Modules.Core.Infrastructure → "Core"
+        /// - App.Host → "Host"
+        /// - Microsoft.Extensions.Logging → null (not our module)
+        /// </remarks>
+        private static string? ExtractModuleName(Assembly assembly)
+        {
+            var name = assembly.GetName().Name;
             
-            return bag;
+            if (name == null)
+                return null;
+            
+            // Pattern: App.Modules.{ModuleName}.{Layer}
+            if (name.StartsWith("App.Modules.", StringComparison.OrdinalIgnoreCase))
+            {
+                var parts = name.Split('.');
+                if (parts.Length >= 3)
+                {
+                    return parts[2];  // Extract module name (Sys, Core, Accounts)
+                }
+            }
+            
+            // Special case: App.Host
+            if (name.StartsWith("App.Host", StringComparison.OrdinalIgnoreCase) ||
+                name.StartsWith("App.Service", StringComparison.OrdinalIgnoreCase))
+            {
+                return "Host";
+            }
+            
+            return null;  // Not a module assembly
         }
         
         /// <summary>
