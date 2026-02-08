@@ -6,6 +6,7 @@ using System.Reflection;
 using App.Modules.Sys.Shared.Models;
 using App.Modules.Sys.Shared.Models.Implementations;
 using App.Modules.Sys.Shared.Lifecycles;
+using App.Modules.Sys.Shared.Services;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace App
@@ -125,14 +126,86 @@ namespace App
         }
         
         /// <summary>
-        /// Checks if interface is a lifecycle marker (should not be registered).
+        /// Checks if interface is a marker interface (should not be registered).
+        /// Includes lifecycle markers AND service discovery markers.
         /// </summary>
+        /// <remarks>
+        /// Marker interfaces are used for:
+        /// 1. Lifecycle determination (IHasSingletonLifecycle, IHasScopedLifecycle, IHasTransientLifecycle)
+        /// 2. Service discovery (IHasService, IHasScopedService, IHasRegistryService, etc.)
+        /// 
+        /// These should NOT be registered as service types in DI - only the BUSINESS interfaces
+        /// in the inheritance chain should be registered.
+        /// 
+        /// Example:
+        /// ServiceA : IServiceB : IHasService : IHasSingletonLifecycle
+        ///   ✓ Register: ServiceA → IServiceB
+        ///   ✗ Skip: IHasService, IHasSingletonLifecycle, IHasLifecycle
+        /// </remarks>
         public static bool IsLifecycleMarker(this Type interfaceType)
         {
-            return interfaceType.Name.Contains("Lifecycle") ||
-                   interfaceType == typeof(IHasSingletonLifecycle) ||
-                   interfaceType == typeof(IHasScopedLifecycle) ||
-                   interfaceType == typeof(IHasTransientLifecycle);
+            // Namespace-based exclusion (most robust)
+            var ns = interfaceType.Namespace;
+            if (ns != null)
+            {
+                // Exclude all interfaces in *.Shared.Lifecycles namespace
+                if (ns.Contains(".Shared.Lifecycles", StringComparison.Ordinal))
+                {
+                    return true;
+                }
+
+                // Exclude marker interfaces in *.Shared.Services namespace
+                // BUT NOT business interfaces that happen to be there
+                if (ns.Contains(".Shared.Services", StringComparison.Ordinal))
+                {
+                    // Only exclude the marker interfaces by name
+                    var name = interfaceType.Name;
+                    if (name.StartsWith("IHas", StringComparison.Ordinal) && 
+                        (name.Contains("Service", StringComparison.Ordinal) || 
+                         name.Contains("Lifecycle", StringComparison.Ordinal) || 
+                         name.Contains("Registry", StringComparison.Ordinal)))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            // Name-based exclusion (fallback for edge cases)
+            var typeName = interfaceType.Name;
+            
+            // Lifecycle markers
+            if (typeName.Contains("Lifecycle", StringComparison.Ordinal))
+            {
+                return true;
+            }
+            
+            // Service discovery markers (IHasService, IHasScopedService, IHasRegistryService, etc.)
+            if (typeName.StartsWith("IHas", StringComparison.Ordinal) && 
+                typeName.EndsWith("Service", StringComparison.Ordinal) && 
+                !typeName.Contains("Context", StringComparison.Ordinal))
+            {
+                // But NOT business services like IHasContextService - those are real services
+                // Check if it's a known marker type
+                return typeName == "IHasService" ||
+                       typeName == "IHasScopedService" ||
+                       typeName == "IHasRegistryService" ||
+                       typeName == "IHasAppService" ||
+                       typeName == "IHasAppCoreService" ||
+                       typeName == "IHasAppInfrastructureService";
+            }
+            
+            // Explicit type checks (belt and suspenders)
+            if (interfaceType == typeof(IHasSingletonLifecycle) ||
+                interfaceType == typeof(IHasScopedLifecycle) ||
+                interfaceType == typeof(IHasTransientLifecycle) ||
+                interfaceType == typeof(IHasLifecycle) ||
+                interfaceType == typeof(IHasService) ||
+                interfaceType == typeof(IHasScopedService))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

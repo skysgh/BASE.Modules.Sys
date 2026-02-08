@@ -1,3 +1,5 @@
+using App.Modules.Sys.Shared.Services;
+
 namespace App.Modules.Sys.Substrate.Contracts.Social;
 
 /// <summary>
@@ -20,7 +22,7 @@ namespace App.Modules.Sys.Substrate.Contracts.Social;
 /// - Workspace membership may specify which identity to show
 /// - Falls back to primary PersonIdentity
 /// </summary>
-public interface IPersonIdentityResolver
+public interface IPersonIdentityResolverService : IHasScopedService
 {
     /// <summary>
     /// Get identity to display for the current authenticated user

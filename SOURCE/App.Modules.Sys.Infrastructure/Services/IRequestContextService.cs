@@ -1,17 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace App.Modules.Sys.Infrastructure.Services;
 
 /// <summary>
-/// HTTP request-scoped context (extends base execution context).
-/// Provides access to raw HTTP request data (headers, IP, route, user agent, etc.).
+/// HTTP request-scoped context (extends base execution context AND context storage).
+/// Provides access to raw HTTP request data (headers, IP, route, user agent, etc.)
+/// plus per-request storage via Apply/GetValue from IContextService.
 /// </summary>
 /// <remarks>
-/// Lifetime: Scoped (per HTTP request).
+/// Lifetime: SINGLETON - safe because all state is per-request via IHttpContextAccessor.
 /// 
-/// Inheritance: IRequestContextService : IExecutionContextService
-/// - Base properties (ExecutionId, ExecutionType, etc.) from IExecutionContextService
+/// Inheritance: IRequestContextService : IExecutionContextService, IContextService
+/// - Execution properties (ExecutionId, ExecutionType, etc.) from IExecutionContextService
+/// - Per-request storage (Apply, GetValue, GetService) from IContextService  
 /// - HTTP-specific properties (HttpMethod, Headers, IpAddress, etc.) from this interface
 /// 
 /// THIS IS INFRASTRUCTURE CONCERN - Raw HTTP data only.
@@ -22,12 +25,14 @@ namespace App.Modules.Sys.Infrastructure.Services;
 /// Implementations (in Infrastructure.Web) will provide HttpContext access.
 /// 
 /// Use cases:
+/// - Per-request storage (Apply/GetValue)
+/// - Service resolution from request scope (GetService)
 /// - Logging (request ID, IP, user agent)
 /// - Diagnostics (headers, timing)
 /// - Security (IP filtering, rate limiting)
 /// - Device detection (parse user agent)
 /// </remarks>
-public interface IRequestContextService : IExecutionContextService
+public interface IRequestContextService : IExecutionContextService, IContextService
 {
     // ========================================
     // HTTP-SPECIFIC PROPERTIES
@@ -104,6 +109,28 @@ public interface IRequestContextService : IExecutionContextService
     /// Useful for development/diagnostics features.
     /// </summary>
     bool IsLocalRequest { get; }
+
+    // ========================================
+    // AUTHENTICATION / IDENTITY
+    // ========================================
+
+    /// <summary>
+    /// The ClaimsPrincipal for the current request (User).
+    /// Provides access to authentication state and claims.
+    /// </summary>
+    ClaimsPrincipal? User { get; }
+
+    /// <summary>
+    /// Whether the current user is authenticated.
+    /// </summary>
+    bool IsAuthenticated { get; }
+
+    /// <summary>
+    /// Get a specific claim value by type.
+    /// </summary>
+    /// <param name="claimType">The claim type (e.g., ClaimTypes.Email).</param>
+    /// <returns>The claim value if found, null otherwise.</returns>
+    string? GetClaimValue(string claimType);
 
     // ========================================
     // ROUTE DATA

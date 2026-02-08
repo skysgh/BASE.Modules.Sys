@@ -52,30 +52,6 @@ public interface IExecutionContextService : IHasService
     TimeSpan ExecutionDuration { get; }
 
     // ========================================
-    // EXECUTION METADATA
-    // ========================================
-
-    /// <summary>
-    /// Arbitrary metadata associated with this execution.
-    /// Can store custom values for correlation, tracing, etc.
-    /// </summary>
-    IReadOnlyDictionary<string, object?> Metadata { get; }
-
-    /// <summary>
-    /// Get specific metadata value by key.
-    /// </summary>
-    /// <param name="key">Metadata key.</param>
-    /// <returns>Metadata value if exists, null otherwise.</returns>
-    object? GetMetadata(string key);
-
-    /// <summary>
-    /// Set metadata value (if mutable context).
-    /// </summary>
-    /// <param name="key">Metadata key.</param>
-    /// <param name="value">Metadata value.</param>
-    void SetMetadata(string key, object? value);
-
-    // ========================================
     // CORRELATION & TRACING
     // ========================================
 

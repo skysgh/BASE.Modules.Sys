@@ -1,11 +1,12 @@
 using System.Security.Claims;
+using App.Modules.Sys.Infrastructure.Services;
+using App.Modules.Sys.Shared.Services;
 using App.Modules.Sys.Substrate.Contracts.Social;
-using Microsoft.AspNetCore.Http;
 
 namespace App.Modules.Sys.Infrastructure.Web.Social;
 
 /// <summary>
-/// Lite implementation of IPersonIdentityResolver using User claims from IdP.
+/// Lite implementation of IPersonIdentityResolverService using User claims from IdP.
 /// Used when Social module is not deployed.
 /// 
 /// This provides basic display name, email, and profile image from:
@@ -13,16 +14,16 @@ namespace App.Modules.Sys.Infrastructure.Web.Social;
 /// - Azure AD claims (preferred_username, upn)
 /// - Generic claims (given_name + family_name)
 /// </summary>
-public class LitePersonIdentityResolver : IPersonIdentityResolver
+public class LitePersonIdentityResolverService : IPersonIdentityResolverService, IHasScopedService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IRequestContextService _requestContextService;
 
     /// <summary>
     /// Constructor.
     /// </summary>
-    public LitePersonIdentityResolver(IHttpContextAccessor httpContextAccessor)
+    public LitePersonIdentityResolverService(IRequestContextService requestContextService)
     {
-        this._httpContextAccessor = httpContextAccessor;
+        this._requestContextService = requestContextService;
     }
 
     /// <inheritdoc />
@@ -31,8 +32,8 @@ public class LitePersonIdentityResolver : IPersonIdentityResolver
     /// <inheritdoc />
     public Task<IPersonIdentityInfo?> GetCurrentUserIdentityAsync(CancellationToken ct = default)
     {
-        var user = this._httpContextAccessor.HttpContext?.User;
-        if (user?.Identity?.IsAuthenticated != true)
+        var user = this._requestContextService.User;
+        if (!this._requestContextService.IsAuthenticated || user == null)
         {
             return Task.FromResult<IPersonIdentityInfo?>(null);
         }
@@ -46,8 +47,8 @@ public class LitePersonIdentityResolver : IPersonIdentityResolver
     {
         // In lite mode, we can only resolve the current user
         // For other users, we'd need to look them up in a user store
-        var currentUser = this._httpContextAccessor.HttpContext?.User;
-        if (currentUser?.Identity?.IsAuthenticated != true)
+        var currentUser = this._requestContextService.User;
+        if (!this._requestContextService.IsAuthenticated || currentUser == null)
         {
             return Task.FromResult<IPersonIdentityInfo?>(null);
         }

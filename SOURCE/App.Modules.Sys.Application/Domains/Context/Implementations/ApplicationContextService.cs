@@ -2,7 +2,7 @@ using App.Modules.Sys.Application.Domains.Context.Models.Implementations;
 using App.Modules.Sys.Application.Domains.Context.Services;
 using App.Modules.Sys.Application.ReferenceData.Models;
 using App.Modules.Sys.Application.ReferenceData.Services;
-using App.Modules.Sys.Shared.Lifecycles;
+using App.Modules.Sys.Shared.Services;
 using App.Modules.Sys.Substrate.Contracts.Social;
 using System;
 using System.Threading;
@@ -14,9 +14,9 @@ namespace App.Modules.Sys.Application.Domains.Context.Implementations;
 /// Implementation of ApplicationContextService.
 /// Composes context from various providers (system, workspace, user, settings).
 /// </summary>
-public class ApplicationContextService : IApplicationContextService, IHasScopedLifecycle
+public class ApplicationContextService : IApplicationContextService, IHasScopedService
 {
-    private readonly IPersonIdentityResolver _identityResolver;
+    private readonly IPersonIdentityResolverService _identityResolver;
     private readonly ISystemContextProvider _systemProvider;
     private readonly ISystemLanguageApplicationService? _languageService;
 
@@ -24,7 +24,7 @@ public class ApplicationContextService : IApplicationContextService, IHasScopedL
     /// Constructor.
     /// </summary>
     public ApplicationContextService(
-        IPersonIdentityResolver identityResolver,
+        IPersonIdentityResolverService identityResolver,
         ISystemContextProvider systemProvider,
         ISystemLanguageApplicationService? languageService = null)
     {

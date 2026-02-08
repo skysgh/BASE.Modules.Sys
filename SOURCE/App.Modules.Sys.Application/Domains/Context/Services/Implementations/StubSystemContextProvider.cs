@@ -1,5 +1,6 @@
 using App.Modules.Sys.Application.Domains.Context.Models.Implementations;
 using App.Modules.Sys.Application.ReferenceData.Models;
+using App.Modules.Sys.Shared.Services;
 
 namespace App.Modules.Sys.Application.Domains.Context.Services.Implementations;
 
@@ -7,7 +8,7 @@ namespace App.Modules.Sys.Application.Domains.Context.Services.Implementations;
 /// Stub implementation of system context provider.
 /// TODO: Replace with database-backed implementation.
 /// </summary>
-public class StubSystemContextProvider : ISystemContextProvider
+public class StubSystemContextProvider : ISystemContextProvider, IHasService
 {
     /// <inheritdoc/>
     public Task<SystemContextDto> GetSystemContextAsync(CancellationToken ct = default)
