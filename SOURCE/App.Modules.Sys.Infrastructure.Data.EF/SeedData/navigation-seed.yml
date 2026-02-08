@@ -1,0 +1,120 @@
+# Navigation Menu Seed Data
+# Defines the primary menu structure for the application
+
+navigationMenus:
+  # Primary navigation menu
+  primary:
+    - id: 00000000-0000-0000-0002-000000000001
+      key: "dashboard"
+      label: "Dashboard"
+      route: "/dashboard"
+      icon: "home"
+      order: 1
+      isActive: true
+      requiredPermission: null  # Available to all authenticated users
+      
+    - id: 00000000-0000-0000-0002-000000000002
+      key: "work"
+      label: "Work Items"
+      route: "/work"
+      icon: "list"
+      order: 2
+      isActive: true
+      requiredPermission: "work.view"
+      badgeSource: "workItems.unread"  # Dynamic badge from context
+      
+    - id: 00000000-0000-0000-0002-000000000003
+      key: "people"
+      label: "People"
+      route: "/people"
+      icon: "users"
+      order: 3
+      isActive: true
+      requiredPermission: "people.view"
+      children:
+        - id: 00000000-0000-0000-0002-000000000031
+          key: "people.directory"
+          label: "Directory"
+          route: "/people/directory"
+          icon: "book"
+          order: 1
+          
+        - id: 00000000-0000-0000-0002-000000000032
+          key: "people.groups"
+          label: "Groups"
+          route: "/people/groups"
+          icon: "users"
+          order: 2
+          
+    - id: 00000000-0000-0000-0002-000000000004
+      key: "reports"
+      label: "Reports"
+      route: "/reports"
+      icon: "bar-chart"
+      order: 4
+      isActive: true
+      requiredPermission: "reports.view"
+      
+    - id: 00000000-0000-0000-0002-000000000005
+      key: "settings"
+      label: "Settings"
+      route: "/settings"
+      icon: "settings"
+      order: 99
+      isActive: true
+      requiredPermission: null
+      children:
+        - id: 00000000-0000-0000-0002-000000000051
+          key: "settings.profile"
+          label: "Profile"
+          route: "/settings/profile"
+          icon: "user"
+          order: 1
+          
+        - id: 00000000-0000-0000-0002-000000000052
+          key: "settings.preferences"
+          label: "Preferences"
+          route: "/settings/preferences"
+          icon: "sliders"
+          order: 2
+          
+        - id: 00000000-0000-0000-0002-000000000053
+          key: "settings.security"
+          label: "Security"
+          route: "/settings/security"
+          icon: "shield"
+          order: 3
+          
+  # Admin navigation (separate menu for admins)
+  admin:
+    - id: 00000000-0000-0000-0002-000000000101
+      key: "admin.users"
+      label: "User Management"
+      route: "/admin/users"
+      icon: "users-cog"
+      order: 1
+      requiredPermission: "admin.users"
+      
+    - id: 00000000-0000-0000-0002-000000000102
+      key: "admin.workspaces"
+      label: "Workspaces"
+      route: "/admin/workspaces"
+      icon: "building"
+      order: 2
+      requiredPermission: "admin.workspaces"
+      
+    - id: 00000000-0000-0000-0002-000000000103
+      key: "admin.settings"
+      label: "System Settings"
+      route: "/admin/settings"
+      icon: "server"
+      order: 3
+      requiredPermission: "admin.settings"
+      
+    - id: 00000000-0000-0000-0002-000000000104
+      key: "admin.diagnostics"
+      label: "Diagnostics"
+      route: "/admin/diagnostics"
+      icon: "activity"
+      order: 4
+      requiredPermission: "admin.diagnostics"

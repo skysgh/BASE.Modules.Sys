@@ -1,0 +1,139 @@
+# System Configuration Seed Data
+# Core system-level settings and branding
+
+# System Branding/Information
+system:
+  name: "BASE Platform"
+  version: "1.0.0"
+  environment: "Development"
+  branding:
+    provider:
+      name: "BASE Software Inc"
+      contactEmail: "support@base-software.com"
+      logoUrl: "/assets/system/logo.png"
+      supportUrl: "https://support.base-software.com"
+      legalUrl: "https://base-software.com/legal"
+    developer:
+      name: "BASE Development Team"
+      contactEmail: "dev@base-software.com"
+      docsUrl: "https://docs.base-software.com"
+  features:
+    enableMultiTenant: true
+    enableAdvancedSettings: true
+    enableDiagnostics: true
+    enableApiDocs: true
+
+# System-level settings (can be overridden at workspace/user level)
+settings:
+  # Theme settings
+  - id: 00000000-0000-0000-0001-000000000001
+    key: "theme.default"
+    value: "light"
+    level: System
+    dataType: String
+    category: "Appearance"
+    description: "Default theme for the application"
+    isReadOnly: false
+    
+  - id: 00000000-0000-0000-0001-000000000002
+    key: "theme.availableThemes"
+    value: '["light", "dark", "system"]'
+    level: System
+    dataType: JsonArray
+    category: "Appearance"
+    description: "Available theme options"
+    isReadOnly: true
+    
+  # Language settings
+  - id: 00000000-0000-0000-0001-000000000003
+    key: "language.default"
+    value: "en"
+    level: System
+    dataType: String
+    category: "Localization"
+    description: "Default system language"
+    isReadOnly: false
+    
+  # Security settings
+  - id: 00000000-0000-0000-0001-000000000010
+    key: "security.sessionTimeoutMinutes"
+    value: "480"
+    level: System
+    dataType: Integer
+    category: "Security"
+    description: "Session timeout in minutes (default 8 hours)"
+    isReadOnly: false
+    
+  - id: 00000000-0000-0000-0001-000000000011
+    key: "security.requireMfa"
+    value: "false"
+    level: System
+    dataType: Boolean
+    category: "Security"
+    description: "Require multi-factor authentication"
+    isReadOnly: false
+    
+  - id: 00000000-0000-0000-0001-000000000012
+    key: "security.passwordMinLength"
+    value: "12"
+    level: System
+    dataType: Integer
+    category: "Security"
+    description: "Minimum password length"
+    isReadOnly: false
+    
+  - id: 00000000-0000-0000-0001-000000000013
+    key: "security.passwordRequireUppercase"
+    value: "true"
+    level: System
+    dataType: Boolean
+    category: "Security"
+    description: "Require uppercase letter in password"
+    isReadOnly: false
+    
+  - id: 00000000-0000-0000-0001-000000000014
+    key: "security.passwordRequireNumber"
+    value: "true"
+    level: System
+    dataType: Boolean
+    category: "Security"
+    description: "Require number in password"
+    isReadOnly: false
+    
+  - id: 00000000-0000-0000-0001-000000000015
+    key: "security.passwordRequireSpecial"
+    value: "true"
+    level: System
+    dataType: Boolean
+    category: "Security"
+    description: "Require special character in password"
+    isReadOnly: false
+    
+  # Navigation settings
+  - id: 00000000-0000-0000-0001-000000000020
+    key: "navigation.showBreadcrumbs"
+    value: "true"
+    level: System
+    dataType: Boolean
+    category: "Navigation"
+    description: "Show breadcrumb navigation"
+    isReadOnly: false
+    
+  # Feature flags
+  - id: 00000000-0000-0000-0001-000000000030
+    key: "features.enableAnalytics"
+    value: "true"
+    level: System
+    dataType: Boolean
+    category: "Features"
+    description: "Enable analytics tracking"
+    isReadOnly: false
+    
+  - id: 00000000-0000-0000-0001-000000000031
+    key: "features.enableChat"
+    value: "false"
+    level: System
+    dataType: Boolean
+    category: "Features"
+    description: "Enable in-app chat"
+    isReadOnly: false
