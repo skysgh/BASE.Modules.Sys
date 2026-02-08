@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -37,6 +37,9 @@
     <Folder Include="Domains\Diagnostics.Startup\" />
     <Folder Include="Domains\Environments\" />
     <Folder Include="Domains\Devices\" />
+    <Folder Include="Domains\Localisation\Services\Implementations\" />
+    <Folder Include="Domains\Localisation\Services\Models\" />
+    <Folder Include="Domains\Smtp\Services\Models\" />
     <Folder Include="Middleware\" />
     <Folder Include="Models\" />
     <Folder Include="ObjectMapping\" />
@@ -52,8 +55,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\App.Modules.Sys.Domain\App.Modules.Sys.Domain.csproj" />
-    <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.csproj" />
-    <ProjectReference Include="..\App.Modules.Sys.Substrate\App.Modules.Sys.Shared.csproj" />
+    <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.Contracts.csproj" />
+    <ProjectReference Include="..\App.Modules.Sys.Substrate\App.Modules.Sys.Substrate.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Settings\SettingsSchema.yml">

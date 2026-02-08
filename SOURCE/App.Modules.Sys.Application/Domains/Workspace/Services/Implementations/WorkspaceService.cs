@@ -91,12 +91,23 @@ internal sealed class WorkspaceService : IWorkspaceService
         {
             Id = workspace.Id.ToString(),
             Name = workspace.Title,
+            Title = workspace.Title,
+            Description = string.Empty, // TODO: Add to entity
             Branding = new WorkspaceBrandingDto
             {
                 OrganizationName = workspace.OrganizationName,
                 LogoUrl = workspace.LogoUrl,
-                PrimaryColor = workspace.PrimaryColor,
-                CustomCssUrl = workspace.CustomCssUrl
+                Theme = new ThemeDto
+                {
+                    PrimaryColor = workspace.PrimaryColor,
+                    CustomCssUrl = workspace.CustomCssUrl
+                }
+            },
+            Contact = new WorkspaceContactDto
+            {
+                Email = null, // TODO: Add to entity
+                Phone = null,
+                Address = null
             },
             Account = new AccountInfoDto
             {
@@ -105,7 +116,14 @@ internal sealed class WorkspaceService : IWorkspaceService
                 StorageLimitGb = workspace.StorageLimitGb,
                 IsActive = workspace.IsActive
             },
-            Settings = ParseSettingsJson(workspace.SettingsJson)
+            Resources = new WorkspaceResourcesDto
+            {
+                ImagesRoot = null, // TODO: Add to entity
+                TrustedByPath = null,
+                I18nPath = null
+            },
+            AccountFeatures = new Dictionary<string, bool>(), // TODO: Parse from entity
+            UIOptions = new Dictionary<string, object>() // TODO: Parse from SettingsJson
         };
     }
 

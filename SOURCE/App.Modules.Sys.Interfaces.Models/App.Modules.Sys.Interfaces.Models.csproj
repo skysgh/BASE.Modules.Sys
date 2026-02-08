@@ -28,8 +28,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.csproj" />
-    <ProjectReference Include="..\App.Modules.Sys.Substrate\App.Modules.Sys.Shared.csproj" />
+    <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.Contracts.csproj" />
+    <ProjectReference Include="..\App.Modules.Sys.Substrate\App.Modules.Sys.Substrate.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,3 +40,4 @@
   </ItemGroup>
 
 </Project>
+

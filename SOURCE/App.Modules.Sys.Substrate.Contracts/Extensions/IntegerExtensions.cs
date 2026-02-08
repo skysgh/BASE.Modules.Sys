@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,6 +11,21 @@ namespace App
     /// </summary>
     public static class IntegerExtensions
     {
+        /// <summary>
+        ///     Converts an integer to a Guid unique identifier
+        ///     (obviously not very random).
+        ///     <para>
+        ///         Useful for initial seeding scenarios.
+        ///     </para>
+        /// </summary>
+        /// <returns></returns>
+        public static Guid ToGuid(this int value)
+        {
+            var bytes = new byte[16];
+            BitConverter.GetBytes(value).CopyTo(bytes, 0);
+            return new Guid(bytes);
+        }
+
         /// <summary>
         /// Checks if a specific bit is set in the integer value.
         /// </summary>

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
@@ -29,51 +30,42 @@ namespace App.Modules.Sys.Shared.Models.Entities.Base
     public abstract class UntenantedAuditedRecordStatedTimestampedNoneIdEntityBase
         : IHasTimestampRecordStateInRecordAuditability
     {
-
-
         /// <summary>
-        ///     Gets or sets the datastore concurrency check timestamp.
-        ///     <para>
-        ///         Note that this is filled in when persisted in the db --
-        ///         so it's usable to determine whether Record is New or not.
-        ///     </para>
+        /// Gets or sets the datastore concurrency check timestamp.
+        /// <para>
+        /// Note that this is filled in when persisted in the db --
+        /// so it's usable to determine whether Record is New or not.
+        /// </para>
         /// </summary>
         [ConcurrencyCheck]
-        public virtual byte[] Timestamp { get; set; }= null!;
-        /// <inheritdoc/>
+        public virtual byte[] Timestamp { get; set; } = null!;
 
-        // Do not include in DTOs:[DataMember]
+        /// <inheritdoc/>
         [NotMapped]
         public virtual RecordPersistenceState RecordState { get; set; }
+
         /// <inheritdoc/>
-
-
-        //TODO: Convert to DateTimeOffset
-        // Do not include in DTOs:[DataMember]
         [NotMapped]
-        public virtual DateTime CreatedOnUtc { get; set; }
+        public virtual DateTime CreatedOnDateTimeUtc { get; set; }
+
         /// <inheritdoc/>
-        // Do not include in DTOs:[DataMember]
         [NotMapped]
         public virtual string CreatedByPrincipalId { get; set; } = string.Empty;
+
         /// <inheritdoc/>
-        // Do not include in DTOs:[DataMember]
         [NotMapped]
-        public virtual DateTime LastModifiedOnUtc { get; set; }
+        public virtual DateTime LastModifiedOnDateTimeUtc { get; set; }
+
         /// <inheritdoc/>
-        // Do not include in DTOs:[DataMember]
         [NotMapped]
         public virtual string LastModifiedByPrincipalId { get; set; } = string.Empty;
+
         /// <inheritdoc/>
-        // Do not include in DTOs:[DataMember]
         [NotMapped]
-        public virtual DateTime? DeletedOnUtc { get; set; }
+        public virtual DateTime? StateChangedOnDateTimeUtc { get; set; }
+
         /// <inheritdoc/>
-        // Do not include in DTOs:[DataMember]
         [NotMapped]
-        public virtual string? DeletedByPrincipalId { get; set; }
-
-
-
+        public virtual string? StateChangedByPrincipalId { get; set; }
     }
 }

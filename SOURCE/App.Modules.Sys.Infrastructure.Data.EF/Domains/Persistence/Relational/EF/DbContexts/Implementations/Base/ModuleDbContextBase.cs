@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Schema;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Services;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Schema.Implementations;
+// using App.Modules.Sys.Infrastructure.Schema.Extensions; // Removed - no longer exists
+// using App.Modules.Sys.Infrastructure.Storage.RDMS.EF.Configuration.Schema.Extensions; // Removed - no longer exists
 
 namespace App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContexts.Implementations.Base
 {
@@ -276,3 +278,4 @@ namespace App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbCon
 
     }
 }
+

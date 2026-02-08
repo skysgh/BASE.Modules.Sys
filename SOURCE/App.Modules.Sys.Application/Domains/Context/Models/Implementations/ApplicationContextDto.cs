@@ -1,3 +1,5 @@
+using App.Modules.Sys.Application.ReferenceData.Models;
+
 namespace App.Modules.Sys.Application.Domains.Context.Models.Implementations;
 
 /// <summary>
@@ -35,6 +37,12 @@ public record ApplicationContextDto
     /// Computed/merged settings (after hierarchy resolution).
     /// </summary>
     public ComputedSettingsDto Settings { get; init; } = new();
+
+    /// <summary>
+    /// Available system languages (for language switcher dropdown).
+    /// Only enabled languages are included.
+    /// </summary>
+    public List<SystemLanguageDto> AvailableLanguages { get; init; } = new();
 
     /// <summary>
     /// Server timestamp when context was generated.

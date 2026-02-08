@@ -29,9 +29,9 @@ namespace App.Modules.Sys.Shared.Factories.Demo
                 RecordState = RecordPersistenceState.Active,
                 Id = (100 + index).ToGuid(),
                 CreatedByPrincipalId = "{P-whatever}",
-                CreatedOnUtc = DateTime.UtcNow,
+                CreatedOnDateTimeUtc = DateTime.UtcNow,
                 LastModifiedByPrincipalId = "{P-whatever}",
-                LastModifiedOnUtc = DateTime.UtcNow,
+                LastModifiedOnDateTimeUtc = DateTime.UtcNow,
                 //DeletedByPrincipalId  
                 //DeletedOnUtc
                 Enabled = true,
@@ -43,3 +43,4 @@ namespace App.Modules.Sys.Shared.Factories.Demo
         }
     }
 }
+

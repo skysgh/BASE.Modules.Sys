@@ -38,7 +38,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\App.Modules.Sys.Infrastructure\App.Modules.Sys.Infrastructure.csproj" />
-    <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.csproj" />
+    <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,3 +49,4 @@
   </ItemGroup>
 
 </Project>
+

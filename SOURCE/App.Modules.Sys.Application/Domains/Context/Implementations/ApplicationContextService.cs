@@ -1,5 +1,7 @@
 using App.Modules.Sys.Application.Domains.Context.Models.Implementations;
+using App.Modules.Sys.Application.ReferenceData.Models;
 using App.Modules.Sys.Shared.Lifecycles;
+using App.Modules.Sys.Substrate.Contracts.Social;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,15 +9,44 @@ using System.Threading.Tasks;
 namespace App.Modules.Sys.Application.Domains.Context.Implementations;
 
 /// <summary>
-/// Stub implementation of ApplicationContextService.
-/// Returns minimal context data for initial integration.
-/// TODO: Wire up actual workspace, user, and settings services.
+/// Implementation of ApplicationContextService.
+/// Returns context data including user identity from IPersonIdentityResolver.
 /// </summary>
 public class ApplicationContextService : IApplicationContextService, IHasSingletonLifecycle
 {
-    /// <inheritdoc/>
-    public Task<ApplicationContextDto> GetApplicationContextAsync(CancellationToken cancellationToken = default)
+    private readonly IPersonIdentityResolver _identityResolver;
+
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="identityResolver">Person identity resolver (lite or full mode).</param>
+    public ApplicationContextService(IPersonIdentityResolver identityResolver)
     {
+        this._identityResolver = identityResolver;
+    }
+
+    /// <inheritdoc/>
+    public async Task<ApplicationContextDto> GetApplicationContextAsync(CancellationToken cancellationToken = default)
+    {
+        // Get current user's identity (works in both lite and full mode)
+        var userIdentity = await this._identityResolver.GetCurrentUserIdentityAsync(cancellationToken);
+        
+        // Build user context from identity (null if not authenticated)
+        UserContextDto? userContext = null;
+        var isAuthenticated = userIdentity != null;
+        
+        if (userIdentity != null)
+        {
+            userContext = new UserContextDto
+            {
+                Id = userIdentity.PersonId.ToString(),
+                DisplayName = userIdentity.DisplayName ?? "User",
+                Email = userIdentity.Email,
+                ProfileImageUrl = userIdentity.ProfileImageUrl,
+                IsLiteMode = userIdentity.IsLiteMode
+            };
+        }
+        
         // TODO: Replace with real data from database
         // Values marked with '!' are SERVER stubs (not client hardcoded)
         
@@ -111,12 +142,12 @@ public class ApplicationContextService : IApplicationContextService, IHasSinglet
             },
             
             
-            User = null, // TODO: Get from authentication
+            User = userContext, // From IPersonIdentityResolver (lite or full mode)
             
             Session = new SessionContextDto
             {
                 Id = Guid.NewGuid(), // TODO: Get from ISessionService
-                IsAuthenticated = false,
+                IsAuthenticated = isAuthenticated,
                 ExpiresAt = DateTime.UtcNow.AddHours(8),
                 LastActivityAt = DateTime.UtcNow
             },
@@ -142,9 +173,22 @@ public class ApplicationContextService : IApplicationContextService, IHasSinglet
                 Language = "en-US!"
             },
             
+            // Available system languages (enabled only)
+            // Matches CLIENT json-server data: base_service_Languages (enabled=true)
+            // '!' suffix on display strings only (NOT on code or iconUrl - those are functional!)
+            AvailableLanguages = new List<SystemLanguageDto>
+            {
+                new() { Code = "en", Name = "NZ English!", NativeName = "Kiwi!", Description = "Kiwi!", IconUrl = "/assets/core/deployed/images/flags/nz.svg", IsActive = true, IsDefault = true },
+                new() { Code = "mi", Name = "Te Reo!", NativeName = "Te Reo!", Description = "NZ Māori!", IconUrl = "/assets/core/deployed/images/flags/mi.svg", IsActive = true, IsDefault = false },
+                new() { Code = "zh", Name = "Chinese!", NativeName = "中国人!", Description = "Chinese language!", IconUrl = "/assets/core/deployed/images/flags/china.svg", IsActive = true, IsDefault = false },
+                new() { Code = "ws", Name = "Samoan!", NativeName = "Gagana Samoa!", Description = "Samoan language!", IconUrl = "/assets/core/deployed/images/flags/ws.svg", IsActive = true, IsDefault = false },
+                new() { Code = "to", Name = "Tongan!", NativeName = "Tonga!", Description = "Tongan!", IconUrl = "/assets/core/deployed/images/flags/to.svg", IsActive = true, IsDefault = false },
+                new() { Code = "in", Name = "Indian!", NativeName = "भारतीय!", Description = "Indian!", IconUrl = "/assets/core/deployed/images/flags/in.svg", IsActive = true, IsDefault = false }
+            },
+            
             GeneratedAt = DateTime.UtcNow
         };
 
-        return Task.FromResult(context);
+        return context;
     }
 }

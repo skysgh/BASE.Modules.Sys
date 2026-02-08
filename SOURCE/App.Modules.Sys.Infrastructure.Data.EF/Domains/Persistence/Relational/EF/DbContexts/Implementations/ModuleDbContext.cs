@@ -12,7 +12,11 @@ using App.Modules.Sys.Domain.Domains.Sessions.Models;
 using App.Modules.Sys.Domain.Domains.Workspaces.Models;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Schema.Implementations;
 using App.Modules.Sys.Domain.Domains.Permissions.Models;
-using App.Modules.Sys.Infrastructure.Data.EF.Configurations.ReferenceData;
+// using App.Modules.Sys.Infrastructure.Data.EF.Configurations.ReferenceData; // Removed - namespace changed
+using App.Modules.Sys.Domain.ReferenceData;
+using App.Modules.Sys.Infrastructure.Storage.RDMS.EF.Configuration.Seeding.ReferenceData;
+using App.Modules.Sys.Infrastructure.Domains.Settings.Language;
+using App.Modules.Sys.Infrastructure.Domains.Settings.Workspaces;
 
 namespace App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContexts.Implementations
 {
@@ -84,6 +88,11 @@ namespace App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbCon
         public DbSet<WorkspaceMember> WorkspaceMembers { get; set; } = null!;
 
         /// <summary>
+        /// Workspace language assignments table - languages enabled per workspace
+        /// </summary>
+        public DbSet<WorkspaceLanguageAssignment> WorkspaceLanguageAssignments { get; set; } = null!;
+
+        /// <summary>
         /// </summary>
 
         /// <summary>
@@ -123,13 +132,22 @@ namespace App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbCon
             // or just before invoking the base, 
             // BUT DONT FORGET IT (or you'll be adding to the 
             // BASE schema....making it harder to remove later.
-            this.SchemaKey = ModuleConstants.DbSchemaKey;
+            SchemaKey = ModuleConstants.DbSchemaKey;
 
+            // ============================================================
+            // Schema Configurations (structure only - no seed data)
+            // ============================================================
             modelBuilder.ApplyConfiguration(new SettingValueConfiguration());
             modelBuilder.ApplyConfiguration(new SystemPermissionConfiguration());
-            modelBuilder.ApplyConfiguration(new SystemLanguageConfiguration());
+            modelBuilder.ApplyConfiguration(new SystemLanguagesConfiguration());
+            modelBuilder.ApplyConfiguration(new WorkspaceLanguageAssignmentConfiguration());
             modelBuilder.ApplyConfiguration(new SessionConfiguration());
             modelBuilder.ApplyConfiguration(new SessionOperationConfiguration());
+
+            // ============================================================
+            // Seed Data (separated per Single Responsibility Principle)
+            // ============================================================
+            SystemLanguageSeeder.Seed(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -188,5 +206,8 @@ namespace App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbCon
         }
     }
 }
+
+
+
 
 

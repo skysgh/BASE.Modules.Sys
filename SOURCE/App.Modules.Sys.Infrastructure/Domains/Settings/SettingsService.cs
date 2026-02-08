@@ -224,8 +224,10 @@ namespace App.Modules.Sys.Infrastructure.Domains.Settings
                 });
             }
 
-            var workspaceIdStr = level == SettingLevel.System ? "*" : workspaceId?.ToString() ?? "*";
-            var userIdStr = level == SettingLevel.Person ? userId?.ToString() ?? "*" : "*";
+            // 5-tier hierarchy: Developer → Provider → Distributor → Workspace → User
+            // For now, map level to workspace/user only (Provider/Distributor not implemented yet)
+            var workspaceIdStr = (level >= SettingLevel.Workspace) ? workspaceId?.ToString() ?? "*" : "*";
+            var userIdStr = (level == SettingLevel.User) ? userId?.ToString() ?? "*" : "*";
 
             return await _repository.GetAllAsync(workspaceIdStr, userIdStr, ct);
         }

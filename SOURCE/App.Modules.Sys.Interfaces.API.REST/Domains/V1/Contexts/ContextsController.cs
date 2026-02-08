@@ -24,7 +24,7 @@ public class ContextsController : SysApiControllerBase
     /// <summary>
     /// Constructor.
     /// </summary>
-    public ContextController(IApplicationContextService contextService)
+    public ContextsController(IApplicationContextService contextService)
     {
         _contextService = contextService;
     }

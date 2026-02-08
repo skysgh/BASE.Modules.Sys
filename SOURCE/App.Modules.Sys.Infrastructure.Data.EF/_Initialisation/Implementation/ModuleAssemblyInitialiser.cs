@@ -1,6 +1,6 @@
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContexts.Implementations;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Services;
-using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Services.Implementations;
+using App.Modules.Sys.Infrastructure.Storage.RDMS.EF.Services.Implementations;
 using App.Modules.Sys.Initialisation;
 using App.Modules.Sys.Initialisation.Implementation.Base;
 using Microsoft.EntityFrameworkCore;

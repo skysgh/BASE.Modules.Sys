@@ -17,6 +17,8 @@ public record UserContextDto
 
     /// <summary>
     /// User display name.
+    /// In lite mode: from IdP claims (name, preferred_username, email).
+    /// In full mode: from PersonIdentity in Social module.
     /// </summary>
     public string? DisplayName { get; init; }
 
@@ -24,6 +26,19 @@ public record UserContextDto
     /// User email address.
     /// </summary>
     public string? Email { get; init; }
+
+    /// <summary>
+    /// URL to user's profile image.
+    /// In lite mode: from IdP claims (picture).
+    /// In full mode: from PersonIdentity.ProfileImageUrl.
+    /// </summary>
+    public string? ProfileImageUrl { get; init; }
+
+    /// <summary>
+    /// Whether identity is from lite mode (IdP claims only)
+    /// or full mode (Social module with PersonIdentity).
+    /// </summary>
+    public bool IsLiteMode { get; init; }
 
     /// <summary>
     /// User profiles organized by domain/module.

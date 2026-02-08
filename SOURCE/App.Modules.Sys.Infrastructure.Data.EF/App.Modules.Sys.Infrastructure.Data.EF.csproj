@@ -29,13 +29,13 @@
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <ItemGroup><Compile Remove="Extensions\ScanAll*_TBV.cs" /><Compile Remove="**\*_TBV.cs" />
+  <ItemGroup><Compile Remove="Domains\Persistence\Relational\EF\Extensions\ScanAll*_TBV.cs" /><Compile Remove="**\*_TBV.cs" />
     <Compile Remove="_TOREVIEW\**" />
     <EmbeddedResource Remove="_TOREVIEW\**" />
     <None Remove="_TOREVIEW\**" />
   </ItemGroup>
 
-  <ItemGroup><Compile Remove="Extensions\ScanAll*_TBV.cs" /><Compile Remove="**\*_TBV.cs" />
+  <ItemGroup><Compile Remove="Domains\Persistence\Relational\EF\Extensions\ScanAll*_TBV.cs" /><Compile Remove="**\*_TBV.cs" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.2" />
@@ -46,18 +46,19 @@
     <PackageReference Include="YamlDotNet" Version="16.2.1" />
   </ItemGroup>
 
-  <ItemGroup><Compile Remove="Extensions\ScanAll*_TBV.cs" /><Compile Remove="**\*_TBV.cs" />
+  <ItemGroup><Compile Remove="Domains\Persistence\Relational\EF\Extensions\ScanAll*_TBV.cs" /><Compile Remove="**\*_TBV.cs" />
     <ProjectReference Include="..\App.Modules.Sys.Domain\App.Modules.Sys.Domain.csproj" />
     <ProjectReference Include="..\App.Modules.Sys.Infrastructure\App.Modules.Sys.Infrastructure.csproj" />
-    <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.csproj" />
-    <ProjectReference Include="..\App.Modules.Sys.Substrate\App.Modules.Sys.Shared.csproj" />
+    <ProjectReference Include="..\App.Modules.Sys.Substrate.Contracts\App.Modules.Sys.Substrate.Contracts.csproj" />
+    <ProjectReference Include="..\App.Modules.Sys.Substrate\App.Modules.Sys.Substrate.csproj" />
   </ItemGroup>
 
-  <ItemGroup><Compile Remove="Extensions\ScanAll*_TBV.cs" /><Compile Remove="**\*_TBV.cs" />
-    <None Include="Extensions\QueryableEFExtensions.cs" />
+  <ItemGroup><Compile Remove="Domains\Persistence\Relational\EF\Extensions\ScanAll*_TBV.cs" /><Compile Remove="**\*_TBV.cs" />
+    <None Include="Domains\Persistence\Relational\EF\Extensions\QueryableEFExtensions.cs" />
+    <None Include="Domains\Persistence\Relational\EF\Services\Implementations\RepositoryService.cs" />
   </ItemGroup>
 
-  <ItemGroup><Compile Remove="Extensions\ScanAll*_TBV.cs" /><Compile Remove="**\*_TBV.cs" />
+  <ItemGroup><Compile Remove="Domains\Persistence\Relational\EF\Extensions\ScanAll*_TBV.cs" /><Compile Remove="**\*_TBV.cs" /><Compile Remove="Domains\Persistence\Relational\EF\Services\Implementations\RepositoryService.cs" />
     <None Update="_Packaging\readme.nuget.md">
       <PackagePath>\</PackagePath>
       <Pack>true</Pack>
@@ -73,7 +74,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\Base\" />
+    <Folder Include="Domains\Persistence\Relational\EF\Configuration\Schema\Management\" />
+    <Folder Include="Domains\Persistence\Relational\EF\Configuration\Seeding\NewFolder\" />
+    <Folder Include="Domains\Persistence\Relational\EF\Repositories\Base\" />
+    <Folder Include="Domains\Settings\Configuration\" />
   </ItemGroup>
 
 </Project>
+

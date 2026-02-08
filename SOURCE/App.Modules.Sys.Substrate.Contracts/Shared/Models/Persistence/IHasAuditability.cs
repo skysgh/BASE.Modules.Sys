@@ -1,51 +1,37 @@
+using System;
+
 namespace App.Modules.Sys.Shared.Models.Persistence
 {
     /// <summary>
     /// Contract for persistable system entities
-    /// to include basic values in the record.
+    /// to include basic audit values in the record.
     /// <para>
-    /// Note:
-    /// <c>Created</c>/<c>Updated</c> 
-    /// properties always expect 
-    /// a value, whereas the 
-    /// <c>Deleted</c> properties are nullable.
-    /// </para>
-    /// <para>
-    /// Note: there is no equivalent 
-    /// <c>IHasInRecordAuditabilityNullable.</c>
+    /// Note: <c>Created</c>/<c>Updated</c> properties always expect 
+    /// a value, whereas state change properties are nullable.
     /// </para>
     /// </summary>
-    public interface IHasInRecordAuditability
+    public interface IHasInRecordAuditability :
+        IHasCreatedOnDateTimeUtc,
+        IHasLastModifiedOnDateTimeUtc
     {
         /// <summary>
-        ///     Gets or sets the created on.
-        /// </summary>
-        DateTime CreatedOnUtc { get; set; }
-
-
-        /// <summary>
-        ///     Gets or sets the created by.
+        /// Gets or sets the principal id who created the record.
         /// </summary>
         string CreatedByPrincipalId { get; set; }
 
         /// <summary>
-        ///     Gets or sets the last modified on.
-        /// </summary>
-        DateTime LastModifiedOnUtc { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the last modified by.
+        /// Gets or sets the principal id who last modified the record.
         /// </summary>
         string LastModifiedByPrincipalId { get; set; }
 
         /// <summary>
-        ///     Gets or sets the last modified on.
+        /// Gets or sets the date when record state changed (nullable for soft delete).
         /// </summary>
-        DateTime? DeletedOnUtc { get; set; }
+        DateTime? StateChangedOnDateTimeUtc { get; set; }
 
         /// <summary>
-        ///     Gets or sets the last modified by.
+        /// Gets or sets the principal id who changed the state (nullable).
         /// </summary>
-        string? DeletedByPrincipalId { get; set; }
+        string? StateChangedByPrincipalId { get; set; }
     }
 }

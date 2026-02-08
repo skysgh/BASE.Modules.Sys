@@ -4,17 +4,18 @@ using App.Modules.Sys.Interfaces.API.REST.Domains.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-
 
 namespace App.Modules.Sys.Interfaces.Domains.V1.ReferenceData;
 
 /// <summary>
 /// System Languages API - Available UI languages for internationalization.
-/// Provides read-only access to system language reference data.
+/// 
+/// Provides:
+/// - Read access for all users (language selection)
+/// - OData query support for admin filtering
+/// 
+/// NOTE: Workspace-level queries and Admin CRUD operations are not yet implemented
+/// in the service layer. Those endpoints will be enabled once the service is complete.
 /// </summary>
 [Route(ApiRoutes.Rest.V1.ReferenceData.Languages)]
 [Authorize]
@@ -29,6 +30,8 @@ public class SystemLanguagesController : ControllerBase
     {
         _service = service;
     }
+
+    #region Query Endpoints (OData)
 
     /// <summary>
     /// Query system languages with OData support.
@@ -54,6 +57,10 @@ public class SystemLanguagesController : ControllerBase
     {
         return _service.GetLanguagesQueryable(activeOnly);
     }
+
+    #endregion
+
+    #region Standard Read Endpoints
 
     /// <summary>
     /// Get all system languages.
@@ -92,7 +99,7 @@ public class SystemLanguagesController : ControllerBase
     {
         var language = await _service.GetLanguageByCodeAsync(code, ct);
         
-        if (language == null)
+        if (language is null)
         {
             return NotFound(new { message = $"Language with code '{code}' not found." });
         }
@@ -115,4 +122,32 @@ public class SystemLanguagesController : ControllerBase
         var language = await _service.GetDefaultLanguageAsync(ct);
         return Ok(language);
     }
+
+    #endregion
+
+    // TODO: Workspace-level endpoints and Admin CRUD endpoints need service implementation
+    // See ISystemLanguageApplicationService for the required methods:
+    // - GetWorkspaceLanguagesQueryable
+    // - GetWorkspaceLanguagesAsync
+    // - GetWorkspaceDefaultLanguageAsync
+    // - SetWorkspaceLanguagesAsync
+    // - CreateLanguageAsync
+    // - UpdateLanguageAsync
+    // - DeleteLanguageAsync
+}
+
+/// <summary>
+/// Request model for setting workspace languages.
+/// </summary>
+public record SetWorkspaceLanguagesRequest
+{
+    /// <summary>
+    /// Language codes to enable for the workspace.
+    /// </summary>
+    public required List<string> LanguageCodes { get; init; }
+
+    /// <summary>
+    /// The default language code for the workspace.
+    /// </summary>
+    public required string DefaultLanguageCode { get; init; }
 }

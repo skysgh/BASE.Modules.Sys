@@ -1,5 +1,6 @@
 using System;
-using System.ComponentModel.DataAnnotations;
+using App.Modules.Sys.Shared.Models;
+using App.Modules.Sys.Shared.Models.Persistence;
 
 namespace App.Modules.Sys.Domain.ReferenceData;
 
@@ -13,56 +14,53 @@ namespace App.Modules.Sys.Domain.ReferenceData;
 /// - Cacheable
 /// - Seed data managed via migrations
 /// - Used by Context to populate computed settings
+/// 
+/// Implements contracts for consistent schema generation:
+/// - IHasGuidId: Entity primary key
+/// - IHasKey: ISO code as business key
+/// - IHasEnabled: Enable/disable language
+/// - IHasDisplayHints: Sort order and display styling
+/// - IHasTitleAndDescription: Display name and description
+/// - IHasImageUrlNullable: Optional flag/icon URL
 /// </remarks>
-public class SystemLanguage
+public class SystemLanguage : 
+    IHasGuidId,
+    IHasKey,
+    IHasEnabled,
+    IHasDisplayHints,
+    IHasTitleAndDescription,
+    IHasImageUrlNullable
 {
-    /// <summary>
-    /// Unique identifier.
-    /// </summary>
-    [Key]
+    /// <inheritdoc/>
     public Guid Id { get; set; }
 
     /// <summary>
     /// ISO 639-1 language code (e.g., "en", "es", "fr").
     /// Used for localization keys and URL routing.
+    /// This is the unique business key for the language.
     /// </summary>
-    [Required]
-    [MaxLength(10)]
-    public string Code { get; set; } = null!;
+    public string Key { get; set; } = null!;
 
     /// <summary>
     /// Display name in English (e.g., "English", "Spanish", "French").
-    /// Used for admin interfaces and documentation.
+    /// Used in language picker UI and admin interfaces.
     /// </summary>
-    [Required]
-    [MaxLength(100)]
-    public string Name { get; set; } = null!;
+    public string Title { get; set; } = null!;
 
     /// <summary>
     /// Display name in native language (e.g., "English", "Español", "Français").
-    /// Used in language picker UI.
+    /// Used in language picker UI for international users.
     /// </summary>
-    [MaxLength(100)]
     public string? NativeName { get; set; }
 
-    /// <summary>
-    /// Optional description for admin purposes.
-    /// </summary>
-    [MaxLength(500)]
-    public string? Description { get; set; }
+    /// <inheritdoc/>
+    public string Description { get; set; } = string.Empty;
 
-    /// <summary>
-    /// URL to flag/icon image (optional).
-    /// Used in language picker UI.
-    /// </summary>
-    [MaxLength(500)]
-    public string? IconUrl { get; set; }
+    /// <inheritdoc/>
+    public string? ImageUrl { get; set; }
 
-    /// <summary>
-    /// Whether this language is available for selection.
-    /// Inactive languages don't appear in UI.
-    /// </summary>
-    public bool IsActive { get; set; } = true;
+    /// <inheritdoc/>
+    public bool Enabled { get; set; } = true;
 
     /// <summary>
     /// Whether this is the default/fallback language.
@@ -70,34 +68,25 @@ public class SystemLanguage
     /// </summary>
     public bool IsDefault { get; set; }
 
-    /// <summary>
-    /// Display order in language picker (lower = first).
-    /// </summary>
-    public int SortOrder { get; set; }
+    /// <inheritdoc/>
+    public int DisplayOrderHint { get; set; }
 
-    /// <summary>
-    /// When this record was created.
-    /// </summary>
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    /// <summary>
-    /// When this record was last updated.
-    /// </summary>
-    public DateTime? UpdatedAt { get; set; }
+    /// <inheritdoc/>
+    public string? DisplayStyleHint { get; set; }
 
     /// <summary>
     /// Validation: Ensure code is valid ISO 639-1 format.
     /// </summary>
-    public bool IsCodeValid()
+    public bool IsKeyValid()
     {
-        return !string.IsNullOrWhiteSpace(Code) && Code.Length >= 2 && Code.Length <= 10;
+        return !string.IsNullOrWhiteSpace(Key) && Key.Length >= 2 && Key.Length <= 10;
     }
 
     /// <summary>
     /// Validation: Ensure at least one name is provided.
     /// </summary>
-    public bool HasName()
+    public bool HasDisplayName()
     {
-        return !string.IsNullOrWhiteSpace(Name) || !string.IsNullOrWhiteSpace(NativeName);
+        return !string.IsNullOrWhiteSpace(Title) || !string.IsNullOrWhiteSpace(NativeName);
     }
 }
