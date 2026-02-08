@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Infrastruct
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Infrastructure.Web.Identity", "App.Modules.Sys.Infrastructure.Web.Identity\App.Modules.Sys.Infrastructure.Web.Identity.csproj", "{2044F07A-217B-4755-9353-C69870F72FD3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Sys.Shared", "App.Modules.Sys.Shared\App.Modules.Sys.Shared.csproj", "{C997B3B9-2B32-4091-AB40-64890B1E7086}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -285,6 +287,18 @@ Global
 		{2044F07A-217B-4755-9353-C69870F72FD3}.Release|x64.Build.0 = Release|Any CPU
 		{2044F07A-217B-4755-9353-C69870F72FD3}.Release|x86.ActiveCfg = Release|Any CPU
 		{2044F07A-217B-4755-9353-C69870F72FD3}.Release|x86.Build.0 = Release|Any CPU
+		{C997B3B9-2B32-4091-AB40-64890B1E7086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C997B3B9-2B32-4091-AB40-64890B1E7086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C997B3B9-2B32-4091-AB40-64890B1E7086}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C997B3B9-2B32-4091-AB40-64890B1E7086}.Debug|x64.Build.0 = Debug|Any CPU
+		{C997B3B9-2B32-4091-AB40-64890B1E7086}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C997B3B9-2B32-4091-AB40-64890B1E7086}.Debug|x86.Build.0 = Debug|Any CPU
+		{C997B3B9-2B32-4091-AB40-64890B1E7086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C997B3B9-2B32-4091-AB40-64890B1E7086}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C997B3B9-2B32-4091-AB40-64890B1E7086}.Release|x64.ActiveCfg = Release|Any CPU
+		{C997B3B9-2B32-4091-AB40-64890B1E7086}.Release|x64.Build.0 = Release|Any CPU
+		{C997B3B9-2B32-4091-AB40-64890B1E7086}.Release|x86.ActiveCfg = Release|Any CPU
+		{C997B3B9-2B32-4091-AB40-64890B1E7086}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
