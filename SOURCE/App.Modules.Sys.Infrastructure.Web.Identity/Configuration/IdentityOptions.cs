@@ -24,6 +24,13 @@ public class IdentityOptions
     public bool UseAzureAdB2C { get; set; }
 
     /// <summary>
+    /// Enable Duende IdentityServer for self-hosted OIDC.
+    /// Requires commercial license for production.
+    /// Use for air-gapped/on-premises scenarios.
+    /// </summary>
+    public bool UseDuendeIdentityServer { get; set; }
+
+    /// <summary>
     /// Enable local accounts for offline/fallback scenarios.
     /// Uses PBKDF2 password hashing.
     /// </summary>
@@ -43,6 +50,11 @@ public class IdentityOptions
     /// Azure AD B2C configuration.
     /// </summary>
     public AzureAdB2COptions AzureAdB2C { get; set; } = new();
+
+    /// <summary>
+    /// Duende IdentityServer configuration (self-hosted).
+    /// </summary>
+    public DuendeIdentityServerOptions DuendeIdentityServer { get; set; } = new();
 
     /// <summary>
     /// Local account configuration.

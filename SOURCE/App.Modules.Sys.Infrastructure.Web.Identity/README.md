@@ -10,11 +10,12 @@ This assembly isolates all identity/authentication infrastructure to:
 
 ## Supported Identity Providers
 
-| Provider | Use Case | FedRAMP | Notes |
-|----------|----------|---------|-------|
-| **Azure AD** | Enterprise SSO | ✅ High | Microsoft Entra ID |
-| **Azure AD B2C** | Consumer + Local | ✅ High | Local accounts + social |
-| **Local Accounts** | Fallback/Offline | N/A | PBKDF2 password hashing |
+| Provider | Use Case | FedRAMP | License | Notes |
+|----------|----------|---------|---------|-------|
+| **Azure AD** | Enterprise SSO | ✅ High | Included | Microsoft Entra ID |
+| **Azure AD B2C** | Consumer + Local | ✅ High | Pay-per-MAU | Local accounts + social |
+| **Duende IdentityServer** | Self-Hosted | N/A | Commercial | Air-gapped/on-premises |
+| **Local Accounts** | Fallback/Offline | N/A | N/A | PBKDF2 password hashing |
 
 ## Architecture
 
@@ -26,11 +27,11 @@ This assembly isolates all identity/authentication infrastructure to:
                                 │
                     OIDC / OAuth 2.0 Flow
                                 │
-        ┌───────────────────────┼───────────────────────┐
-        │                       │                       │
-        ▼                       ▼                       ▼
-   Azure AD              Azure AD B2C            Local Fallback
-   (Enterprise)          (Consumer)              (Offline/Admin)
+        ┌───────────┬───────────┼───────────┬───────────┐
+        │           │           │           │           │
+        ▼           ▼           ▼           ▼           ▼
+   Azure AD    Azure AD B2C   Duende    Local     External
+  (Enterprise)  (Consumer)    (Self)   Fallback    IdPs
 ```
 
 ## Configuration
@@ -61,20 +62,42 @@ This assembly isolates all identity/authentication infrastructure to:
 }
 ```
 
+### Duende IdentityServer (Self-Hosted)
+```json
+{
+  "DuendeIdentityServer": {
+    "Enabled": true,
+    "IssuerUri": "https://identity.yourdomain.com",
+    "RequireHttpsMetadata": true,
+    "SigningCredential": {
+      "Type": "KeyVault",
+      "KeyVaultUrl": "https://your-vault.vault.azure.net",
+      "KeyVaultCertificateName": "identity-signing"
+    }
+  }
+}
+```
+
 ## Usage
 
 ```csharp
 // In Program.cs
 builder.Services.AddBaseIdentity(builder.Configuration, options =>
 {
-    options.UseAzureAd = true;           // Enterprise SSO
-    options.UseAzureAdB2C = true;        // Consumer + Local
-    options.EnableLocalAccounts = true;  // Offline fallback
+    options.UseAzureAd = true;              // Enterprise SSO
+    options.UseAzureAdB2C = true;           // Consumer + Local
+    options.UseDuendeIdentityServer = false; // Self-hosted (optional)
+    options.EnableLocalAccounts = true;     // Offline fallback
 });
 ```
 
-## Files
+## Provider Selection Guide
 
-- `Providers/` - Identity provider implementations
-- `Configuration/` - Configuration models and extensions
-- `Services/` - Identity services (password hashing, token management)
+| Scenario | Recommended Provider |
+|----------|---------------------|
+| Enterprise customers with Azure AD | Azure AD |
+| Consumer-facing with local accounts | Azure AD B2C |
+| Government (FedRAMP required) | Azure AD or B2C |
+| Air-gapped/on-premises | Duende IdentityServer |
+| Offline/fallback | Local Accounts |
+| Super admin bootstrap | Local Accounts |
